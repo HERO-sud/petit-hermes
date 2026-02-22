@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>プチヘルメース | Petit Hermes — 廃校の教室から届く、果実と野菜の酵母パン</title>
+<meta name="description" content="広島県北広島町の廃校で、規格外の果物や野菜から酵母を育て焼き上げたカンパーニュを冷凍便で全国へお届けします。">
+<meta property="og:title" content="プチヘルメース | Petit Hermes">
+<meta property="og:description" content="廃校の教室から届く、果実と野菜の酵母パン。広島・北広島町から冷凍便で全国へ。">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍞</text></svg>">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.26.5/babel.min.js"></script>
+<style>html,body,#root{margin:0;padding:0;min-height:100vh}body{-webkit-font-smoothing:antialiased}</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+
+const I = {
+  hero: "https://images.unsplash.com/photo-1517433670267-08bbd4be890f?w=1400&q=80",
+  bread: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&q=80",
+  sourdough: "https://images.unsplash.com/photo-1585478259715-876acc5be8eb?w=800&q=80",
+  crust: "https://images.unsplash.com/photo-1586444248879-bc604bc77cee?w=800&q=80",
+  ferment: "https://images.unsplash.com/photo-1555507036-ab1f4038024a?w=800&q=80",
+  fruit: "https://images.unsplash.com/photo-1464454709131-ffd692591ee5?w=800&q=80",
+  gift: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=800&q=80",
+  olive: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=800&q=80",
+  wheat: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=800&q=80",
+  school: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800&q=80",
+  garden: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&q=80",
+  cafe: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80",
+  bake: "https://images.unsplash.com/photo-1517433367423-c7e5b0f35086?w=800&q=80",
+  campagne: "https://images.unsplash.com/photo-1589367920969-ab8e050bbb04?w=800&q=80",
+  hands: "https://images.unsplash.com/photo-1556471013-0001958d2f12?w=800&q=80",
+  village: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+  slice: "https://images.unsplash.com/photo-1608198093002-ad4e005484ec?w=800&q=80",
+  table: "https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=800&q=80",
+};
+
+const LINKS = {
+  instagram: "https://www.instagram.com/petit_hermes?igsh=MWRkaGd0c2duejAybA==",
+  line: "https://lin.ee/Jn0emFU",
+  giftcard: "https://app.squareup.com/gift/ML54AVEN5E5KZ/order",
+};
+
+const C = {
+  fg: "#2A2A25", fgL: "#6B6860", fgXL: "#9B978E",
+  bg: "#FAF8F4", bgW: "#FFFFFF", bgWarm: "#F4EFE7", bgDark: "#1B1E16",
+  main: "#4E5D3E", mainD: "#3A4A2F", mainL: "#6B7D5A",
+  warm: "#A67C52", warmL: "#C4A06E", warmXL: "#E8D5B7",
+  border: "#E3DDD2", accent: "#8B4513",
+};
+
+/* ===== ディスクレーマーテキスト（定数化） ===== */
+const DISCLAIMER_TEXT = "※これはAIの実験で自動生成された『架空のデモサイト』です。実際のプチヘルメースの店舗情報、価格、メニューとは一切異なります。本物の情報は";
+const DISCLAIMER_LINK_TEXT = "公式Instagram";
+
+function useVis(th = 0.08) {
+  const r = useRef(null);
+  const [v, setV] = useState(false);
+  useEffect(() => {
+    const el = r.current; if (!el) return;
+    const o = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setV(true); o.disconnect(); } }, { threshold: th });
+    o.observe(el); return () => o.disconnect();
+  }, []);
+  return [r, v];
+}
+
+function R({ children, d = 0, y = 32, s = {} }) {
+  const [r, v] = useVis();
+  return (<div ref={r} style={{ opacity: v ? 1 : 0, transform: v ? "none" : `translateY(${y}px)`, transition: `opacity 0.9s cubic-bezier(.16,1,.3,1) ${d}s, transform 0.9s cubic-bezier(.16,1,.3,1) ${d}s`, willChange: "opacity, transform", ...s }}>{children}</div>);
+}
+
+function Img({ src, alt = "", r = "4/3", rd = 10, hov = false, s = {} }) {
+  const [ok, setOk] = useState(false);
+  const [h, setH] = useState(false);
+  return (
+    <div onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
+      style={{ aspectRatio: r, borderRadius: rd, overflow: "hidden", background: C.warmXL, position: "relative", ...s }}>
+      <img src={src} alt={alt} loading="lazy" onLoad={() => setOk(true)}
+        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block",
+          opacity: ok ? 1 : 0, transition: "opacity 0.6s, transform 0.7s cubic-bezier(.16,1,.3,1)",
+          transform: hov && h ? "scale(1.05)" : "scale(1)" }} />
+    </div>
+  );
+}
+
+function Marquee({ items, speed = 40 }) {
+  const t = items.join("   ·   ") + "   ·   ";
+  return (
+    <div style={{ overflow: "hidden", whiteSpace: "nowrap", background: C.main, color: "rgba(255,255,255,0.7)", padding: "11px 0", fontSize: 12, letterSpacing: "0.18em", textTransform: "uppercase", fontWeight: 500 }}>
+      <div style={{ display: "inline-block", animation: `marquee ${speed}s linear infinite` }}>{t}{t}</div>
+      <style>{`@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}`}</style>
+    </div>
+  );
+}
+
+function Counter({ n, suffix = "", pre = "" }) {
+  const [r, v] = useVis();
+  const [val, setVal] = useState(0);
+  useEffect(() => {
+    if (!v) return;
+    const dur = 1800; const st = performance.now();
+    const tick = (now) => {
+      const p = Math.min((now - st) / dur, 1);
+      const ease = 1 - Math.pow(1 - p, 4);
+      setVal(Math.round(ease * n));
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }, [v, n]);
+  return (<span ref={r} style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(2.2rem,6vw,3.6rem)", fontWeight: 700, color: C.mainD, lineHeight: 1 }}>{pre}{val.toLocaleString()}{suffix}</span>);
+}
+
+function Btn({ children, primary = true, lg = false, onClick, href, s = {} }) {
+  const [h, setH] = useState(false);
+  const baseStyle = {
+    display: "inline-flex", alignItems: "center", gap: 8,
+    padding: lg ? "17px 42px" : "13px 30px",
+    borderRadius: 50, fontSize: lg ? 15 : 14, fontWeight: 600, cursor: "pointer",
+    fontFamily: "'Zen Kaku Gothic New',sans-serif", letterSpacing: "0.03em",
+    border: primary ? "none" : `1.5px solid ${C.main}`,
+    background: primary ? (h ? C.mainD : C.main) : (h ? C.main : "transparent"),
+    color: primary ? "#fff" : (h ? "#fff" : C.main),
+    transition: "all 0.35s cubic-bezier(.16,1,.3,1)",
+    boxShadow: h ? "0 8px 28px rgba(58,74,47,0.2)" : "none",
+    textDecoration: "none", ...s,
+  };
+  if (href) {
+    return (<a href={href} target="_blank" rel="noopener noreferrer" onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)} style={baseStyle}>{children}</a>);
+  }
+  return (<button onClick={onClick} onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)} style={baseStyle}>{children}</button>);
+}
+
+function ScrollToTop() {
+  const [show, setShow] = useState(false);
+  const [hover, setHover] = useState(false);
+  useEffect(() => {
+    const h = () => setShow(window.scrollY > 400);
+    window.addEventListener("scroll", h, { passive: true });
+    return () => window.removeEventListener("scroll", h);
+  }, []);
+  if (!show) return null;
+  return (
+    <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
+      style={{
+        position: "fixed", bottom: 24, right: 24, zIndex: 80,
+        width: 48, height: 48, borderRadius: "50%",
+        background: hover ? C.mainD : C.main, color: "#fff",
+        border: "none", cursor: "pointer", fontSize: 20,
+        boxShadow: "0 4px 16px rgba(0,0,0,0.2)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        transition: "all 0.3s cubic-bezier(.16,1,.3,1)",
+        opacity: show ? 1 : 0, transform: show ? "scale(1)" : "scale(0.5)",
+      }}>↑</button>
+  );
+}
+
+/* ===== Disclaimer コンポーネント ===== */
+function Disclaimer({ variant }) {
+  if (variant === "header") {
+    return (
+      <div style={{
+        background: "#B71C1C", color: "#fff", textAlign: "center",
+        padding: "10px 20px", fontSize: 11, lineHeight: 1.7,
+        letterSpacing: "0.02em",
+      }}>
+        {DISCLAIMER_TEXT}
+        <a href={LINKS.instagram} target="_blank" rel="noopener noreferrer"
+          style={{ color: "#FFCDD2", textDecoration: "underline", fontWeight: 700 }}>
+          {DISCLAIMER_LINK_TEXT}
+        </a>をご覧ください
+      </div>
+    );
+  }
+  /* variant === "footer" */
+  return (
+    <div style={{
+      background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)",
+      borderRadius: 10, padding: "14px 18px", marginBottom: 18,
+      fontSize: 11, lineHeight: 1.7, color: "rgba(255,255,255,0.45)", textAlign: "center",
+    }}>
+      {DISCLAIMER_TEXT}
+      <a href={LINKS.instagram} target="_blank" rel="noopener noreferrer"
+        style={{ color: "rgba(255,255,255,0.65)", textDecoration: "underline" }}>
+        {DISCLAIMER_LINK_TEXT}
+      </a>をご覧ください
+    </div>
+  );
+}
+
+function ProductCard({ product, delay = 0, onClick }) {
+  const [h, setH] = useState(false);
+  const [ok, setOk] = useState(false);
+  return (
+    <R d={delay}>
+      <div onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)} onClick={onClick}
+        style={{ cursor: "pointer", background: C.bgW, borderRadius: 16, overflow: "hidden",
+          boxShadow: h ? "0 20px 52px rgba(0,0,0,0.15)" : "0 2px 12px rgba(0,0,0,0.06)",
+          transform: h ? "translateY(-6px)" : "none", transition: "all 0.45s cubic-bezier(.16,1,.3,1)" }}>
+        <div style={{ position: "relative", overflow: "hidden", aspectRatio: "5/3.5", background: C.warmXL }}>
+          <img src={product.img} alt={product.n} loading="lazy" onLoad={() => setOk(true)}
+            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block",
+              opacity: ok ? 1 : 0, transform: h ? "scale(1.06)" : "scale(1)",
+              transition: "opacity 0.5s, transform 0.7s cubic-bezier(.16,1,.3,1)" }} />
+          <div style={{ position: "absolute", top: 12, left: 12, background: "rgba(58,74,47,0.9)", backdropFilter: "blur(6px)",
+            color: "#fff", fontSize: 11, fontWeight: 700, padding: "5px 14px", borderRadius: 20 }}>{product.b}</div>
+        </div>
+        <div style={{ padding: "20px 20px 22px" }}>
+          <h3 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 16, color: C.mainD, marginBottom: 6, fontWeight: 600 }}>{product.n}</h3>
+          <p style={{ fontSize: 13, color: C.fgL, lineHeight: 1.7, marginBottom: 12 }}>{product.d}</p>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <span style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, fontWeight: 700, color: C.mainD }}>{product.p}<span style={{ fontSize: 11, fontWeight: 400, fontFamily: "'Zen Kaku Gothic New',sans-serif", color: C.fgL }}>（税込）</span></span>
+            <span style={{ fontSize: 12, color: C.main, fontWeight: 600, opacity: h ? 1 : 0.5, transition: "opacity 0.3s" }}>→</span>
+          </div>
+        </div>
+      </div>
+    </R>
+  );
+}
+
+function ShopProductCard({ product, delay = 0 }) {
+  const [h, setH] = useState(false);
+  const [ok, setOk] = useState(false);
+  return (
+    <R d={delay}>
+      <div onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
+        style={{ background: C.bgW, borderRadius: 16, overflow: "hidden", cursor: "pointer",
+          boxShadow: h ? "0 16px 44px rgba(0,0,0,0.1)" : "0 2px 10px rgba(0,0,0,0.04)",
+          transform: h ? "translateY(-5px)" : "none", transition: "all 0.4s cubic-bezier(.16,1,.3,1)" }}>
+        <div style={{ position: "relative", overflow: "hidden", aspectRatio: "5/3.5", background: C.warmXL }}>
+          <img src={product.img} alt={product.n} loading="lazy" onLoad={() => setOk(true)}
+            style={{ width: "100%", height: "100%", objectFit: "cover", opacity: ok ? 1 : 0,
+              transform: h ? "scale(1.05)" : "scale(1)", transition: "opacity 0.5s, transform 0.6s" }} />
+          <div style={{ position: "absolute", top: 12, left: 12, background: "rgba(58,74,47,0.9)", color: "#fff", fontSize: 11, fontWeight: 700, padding: "5px 14px", borderRadius: 20 }}>{product.b}</div>
+        </div>
+        <div style={{ padding: "18px 18px 20px" }}>
+          <h3 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 15, color: C.mainD, marginBottom: 5, fontWeight: 600 }}>{product.n}</h3>
+          <p style={{ fontSize: 13, color: C.fgL, lineHeight: 1.7, marginBottom: 10 }}>{product.d}</p>
+          <span style={{ fontFamily: "'Playfair Display',serif", fontSize: 20, fontWeight: 700, color: C.mainD }}>{product.p}</span>
+        </div>
+      </div>
+    </R>
+  );
+}
+
+function HomePage({ nav }) {
+  const [heroOk, setHeroOk] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
+  useEffect(() => {
+    const h = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", h, { passive: true });
+    return () => window.removeEventListener("scroll", h);
+  }, []);
+  const heroP = Math.min(scrollY / 600, 1);
+
+  return (
+    <div>
+      <section style={{ position: "relative", height: "100svh", minHeight: 600, overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, background: C.bgDark }}>
+          <img src={I.hero} alt="" loading="eager" onLoad={() => setHeroOk(true)}
+            style={{ width: "100%", height: "100%", objectFit: "cover",
+              filter: `brightness(0.3) saturate(0.75)`, opacity: heroOk ? 1 : 0,
+              transition: "opacity 1.2s", transform: `scale(${1 + heroP * 0.08})`, willChange: "transform" }} />
+        </div>
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(27,30,22,0.05) 0%, rgba(27,30,22,0.5) 60%, rgba(27,30,22,0.75) 100%)" }} />
+        <div style={{ position: "relative", zIndex: 2, height: "100%", display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "0 clamp(24px,5vw,80px) clamp(60px,12vh,120px)", maxWidth: 1300, margin: "0 auto" }}>
+          <R d={0.2}>
+            <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 14, color: "rgba(255,255,255,0.4)", letterSpacing: "0.22em", marginBottom: 20, textTransform: "uppercase" }}>Petit Hermes — est. 2025</p>
+          </R>
+          <R d={0.35}>
+            <h1 style={{ fontFamily: "'Playfair Display','Noto Serif JP',serif", fontSize: "clamp(2rem,6.5vw,4.2rem)", fontWeight: 700, color: "#fff", lineHeight: 1.4, marginBottom: 20, maxWidth: 700, letterSpacing: "-0.01em" }}>
+              廃校の教室から届く、果実と野菜の酵母パン。
+            </h1>
+          </R>
+          <R d={0.5}>
+            <p style={{ fontSize: "clamp(0.9rem,2vw,1.05rem)", color: "rgba(255,255,255,0.65)", lineHeight: 1.9, maxWidth: 480, marginBottom: 36 }}>
+              広島・北広島町の廃校で、規格外の果物や野菜から酵母を育て、ゆっくり焼き上げたカンパーニュを冷凍便で全国へ。
+            </p>
+          </R>
+          <R d={0.65}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+              <Btn lg onClick={() => nav("products")} s={{ background: "#fff", color: C.mainD, boxShadow: "0 4px 20px rgba(0,0,0,0.15)" }}>オンラインショップ</Btn>
+              <Btn lg primary={false} onClick={() => nav("about")} s={{ borderColor: "rgba(255,255,255,0.3)", color: "#fff" }}>ストーリーを読む</Btn>
+            </div>
+          </R>
+        </div>
+      </section>
+
+      <Marquee items={["廃校リノベーション", "自家製天然酵母", "規格外野菜", "循環型パン屋", "北広島町", "冷凍便で全国へ", "もったいないを笑顔に"]} />
+
+      <section style={{ background: C.bg, padding: "24px 0" }}>
+        <div style={{ maxWidth: 800, margin: "0 auto", padding: "0 20px" }}>
+          <R><div className="info-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", background: C.bgW, borderRadius: 14, boxShadow: "0 1px 8px rgba(0,0,0,0.04)", overflow: "hidden" }}>
+            {[{ i: "🗓", l: "販売開始", v: "日曜 20:00" }, { i: "⏰", l: "受注締切", v: "火曜 23:59" }, { i: "📦", l: "冷凍発送", v: "木・月曜" }].map((c, j) => (
+              <div key={j} style={{ padding: "22px 10px", textAlign: "center", borderRight: j < 2 ? `1px solid ${C.border}` : "none" }}>
+                <div style={{ fontSize: 22, marginBottom: 4 }}>{c.i}</div>
+                <div style={{ fontSize: 10, color: C.fgXL, letterSpacing: "0.1em", marginBottom: 3 }}>{c.l}</div>
+                <div style={{ fontSize: 15, fontWeight: 700, color: C.mainD, fontFamily: "'Noto Serif JP',serif" }}>{c.v}</div>
+              </div>
+            ))}
+          </div></R>
+        </div>
+      </section>
+
+      <section style={{ background: C.bg, padding: "80px 0 96px" }}>
+        <div style={{ maxWidth: 1140, margin: "0 auto", padding: "0 20px" }}>
+          <R>
+            <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 13, color: C.warm, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 10, textAlign: "center" }}>Why Delicious</p>
+            <h2 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: "clamp(1.4rem,3.5vw,1.9rem)", color: C.mainD, textAlign: "center", lineHeight: 1.6, marginBottom: 52, fontWeight: 600 }}>3つの "おいしさ" の理由</h2>
+          </R>
+          <div className="reason-grid" style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: 20, marginBottom: 20 }}>
+            <R>
+              <div style={{ position: "relative", borderRadius: 16, overflow: "hidden", height: "100%" }}>
+                <Img src={I.fruit} alt="酵母" r="auto" rd={16} s={{ height: "100%", aspectRatio: "auto" }} />
+                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "48px 28px 28px", background: "linear-gradient(transparent, rgba(27,30,22,0.85))" }}>
+                  <h3 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 20, color: "#fff", marginBottom: 8, fontWeight: 600 }}>果実と野菜から育てた酵母</h3>
+                  <p style={{ fontSize: 14, color: "rgba(255,255,255,0.75)", lineHeight: 1.8 }}>りんご、みかん、トマト、大根の葉——。季節の恵みから酵母を育て、唯一無二の香りと奥行きをパンに。</p>
+                </div>
+              </div>
+            </R>
+            <div style={{ display: "grid", gap: 20 }}>
+              <R d={0.1}>
+                <div style={{ position: "relative", borderRadius: 16, overflow: "hidden" }}>
+                  <Img src={I.ferment} alt="発酵" r="16/10" rd={16} />
+                  <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "40px 24px 22px", background: "linear-gradient(transparent, rgba(27,30,22,0.85))" }}>
+                    <h3 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 17, color: "#fff", marginBottom: 5, fontWeight: 600 }}>24時間以上の長時間発酵</h3>
+                    <p style={{ fontSize: 13, color: "rgba(255,255,255,0.7)", lineHeight: 1.7 }}>噛むほどに広がる小麦の甘みと酵母の酸味。</p>
+                  </div>
+                </div>
+              </R>
+              <R d={0.2}>
+                <div style={{ position: "relative", borderRadius: 16, overflow: "hidden" }}>
+                  <Img src={I.crust} alt="クラスト" r="16/10" rd={16} />
+                  <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "40px 24px 22px", background: "linear-gradient(transparent, rgba(27,30,22,0.85))" }}>
+                    <h3 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 17, color: "#fff", marginBottom: 5, fontWeight: 600 }}>バリッと香ばしいクラスト</h3>
+                    <p style={{ fontSize: 13, color: "rgba(255,255,255,0.7)", lineHeight: 1.7 }}>焼き戻せば、焼きたての食感がご自宅で。</p>
+                  </div>
+                </div>
+              </R>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section style={{ background: C.bgWarm, padding: "80px 0", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, opacity: 0.03, backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")", backgroundSize: "150px" }} />
+        <div style={{ maxWidth: 780, margin: "0 auto", padding: "0 24px", textAlign: "center", position: "relative" }}>
+          <R>
+            <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 13, color: C.warm, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 28 }}>Philosophy</p>
+            <blockquote style={{ fontFamily: "'Noto Serif JP',serif", fontSize: "clamp(1.3rem,3.8vw,2rem)", fontWeight: 600, color: C.mainD, lineHeight: 1.8, letterSpacing: "0.04em", margin: 0, padding: 0 }}>
+              「今日のパンが、明日の野菜に。」
+            </blockquote>
+            <p style={{ fontSize: 15, color: C.fgL, lineHeight: 2, marginTop: 24, maxWidth: 540, margin: "24px auto 0" }}>パンくずはコンポストへ。堆肥で育った野菜から、また酵母をおこす。食べることが、次の恵みをつくる。それが私たちの循環です。</p>
+          </R>
+          <R d={0.2}>
+            <div className="cycle-flow" style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 0, marginTop: 40, flexWrap: "wrap" }}>
+              {[
+                { emoji: "🥕", label: "規格外野菜" }, { emoji: "🧫", label: "酵母" }, { emoji: "🍞", label: "パン" },
+                { emoji: "🪱", label: "コンポスト" }, { emoji: "🌱", label: "堆肥" },
+              ].map((item, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "center" }}>
+                  <div style={{ textAlign: "center", padding: "12px 16px" }}>
+                    <div style={{ fontSize: 28, marginBottom: 4, filter: "grayscale(0.2)" }}>{item.emoji}</div>
+                    <div style={{ fontSize: 11, color: C.fgL, fontWeight: 600, letterSpacing: "0.04em" }}>{item.label}</div>
+                  </div>
+                  {i < 4 && <div className="cycle-arrow" style={{ width: 28, height: 1, background: C.warmL, flexShrink: 0 }} />}
+                </div>
+              ))}
+            </div>
+            <div style={{ display: "flex", justifyContent: "center", marginTop: 4 }}>
+              <svg width="180" height="20" viewBox="0 0 180 20" style={{ opacity: 0.25 }}>
+                <path d="M170 10 Q90 28 10 10" stroke={C.warm} fill="none" strokeWidth="1" strokeDasharray="3 3" />
+                <polygon points="14,6 10,10 14,14" fill={C.warm} />
+              </svg>
+            </div>
+            <p style={{ fontSize: 11, color: C.fgXL, marginTop: 8, letterSpacing: "0.1em" }}>— この循環がずっとつづく —</p>
+          </R>
+        </div>
+      </section>
+
+      <section style={{ position: "relative", padding: "88px 0", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, background: C.bgDark }}>
+          <img src={I.bake} alt="" loading="lazy"
+            style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.18) saturate(0.5)" }} />
+        </div>
+        <div style={{ position: "relative", zIndex: 2, maxWidth: 1140, margin: "0 auto", padding: "0 20px" }}>
+          <R>
+            <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 13, color: "rgba(255,255,255,0.4)", letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 10, textAlign: "center" }}>Online Shop</p>
+            <h2 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: "clamp(1.4rem,3.5vw,1.9rem)", color: "#fff", textAlign: "center", lineHeight: 1.6, marginBottom: 44, fontWeight: 600 }}>おすすめのセット</h2>
+          </R>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))", gap: 20 }}>
+            {[
+              { n: "はじめてのプチヘルメース便", p: "¥7,980", d: "定番カンパーニュ（ホール）×1＋季節の酵母スライス×1", b: "初回限定", img: I.bread },
+              { n: "日々の食卓セット", p: "¥9,980", d: "季節の酵母カンパーニュスライス×2セット", b: "一番人気", img: I.campagne },
+              { n: "わかちあいギフト", p: "¥8,980", d: "カンパーニュ＋スライスセット｜ギフト包装", b: "贈りものに", img: I.gift },
+            ].map((p, i) => (
+              <ProductCard key={i} product={p} delay={i * 0.1} onClick={() => nav("products")} />
+            ))}
+          </div>
+          <R d={0.3}><div style={{ textAlign: "center", marginTop: 36, display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center" }}>
+            <Btn onClick={() => nav("products")} s={{ background: "#fff", color: C.mainD }}>すべての商品を見る →</Btn>
+            <Btn href={LINKS.giftcard} s={{ background: C.warm, color: "#fff" }}>🎁 ギフトカードを贈る</Btn>
+          </div></R>
+        </div>
+      </section>
+
+      <section style={{ background: C.bg, padding: "88px 0" }}>
+        <div style={{ maxWidth: 1060, margin: "0 auto", padding: "0 20px" }}>
+          <div className="story-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1.15fr", gap: 48, alignItems: "center" }}>
+            <R>
+              <div style={{ position: "relative" }}>
+                <Img src={I.school} alt="旧南方小学校" r="3/4" rd={16} hov />
+                <div style={{ position: "absolute", bottom: -16, right: -16, background: C.main, color: "#fff", borderRadius: 14, padding: "16px 20px", fontSize: 13, fontWeight: 600, lineHeight: 1.6, boxShadow: "0 8px 24px rgba(58,74,47,0.25)" }}>
+                  <span style={{ display: "block", fontFamily: "'Playfair Display',serif", fontSize: 28, fontWeight: 700 }}>2025</span>
+                  旧南方小学校にて開業
+                </div>
+              </div>
+            </R>
+            <R d={0.15}>
+              <div>
+                <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 13, color: C.warm, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 12 }}>Our Story</p>
+                <h2 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: "clamp(1.5rem,3.8vw,2rem)", color: C.mainD, lineHeight: 1.65, marginBottom: 18, fontWeight: 600 }}>なぜ廃校で、パンを焼くのか。</h2>
+                <p style={{ fontSize: 15, color: C.fgL, lineHeight: 2, marginBottom: 16 }}>北海道から広島県北広島町に移住した店主の大下安有美。地元の農家さんが丹精込めて育てた野菜が「規格外」というだけで捨てられる現実を目の当たりにしました。</p>
+                <p style={{ fontSize: 15, color: C.fgL, lineHeight: 2, marginBottom: 24 }}>「もったいないを笑顔に変えたい」——その想いを胸に、子どもたちの声が消えた教室で、パン作りが始まりました。</p>
+                <Btn primary={false} onClick={() => nav("about")}>ストーリーの続きを読む</Btn>
+              </div>
+            </R>
+          </div>
+        </div>
+      </section>
+
+      <section style={{ background: C.bgWarm, padding: "72px 0", overflow: "hidden" }}>
+        <div style={{ maxWidth: 1060, margin: "0 auto", padding: "0 20px" }}>
+          <R>
+            <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 13, color: C.warm, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 10, textAlign: "center" }}>Voices</p>
+            <h2 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: "clamp(1.3rem,3vw,1.7rem)", color: C.mainD, textAlign: "center", marginBottom: 36, fontWeight: 600 }}>お客さまの声</h2>
+          </R>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 18 }}>
+            {[
+              { q: "この香りは他のパン屋さんにはない。家に届いた瞬間から幸せでした。", n: "M.S.さん（東京都）", s: "★★★★★" },
+              { q: "焼き戻したときのクラストの音！子どもたちが「パン屋さんの匂いだ」と喜んでいました。", n: "K.T.さん（大阪府）", s: "★★★★★" },
+              { q: "廃校で焼かれたパンを食べながら、食品ロスのことを考えるきっかけになりました。味も想いも素晴らしい。", n: "A.H.さん（広島県）", s: "★★★★★" },
+            ].map((r, i) => (
+              <R key={i} d={i * 0.1}>
+                <div style={{ background: C.bgW, borderRadius: 16, padding: "28px 24px", boxShadow: "0 1px 6px rgba(0,0,0,0.03)", height: "100%" }}>
+                  <p style={{ fontSize: 13, color: C.warmL, marginBottom: 12, letterSpacing: 2 }}>{r.s}</p>
+                  <p style={{ fontSize: 14, color: C.fg, lineHeight: 1.9, marginBottom: 16, fontStyle: "italic" }}>"{r.q}"</p>
+                  <p style={{ fontSize: 12, color: C.fgXL, fontWeight: 600 }}>— {r.n}</p>
+                </div>
+              </R>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section style={{ background: C.bg, padding: "80px 0" }}>
+        <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 20px" }}>
+          <R>
+            <div className="stats-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(180px,1fr))", gap: 28, textAlign: "center" }}>
+              {[
+                { n: 158, s: "%", l: "クラウドファンディング達成率" },
+                { n: 523, s: "万t", l: "日本の年間食品ロス", p: "約" },
+                { n: 1500, s: "+", l: "rebake待ち人数", p: "" },
+              ].map((d, i) => (
+                <div key={i}>
+                  <Counter n={d.n} suffix={d.s} pre={d.p || ""} />
+                  <p style={{ fontSize: 12, color: C.fgL, marginTop: 10, letterSpacing: "0.04em" }}>{d.l}</p>
+                </div>
+              ))}
+            </div>
+          </R>
+          <R d={0.1}>
+            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 14, marginTop: 40 }}>
+              {["中国新聞", "YouTube紹介", "TikTok話題", "ラジオ出演", "For Good"].map((m, i) => (
+                <span key={i} style={{ fontSize: 12, padding: "8px 18px", border: `1px solid ${C.border}`, borderRadius: 24, color: C.fgL }}>{m}</span>
+              ))}
+            </div>
+          </R>
+        </div>
+      </section>
+
+      <section style={{ position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, background: C.bgDark }}>
+          <img src={I.wheat} alt="" loading="lazy"
+            style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.2) saturate(0.5)" }} />
+        </div>
+        <div style={{ position: "relative", zIndex: 2, maxWidth: 680, margin: "0 auto", padding: "72px 24px", textAlign: "center" }}>
+          <R>
+            <h2 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: "clamp(1.4rem,3.5vw,2rem)", color: "#fff", lineHeight: 1.7, marginBottom: 16, fontWeight: 600 }}>一緒に、循環をはじめませんか？</h2>
+            <p style={{ fontSize: 14, color: "rgba(255,255,255,0.6)", lineHeight: 1.9, marginBottom: 32 }}>あなたがパンを食べるたび、次の恵みが生まれます。廃校の教室から届く、小さな循環のはじまりです。</p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center" }}>
+              <Btn lg onClick={() => nav("products")} s={{ background: "#fff", color: C.mainD }}>ショップへ</Btn>
+              <Btn lg primary={false} onClick={() => nav("start")} s={{ borderColor: "rgba(255,255,255,0.3)", color: "#fff" }}>はじめての方へ</Btn>
+              <Btn lg href={LINKS.giftcard} s={{ background: C.warm, color: "#fff", border: "none" }}>🎁 ギフトカード</Btn>
+            </div>
+          </R>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function SubPage({ img, en, ja, children }) {
+  const [ok, setOk] = useState(false);
+  return (
+    <div>
+      <section style={{ position: "relative", padding: "110px 0 72px", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, background: C.bgDark }}>
+          <img src={img} alt="" loading="eager" onLoad={() => setOk(true)}
+            style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.25) saturate(0.6)",
+              opacity: ok ? 1 : 0, transition: "opacity 0.8s" }} />
+        </div>
+        <div style={{ position: "relative", zIndex: 2, textAlign: "center" }}>
+          <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 13, color: "rgba(255,255,255,0.4)", letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 10 }}>{en}</p>
+          <h1 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: "clamp(1.5rem,4vw,2.1rem)", color: "#fff", fontWeight: 600, letterSpacing: "0.05em" }}>{ja}</h1>
+        </div>
+      </section>
+      {children}
+    </div>
+  );
+}
+
+function StartPage({ nav }) {
+  const steps = [
+    { n: "01", t: "注文する", d: "日曜20:00〜火曜23:59の間にオンラインショップからご注文。初めての方には「はじめてのプチヘルメース便」がおすすめ。", img: I.bread },
+    { n: "02", t: "届いたら冷凍庫へ", d: "ヤマト運輸のクール便（冷凍）でお届け。そのまま冷凍庫へ。約1ヶ月保存OK。", img: I.slice },
+    { n: "03", t: "霧吹き＋オーブンで焼き戻す", d: "凍ったまま霧吹きをして200℃のオーブンで10〜15分。バリッとした食感が蘇ります。", img: I.crust },
+    { n: "04", t: "お好みの食べ方で", d: "オリーブオイルと塩、バターと蜂蜜、スープと一緒に。シンプルなほど、味が際立つ。", img: I.olive },
+  ];
+  return (
+    <SubPage img={I.sourdough} en="Getting Started" ja="はじめての方へ">
+      <section style={{ background: C.bg, padding: "64px 0 88px" }}>
+        <div style={{ maxWidth: 840, margin: "0 auto", padding: "0 20px" }}>
+          {steps.map((s, i) => (
+            <R key={i} d={i * 0.06}>
+              <div className="step-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1.1fr", gap: 28, marginBottom: 40, alignItems: "center", direction: i % 2 === 1 ? "rtl" : "ltr" }}>
+                <Img src={s.img} alt={s.t} hov />
+                <div style={{ direction: "ltr" }}>
+                  <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 10 }}>
+                    <span style={{ fontFamily: "'Playfair Display',serif", fontSize: 36, color: C.warmXL, fontWeight: 700 }}>{s.n}</span>
+                    <h3 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 18, color: C.mainD, fontWeight: 600 }}>{s.t}</h3>
+                  </div>
+                  <p style={{ fontSize: 14, color: C.fgL, lineHeight: 1.9 }}>{s.d}</p>
+                </div>
+              </div>
+            </R>
+          ))}
+          <R d={0.3}>
+            <div style={{ background: C.mainD, borderRadius: 20, padding: "36px 28px", color: "#fff", textAlign: "center" }}>
+              <h3 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 18, marginBottom: 8, fontWeight: 600 }}>はじめてのプチヘルメース便</h3>
+              <p style={{ fontSize: 13, opacity: 0.7, marginBottom: 6 }}>定番カンパーニュ（ホール）×1 ＋ 季節の酵母スライス×1</p>
+              <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 36, fontWeight: 700, marginBottom: 18 }}>¥7,980</p>
+              <Btn s={{ background: "#fff", color: C.mainD }}>カートに入れる</Btn>
+            </div>
+          </R>
+        </div>
+      </section>
+    </SubPage>
+  );
+}
+
+function ProductsPage() {
+  return (
+    <SubPage img={I.wheat} en="Online Shop" ja="オンラインショップ">
+      <section style={{ background: C.bg, padding: "48px 0 88px" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 20px" }}>
+          <R><div style={{ background: C.bgW, borderRadius: 12, padding: "14px 20px", marginBottom: 28, textAlign: "center", boxShadow: "0 1px 4px rgba(0,0,0,0.03)" }}>
+            <p style={{ fontSize: 14, color: C.fg }}>🚚 <strong>12,000円以上のご注文で送料無料</strong>（本州・四国・九州）</p>
+          </div></R>
+          <R d={0.05}>
+            <div style={{ background: "linear-gradient(135deg, " + C.warm + ", " + C.warmL + ")", borderRadius: 16, padding: "28px 24px", marginBottom: 28, textAlign: "center", color: "#fff", boxShadow: "0 4px 20px rgba(166,124,82,0.25)" }}>
+              <p style={{ fontSize: 13, opacity: 0.8, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 6 }}>Gift Card</p>
+              <h3 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 20, fontWeight: 600, marginBottom: 8 }}>🎁 ギフトカードを贈りませんか？</h3>
+              <p style={{ fontSize: 13, opacity: 0.85, lineHeight: 1.8, marginBottom: 16, maxWidth: 440, margin: "0 auto 16px" }}>大切な方へ、パンの贈りもの。金額を選んでオンラインで簡単にお届けできます。</p>
+              <Btn href={LINKS.giftcard} s={{ background: "#fff", color: C.warm, border: "none" }}>ギフトカードを購入する →</Btn>
+            </div>
+          </R>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(255px,1fr))", gap: 20 }}>
+            {[
+              { n: "はじめてのプチヘルメース便", p: "¥7,980", d: "カンパーニュ（ホール）×1＋季節の酵母スライス×1", b: "初回限定", img: I.bread },
+              { n: "日々の食卓セット", p: "¥9,980", d: "季節の酵母カンパーニュスライス×2セット", b: "一番人気", img: I.campagne },
+              { n: "わかちあいギフト", p: "¥8,980", d: "カンパーニュ＋スライスセット｜ギフト包装", b: "贈りものに", img: I.gift },
+              { n: "今週の酵母カンパーニュ", p: "¥3,280", d: "今週の酵母で焼いた1本", b: "単品", img: I.sourdough },
+            ].map((p, i) => (
+              <ShopProductCard key={i} product={p} delay={i * 0.06} />
+            ))}
+          </div>
+        </div>
+      </section>
+    </SubPage>
+  );
+}
+
+function RebakePage() {
+  return (
+    <SubPage img={I.crust} en="How to Enjoy" ja="おいしい焼き戻し方">
+      <section style={{ background: C.bg, padding: "48px 0 88px" }}>
+        <div style={{ maxWidth: 660, margin: "0 auto", padding: "0 20px" }}>
+          <R><div style={{ background: C.mainD, borderRadius: 16, padding: "20px", color: "#fff", textAlign: "center", marginBottom: 32 }}>
+            <p style={{ fontSize: 16, fontWeight: 700 }}>💡 霧吹き ＋ 高温 ＋ 短時間</p>
+            <p style={{ fontSize: 13, opacity: 0.7, marginTop: 4 }}>この3つで、焼きたてが蘇ります。</p>
+          </div></R>
+          {[
+            { n: "1", t: "冷凍庫から出す", d: "食べたい分だけ。解凍不要、凍ったままでOK。" },
+            { n: "2", t: "霧吹きをかける", d: "表面全体にまんべんなく、しっとりするくらいたっぷり。" },
+            { n: "3", t: "200℃で焼く", d: "予熱したオーブンで10〜15分。スライスは8〜10分。" },
+            { n: "4", t: "5分休ませる", d: "余熱で中まで温まり、クラストがさらにパリッと。" },
+          ].map((s, i) => (
+            <R key={i} d={0.03 + i * 0.05}>
+              <div style={{ display: "flex", gap: 16, padding: "20px", background: C.bgW, borderRadius: 14, marginBottom: 10, boxShadow: "0 1px 4px rgba(0,0,0,0.03)" }}>
+                <div style={{ width: 44, height: 44, borderRadius: "50%", background: C.bgWarm, color: C.main, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Playfair Display',serif", fontWeight: 700, fontSize: 20, flexShrink: 0 }}>{s.n}</div>
+                <div>
+                  <h3 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 15, color: C.mainD, marginBottom: 4, fontWeight: 600 }}>{s.t}</h3>
+                  <p style={{ fontSize: 14, color: C.fgL, lineHeight: 1.8 }}>{s.d}</p>
+                </div>
+              </div>
+            </R>
+          ))}
+          <R d={0.3}>
+            <Img src={I.olive} alt="食べ方" r="16/9" s={{ marginTop: 24 }} />
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 8, marginTop: 14 }}>
+              {[{ t: "シンプルに", d: "オリーブオイル＋塩" }, { t: "朝食に", d: "バター＋蜂蜜" }, { t: "食事と", d: "シチュー、チーズ" }, { t: "ワインと", d: "ブルーチーズ＋くるみ" }].map((r, i) => (
+                <div key={i} style={{ background: C.bgW, borderRadius: 10, padding: "14px", textAlign: "center" }}>
+                  <p style={{ fontSize: 13, fontWeight: 700, color: C.mainD, marginBottom: 3 }}>{r.t}</p>
+                  <p style={{ fontSize: 11, color: C.fgL }}>{r.d}</p>
+                </div>
+              ))}
+            </div>
+          </R>
+        </div>
+      </section>
+    </SubPage>
+  );
+}
+
+function AboutPage() {
+  return (
+    <SubPage img={I.village} en="Our Story" ja="わたしたちのストーリー">
+      <section style={{ background: C.bg, padding: "64px 0 88px" }}>
+        <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 20px" }}>
+          <R><Img src={I.school} alt="旧南方小学校" r="16/9" /></R>
+          <R d={0.1}>
+            <div style={{ background: C.bgW, borderRadius: 16, padding: "34px 26px", marginTop: -32, marginLeft: 14, marginRight: 14, position: "relative", zIndex: 2, boxShadow: "0 4px 20px rgba(0,0,0,0.05)" }}>
+              <h3 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 20, color: C.mainD, marginBottom: 16, lineHeight: 1.6, fontWeight: 600 }}>もったいないを笑顔に変える。</h3>
+              <div style={{ fontSize: 15, color: C.fgL, lineHeight: 2.1 }}>
+                <p style={{ marginBottom: 14 }}>広島県山県郡北広島町。人口約17,000人のこのまちに、閉校した旧南方小学校があります。</p>
+                <p style={{ marginBottom: 14 }}>北海道から北広島町に移住した店主の大下安有美が、子どもたちの声が消えた教室でパンを焼き始めました。地元の農家さんが丹精込めて育てた野菜が「規格外」というだけで捨てられる現実——。</p>
+                <p style={{ marginBottom: 14 }}>「その当たり前を私は変えたい。優しい皆さんの努力を無駄にはさせたくない。」</p>
+                <p>形が悪い果物、サイズが合わない野菜。それらが酵母として新しい命を得て、パンになる。食べ残しはコンポストにして堆肥に。その堆肥で育った野菜から、また酵母をおこす——。「今日のパンが、明日の野菜に。」この循環が、私たちの目指す未来です。</p>
+              </div>
+            </div>
+          </R>
+          <R d={0.2}><div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginTop: 24 }}>
+            <Img src={I.fruit} alt="酵母" r="1/1" hov />
+            <Img src={I.hands} alt="パン作り" r="1/1" hov />
+            <Img src={I.garden} alt="畑" r="1/1" hov />
+          </div></R>
+        </div>
+      </section>
+    </SubPage>
+  );
+}
+
+function ShopInfoPage() {
+  return (
+    <SubPage img={I.cafe} en="Shop Info" ja="お店情報">
+      <section style={{ background: C.bg, padding: "48px 0 88px" }}>
+        <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 20px" }}>
+          <R><div className="shop-img-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 24 }}>
+            <Img src={I.school} alt="外観" hov />
+            <Img src={I.bake} alt="内観" hov />
+          </div></R>
+          <R d={0.1}><div style={{ background: C.bgW, borderRadius: 16, padding: "26px 22px", boxShadow: "0 2px 10px rgba(0,0,0,0.04)" }}>
+            <h3 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 17, color: C.mainD, marginBottom: 16, fontWeight: 600 }}>プチヘルメース</h3>
+            <table style={{ width: "100%", fontSize: 14, borderCollapse: "collapse" }}><tbody>
+              {[["所在地", "〒731-1523 広島県山県郡北広島町南方1927-1（旧南方小学校校舎内）"], ["営業日", "水曜・土曜"], ["営業時間", "11:30〜15:30（イートイン可）"], ["電話", "050-3092-1237"], ["駐車場", "あり（校庭に駐車可・約10台）"]].map(([l, v], i) => (
+                <tr key={i} style={{ borderBottom: `1px solid ${C.border}` }}>
+                  <td style={{ padding: "12px 6px", fontWeight: 600, color: C.mainD, verticalAlign: "top", whiteSpace: "nowrap", width: 86 }}>{l}</td>
+                  <td style={{ padding: "12px 6px", color: C.fgL, lineHeight: 1.7 }}>{v}</td>
+                </tr>
+              ))}
+            </tbody></table>
+          </div></R>
+          <R d={0.15}><div style={{ borderRadius: 16, overflow: "hidden", marginTop: 14, boxShadow: "0 2px 10px rgba(0,0,0,0.04)" }}>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3000!2d132.5358330!3d34.6751040!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzTCsDQwJzMwLjQiTiAxMzLCsDMyJzA5LjAiRQ!5e0!3m2!1sja!2sjp!4v1700000000000"
+              width="100%" height="300" style={{ border: 0, display: "block" }} allowFullScreen="" loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade" title="プチヘルメース所在地" />
+          </div></R>
+          <R d={0.2}><div style={{ background: C.bgW, borderRadius: 14, padding: "22px 20px", marginTop: 14, boxShadow: "0 1px 4px rgba(0,0,0,0.03)" }}>
+            <h3 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: 15, color: C.mainD, marginBottom: 8, fontWeight: 600 }}>🚗 アクセス</h3>
+            <p style={{ fontSize: 14, color: C.fgL, lineHeight: 1.9 }}>広島市中心部から車で約60分（中国自動車道 千代田IC下車）。千代田ICから県道5号線を北へ約15分。「旧南方小学校」の看板が目印。</p>
+          </div></R>
+        </div>
+      </section>
+    </SubPage>
+  );
+}
+
+function FAQPage() {
+  const [op, setOp] = useState(null);
+  const qs = [
+    { q: "注文はいつできますか？", a: "毎週日曜20:00〜火曜23:59。締切後の翌木曜または翌週月曜に発送します。" },
+    { q: "届いたパンはどのくらい保存できますか？", a: "冷凍保存で約1ヶ月おいしくお召し上がりいただけます。再冷凍はお避けください。" },
+    { q: "送料はいくらですか？", a: "本州・四国・九州1,100円、北海道1,650円、沖縄2,200円。12,000円以上で本州・四国・九州送料無料。" },
+    { q: "ギフト包装はできますか？", a: "「わかちあいギフト」セットはギフト包装でお届けします。のし対応も可能です。" },
+    { q: "ギフトカードはありますか？", a: "はい。オンラインでギフトカードを購入し、大切な方にお届けできます。ショップページまたはフッターのリンクからご購入ください。" },
+    { q: "アレルギー対応はしていますか？", a: "小麦を使用しています。季節により様々な果実・野菜の酵母を使用するため、事前にお問い合わせください。" },
+    { q: "実店舗で購入できますか？", a: "水曜・土曜の11:30〜15:30に店舗販売をしています。イートインもご利用いただけます。" },
+  ];
+  return (
+    <div style={{ background: C.bg, padding: "64px 0 88px" }}>
+      <div style={{ maxWidth: 700, margin: "0 auto", padding: "0 20px" }}>
+        <R><div style={{ textAlign: "center", marginBottom: 40 }}>
+          <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 13, color: C.warm, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 10 }}>FAQ</p>
+          <h2 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: "clamp(1.4rem,3.5vw,1.9rem)", color: C.mainD, fontWeight: 600 }}>よくあるご質問</h2>
+        </div></R>
+        {qs.map((f, i) => (
+          <R key={i} d={i * 0.03}>
+            <div style={{ background: C.bgW, borderRadius: 14, marginBottom: 8, overflow: "hidden", boxShadow: "0 1px 4px rgba(0,0,0,0.03)" }}>
+              <button onClick={() => setOp(op === i ? null : i)} style={{
+                width: "100%", padding: "18px 20px", background: "none", border: "none", cursor: "pointer",
+                display: "flex", justifyContent: "space-between", alignItems: "center", textAlign: "left",
+                fontFamily: "'Zen Kaku Gothic New',sans-serif", fontSize: 15, fontWeight: 600, color: C.mainD,
+              }}>
+                <span style={{ flex: 1 }}>{f.q}</span>
+                <span style={{ fontSize: 20, color: C.warm, transform: op === i ? "rotate(45deg)" : "none", transition: "transform 0.3s", flexShrink: 0, marginLeft: 12 }}>+</span>
+              </button>
+              <div style={{ maxHeight: op === i ? 180 : 0, overflow: "hidden", transition: "max-height 0.4s cubic-bezier(.16,1,.3,1)" }}>
+                <p style={{ padding: "0 20px 18px", fontSize: 14, color: C.fgL, lineHeight: 1.85 }}>{f.a}</p>
+              </div>
+            </div>
+          </R>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ContactPage() {
+  const [sent, setSent] = useState(false);
+  return (
+    <div style={{ background: C.bg, padding: "64px 0 88px" }}>
+      <div style={{ maxWidth: 560, margin: "0 auto", padding: "0 20px" }}>
+        <R><div style={{ textAlign: "center", marginBottom: 36 }}>
+          <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 13, color: C.warm, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 10 }}>Contact</p>
+          <h2 style={{ fontFamily: "'Noto Serif JP',serif", fontSize: "clamp(1.4rem,3.5vw,1.9rem)", color: C.mainD, fontWeight: 600 }}>お問い合わせ</h2>
+        </div></R>
+        <R d={0.1}>
+          <div style={{ background: C.bgW, borderRadius: 20, padding: "32px 26px", boxShadow: "0 4px 16px rgba(0,0,0,0.04)" }}>
+            {sent ? (
+              <div style={{ textAlign: "center", padding: "32px 0" }}>
+                <p style={{ fontSize: 40, marginBottom: 12 }}>✉️</p>
+                <h3 style={{ fontFamily: "'Noto Serif JP',serif", color: C.mainD, marginBottom: 8, fontSize: 18 }}>送信しました</h3>
+                <p style={{ fontSize: 14, color: C.fgL }}>3営業日以内にご返信いたします。</p>
+              </div>
+            ) : (
+              <div>
+                {[{ l: "お名前", t: "text" }, { l: "メールアドレス", t: "email" }].map((f, i) => (
+                  <div key={i} style={{ marginBottom: 18 }}>
+                    <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: C.mainD, marginBottom: 6 }}>{f.l}</label>
+                    <input type={f.t} style={{ width: "100%", padding: "11px 14px", border: `1px solid ${C.border}`, borderRadius: 10, fontSize: 14, fontFamily: "inherit", outline: "none" }} />
+                  </div>
+                ))}
+                <div style={{ marginBottom: 18 }}>
+                  <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: C.mainD, marginBottom: 6 }}>内容</label>
+                  <textarea rows={5} style={{ width: "100%", padding: "11px 14px", border: `1px solid ${C.border}`, borderRadius: 10, fontSize: 14, fontFamily: "inherit", resize: "vertical", outline: "none" }} />
+                </div>
+                <button onClick={() => setSent(true)} style={{
+                  width: "100%", padding: "14px", background: C.main, color: "#fff", border: "none",
+                  borderRadius: 50, fontSize: 15, fontWeight: 600, cursor: "pointer", fontFamily: "inherit",
+                }}>送信する</button>
+              </div>
+            )}
+          </div>
+        </R>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [page, setPage] = useState("home");
+  const [scr, setScr] = useState(false);
+  const [menu, setMenu] = useState(false);
+
+  useEffect(() => {
+    const h = () => setScr(window.scrollY > 20);
+    window.addEventListener("scroll", h, { passive: true });
+    return () => window.removeEventListener("scroll", h);
+  }, []);
+
+  const nav = useCallback((p) => { setPage(p); setMenu(false); window.scrollTo({ top: 0, behavior: "smooth" }); }, []);
+
+  const items = [
+    { k: "products", l: "ショップ" }, { k: "start", l: "はじめての方へ" },
+    { k: "rebake", l: "食べ方" }, { k: "about", l: "ストーリー" },
+    { k: "shop", l: "お店情報" }, { k: "faq", l: "FAQ" }, { k: "contact", l: "お問い合わせ" },
+  ];
+
+  const now = new Date();
+  const jst = new Date(now.getTime() + (now.getTimezoneOffset() + 540) * 60000);
+  const selling = (jst.getDay() === 0 && jst.getHours() >= 20) || jst.getDay() === 1 || jst.getDay() === 2;
+
+  const pg = () => {
+    switch (page) {
+      case "start": return <StartPage nav={nav} />;
+      case "products": return <ProductsPage />;
+      case "rebake": return <RebakePage />;
+      case "about": return <AboutPage />;
+      case "shop": return <ShopInfoPage />;
+      case "faq": return <FAQPage />;
+      case "contact": return <ContactPage />;
+      default: return <HomePage nav={nav} />;
+    }
+  };
+
+  return (
+    <div style={{ fontFamily: "'Zen Kaku Gothic New',sans-serif", color: C.fg, background: C.bg, minHeight: "100vh", overflowX: "hidden" }}>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Noto+Serif+JP:wght@600;700&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{-webkit-font-smoothing:antialiased}
+input,select,textarea,button{outline:none;font-family:inherit}input:focus,select:focus,textarea:focus{border-color:${C.main}!important}
+::selection{background:${C.warmXL};color:${C.mainD}}
+@media(max-width:900px){.dnv{display:none!important}.mbt{display:flex!important}}
+@media(min-width:901px){.dnv{display:flex!important}.mbt{display:none!important}}
+@media(max-width:768px){
+  .reason-grid{grid-template-columns:1fr!important}
+  .story-grid{grid-template-columns:1fr!important;gap:28px!important}
+  .step-grid{grid-template-columns:1fr!important;direction:ltr!important}
+  .shop-img-grid{grid-template-columns:1fr!important}
+}`}</style>
+
+      {/* ===== ① ディスクレーマー（ページ最上部） ===== */}
+      <Disclaimer variant="header" />
+
+      <div style={{ background: selling ? C.main : C.mainD, color: "#fff", textAlign: "center", padding: "9px 20px", fontSize: 12, letterSpacing: "0.04em" }}>
+        <span style={{ fontWeight: 700 }}>{selling ? "🔴 販売中" : "次回販売"}</span>
+        {selling ? " — 火曜23:59締切｜冷凍便でお届け" : " — 日曜20:00〜火曜23:59"}
+      </div>
+
+      <header style={{
+        background: scr ? "rgba(250,248,244,0.9)" : "transparent",
+        backdropFilter: scr ? "blur(16px) saturate(1.2)" : "none",
+        borderBottom: scr ? `1px solid rgba(227,221,210,0.6)` : "1px solid transparent",
+        position: "sticky", top: 0, zIndex: 90, transition: "all 0.4s",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", maxWidth: 1200, margin: "0 auto", padding: "12px 20px" }}>
+          <div onClick={() => nav("home")} style={{ cursor: "pointer" }}>
+            <span style={{ display: "block", fontFamily: "'Playfair Display',serif", fontSize: 24, fontWeight: 700, color: C.mainD, letterSpacing: "0.02em", lineHeight: 1 }}>Petit Hermes</span>
+            <span style={{ display: "block", fontSize: 9, color: C.fgXL, letterSpacing: "0.14em", marginTop: 2 }}>プチヘルメース</span>
+          </div>
+          <nav className="dnv" style={{ display: "flex", gap: 20, alignItems: "center" }}>
+            {items.map(n => (
+              <span key={n.k} onClick={() => nav(n.k)} style={{
+                cursor: "pointer", fontSize: 13, color: page === n.k ? C.main : C.fgL,
+                fontWeight: page === n.k ? 700 : 400, transition: "color 0.3s",
+              }}>{n.l}</span>
+            ))}
+          </nav>
+          <button className="mbt" onClick={() => setMenu(!menu)} style={{
+            display: "none", flexDirection: "column", justifyContent: "center", alignItems: "center",
+            width: 40, height: 40, background: "none", border: "none", cursor: "pointer", zIndex: 110, gap: 5,
+          }}>
+            <span style={{ width: 20, height: 1.5, background: C.mainD, transition: "all 0.3s", transform: menu ? "translateY(6.5px) rotate(45deg)" : "none" }} />
+            <span style={{ width: 20, height: 1.5, background: C.mainD, transition: "all 0.3s", opacity: menu ? 0 : 1 }} />
+            <span style={{ width: 20, height: 1.5, background: C.mainD, transition: "all 0.3s", transform: menu ? "translateY(-6.5px) rotate(-45deg)" : "none" }} />
+          </button>
+        </div>
+      </header>
+
+      {menu && <div onClick={() => setMenu(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.25)", zIndex: 100, backdropFilter: "blur(4px)" }} />}
+      <nav style={{
+        position: "fixed", top: 0, right: menu ? 0 : "-100%", width: "76%", maxWidth: 300, height: "100vh",
+        background: C.bg, zIndex: 105, padding: "80px 28px 32px", transition: "right 0.35s cubic-bezier(.16,1,.3,1)", overflowY: "auto",
+      }}>
+        {items.map(n => (
+          <span key={n.k} onClick={() => nav(n.k)} style={{
+            display: "block", padding: "14px 0", fontSize: 16, color: page === n.k ? C.main : C.fg,
+            fontWeight: page === n.k ? 700 : 400, borderBottom: `1px solid ${C.border}`, cursor: "pointer",
+          }}>{n.l}</span>
+        ))}
+        <div style={{ marginTop: 20, display: "flex", gap: 8 }}>
+          <a href={LINKS.instagram} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, padding: "8px 16px", border: "1px solid " + C.border, borderRadius: 20, color: C.fgL, textDecoration: "none" }}>Instagram</a>
+          <a href={LINKS.line} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, padding: "8px 16px", border: "1px solid " + C.border, borderRadius: 20, color: C.fgL, textDecoration: "none" }}>LINE</a>
+        </div>
+      </nav>
+
+      <main>{pg()}</main>
+
+      <ScrollToTop />
+
+      <footer style={{ background: C.bgDark, color: "#fff", padding: "52px 0 22px" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(180px,1fr))", gap: 28, marginBottom: 36 }}>
+            <div>
+              <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 20, fontWeight: 600, marginBottom: 6 }}>Petit Hermes</p>
+              <p style={{ fontSize: 12, opacity: 0.5, lineHeight: 1.7 }}>今日のパンが、明日の野菜に。</p>
+              <div style={{ display: "flex", gap: 6, marginTop: 12, flexWrap: "wrap" }}>
+                <a href={LINKS.instagram} target="_blank" rel="noopener noreferrer" style={{ fontSize: 11, padding: "5px 12px", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 20, color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>Instagram</a>
+                <a href={LINKS.line} target="_blank" rel="noopener noreferrer" style={{ fontSize: 11, padding: "5px 12px", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 20, color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>LINE</a>
+                <a href={LINKS.giftcard} target="_blank" rel="noopener noreferrer" style={{ fontSize: 11, padding: "5px 12px", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 20, color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>🎁 ギフトカード</a>
+              </div>
+            </div>
+            <div>
+              <p style={{ fontSize: 10, fontWeight: 700, marginBottom: 10, letterSpacing: "0.15em", textTransform: "uppercase", opacity: 0.35 }}>Shop</p>
+              {[{ k: "products", l: "オンラインショップ" }, { k: "start", l: "はじめての方へ" }, { k: "rebake", l: "おいしい食べ方" }].map(n => (
+                <span key={n.k} onClick={() => nav(n.k)} style={{ display: "block", fontSize: 13, color: "rgba(255,255,255,0.5)", cursor: "pointer", lineHeight: 2.1 }}>{n.l}</span>
+              ))}
+            </div>
+            <div>
+              <p style={{ fontSize: 10, fontWeight: 700, marginBottom: 10, letterSpacing: "0.15em", textTransform: "uppercase", opacity: 0.35 }}>Info</p>
+              <p style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", lineHeight: 1.8 }}>〒731-1523 広島県山県郡北広島町南方1927-1</p>
+              <p style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", marginTop: 3 }}>水・土 11:30〜15:30</p>
+            </div>
+            <div>
+              <p style={{ fontSize: 10, fontWeight: 700, marginBottom: 10, letterSpacing: "0.15em", textTransform: "uppercase", opacity: 0.35 }}>Support</p>
+              {[{ k: "faq", l: "よくあるご質問" }, { k: "contact", l: "お問い合わせ" }].map(n => (
+                <span key={n.k} onClick={() => nav(n.k)} style={{ display: "block", fontSize: 13, color: "rgba(255,255,255,0.5)", cursor: "pointer", lineHeight: 2.1 }}>{n.l}</span>
+              ))}
+            </div>
+          </div>
+
+          {/* ===== ② ディスクレーマー（フッター内） ===== */}
+          <Disclaimer variant="footer" />
+
+          <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: 18, textAlign: "center" }}>
+            <small style={{ fontSize: 10, color: "rgba(255,255,255,0.2)" }}>© 2025 Petit Hermes. All Rights Reserved.</small>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(React.createElement(App));
+</script>
+</body>
+</html>
