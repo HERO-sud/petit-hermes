@@ -1,2 +1,0 @@
-# petit-hermes
-プチヘルメース
