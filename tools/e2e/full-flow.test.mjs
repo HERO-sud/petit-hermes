@@ -65,10 +65,19 @@ try {
   await key(page, 'Digit3'); await sleep(1500);
   assert(await ev(() => window.__game.state.eatenCount) === 1, 'パンを食べた');
 
-  await key(page, 'KeyP'); await sleep(800);
-  for (let i = 0; i < 3; i++) { await key(page, 'KeyF'); await sleep(600); }
-  await key(page, 'KeyP'); await sleep(800);
+  for (let i = 0; i < 6; i++) {
+    await key(page, 'KeyP'); await sleep(700);
+    if (await phase() === 'PHOTO') break;
+  }
+  for (let i = 0; i < 10; i++) {
+    if (await ev(() => window.__game.objectives.state.photo.count) >= 3) break;
+    await key(page, 'KeyF'); await sleep(600);
+  }
   assert(await ev(() => window.__game.objectives.state.photo.count) >= 3, 'フォトモードで3枚');
+  for (let i = 0; i < 6; i++) {
+    if (await phase() === 'PLAY') break;
+    await key(page, 'KeyP'); await sleep(700);
+  }
 
   await tp(-6, -55.9); await sleep(900);
   for (let i = 0; i < 8; i++) {
