@@ -53,6 +53,19 @@ export const L = {
     [-70, 220, 0.25, 9], [85, -180, -0.15, 10],
   ],
   greenhouses: [ [-70, 50, 0.2], [68, 95, -0.1] ],
+  // 村人NPC（wander: 徘徊ウェイポイント / dog: 犬連れ）
+  villagers: [
+    { id: 'vilBus', model: 'OldClassy_Male', x: 31.2, z: 41.4, ry: -1.3, targetH: 1.62,
+      dialog: 'vilBus', label: 'おじいさんと 話す' },
+    { id: 'vilField', model: 'Casual2_Male', x: -57, z: 15, ry: 0.5,
+      dialog: 'vilField', label: '村人と 話す', wander: [[-57, 15], [-44, 13], [-50, 9]] },
+    { id: 'vilKid', model: 'Casual_Bald', x: -10, z: -22, ry: 0, targetH: 1.18,
+      dialog: 'vilKid', label: '子どもと 話す', wander: [[-10, -22], [3, -15], [10, -27], [-4, -32]] },
+    { id: 'vilShrine', model: 'Kimono_Female', x: -77.6, z: -136.6, ry: 2.6, targetH: 1.55,
+      dialog: 'vilShrine', label: 'おばあさんと 話す' },
+    { id: 'vilDog', model: 'Casual3_Female', x: 28.5, z: 95, ry: Math.PI, dog: true,
+      dialog: 'vilDog', label: '犬のさんぽの人と 話す', wander: [[28.5, 95], [28.5, 58], [28, 25], [29, 112]] },
+  ],
 };
 
 // ---- ショップ（実商品をモチーフにしたゲーム内表記）----
@@ -110,6 +123,26 @@ export const DIALOGS = {
   ]},
   shrine: { name: 'ちいさな祠', lines: [ '村をみまもる ちいさな祠。そっと手をあわせた。' ]},
   busstop: { name: 'バス停「南方小学校前」', lines: [ '時刻表は 1日に4本。のんびりした谷の時間がながれている。' ]},
+  vilBus: { name: 'バスをまつ おじいさん', lines: [
+    'つぎのバスは ひるすぎじゃ。まあ、あわてんさんな。',
+    '学校のパン屋さんに いくんかい？ ええにおいが ここまで とどくんよ。',
+  ]},
+  vilField: { name: 'はたけの村人', lines: [
+    '田中さんとこの やさいは ほんまにうまいんじゃ。形は わるいけどな！',
+    'すてるはずのやさいが パンの酵母になるんと。おもしろいのう。',
+  ]},
+  vilKid: { name: 'グラウンドの子', lines: [
+    'むかし ここ、しょうがっこうだったんだって！',
+    'かけっこしよう！ よーい、どん！…あ、まけた！',
+  ]},
+  vilShrine: { name: '着物のおばあさん', lines: [
+    'この祠はね、むらのみんなを ずーっと みまもってきたんよ。',
+    'パン屋の大下さんも、ようけ おまいりに きんさるの。',
+  ]},
+  vilDog: { name: '犬のさんぽの人', lines: [
+    'うちのコロ、パン屋さんのにおいが だいすきでね。',
+    'さんぽコースが いっつも 学校のほうに ひっぱられるんよ🐕',
+  ]},
 };
 
 export const DISCLAIMER = '※架空のファンメイドデモです。実際の情報は公式Instagram @petit_hermes へ';

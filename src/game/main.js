@@ -113,6 +113,7 @@ async function boot() {
 
   setupGameplay();
   setupDebug();
+  G.npcs.spawnVillagers(); // 村人はモデル読込完了し次第あらわれる（起動をブロックしない）
 
   loadNote('');
   $('startBtn').disabled = false;
