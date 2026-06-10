@@ -12,24 +12,26 @@ main.js            bootstrap・フェーズ管理・メインループ・__game�
 config.js          CFG定数 / ワールド座標表 L / 商品 / セリフ / 品質ティア
 core/  renderer    WebGLRenderer・カメラ・コンテキスト喪失対応
        sky         実写HDRI背景+IBL・太陽光（影）・露出の時刻変化
-       loaders     GLB/HDR/テクスチャの非同期ロード
+       weather     天候状態機械（晴/霧/雨）・雨粒Points・風/雨音/霧連動
+       loaders     GLB/HDR/テクスチャの非同期ロード（Draco対応）
        postfx      Bloom+SMAAコンポーザ（ティア別）
        quality     低/中/高オートスケーラ（fpsヒステリシス）
 gen/   noise       seed付きfbm/ridged・数学ユーティリティ
        textures    プロシージャルPBR工場（高さ場→Sobel法線→粗さ）
        materials   school/village共有マテリアルファクトリ
-world/ terrain     ハイトフィールド+スプラットシェーダ+getGroundY
+world/ props       配置用GLBプロップ（車・民家）の事前ロード+実寸設置
+       terrain     ハイトフィールド+スプラットシェーダ+getGroundY
        roads       県道リボン・電柱+垂れ電線・ガードレール・橋
        water       川(平面反射)・田んぼ水鏡
        vegetation  草/杉・赤松/稲/竹/遠景インポスタ（Instanced+風）
        school      校舎・パン屋内装・カフェ・体育館・総合センター
-       village     農家・軽トラ・バス停・祠・コンポスト・収集物・バス
+       village     農家・車(GLB)・バス停・祠・コンポスト・収集物・バス
        colliders   円柱vsAABB/円の衝突・地面高さ
-entities/ character  リグ済みGLB複製+アニメブレンド（小物はボーン装着）
-          player     入力（KB/マウス/タッチ）・移動・カメラリグ
-          npc        大下さん/田中さん（視線追従）
+entities/ character  トゥーン調GLTF（Quaternius）役柄別ロード+アニメブレンド
+          player     入力（KB/マウス/タッチ）・移動・カメラリグ（ジャンプなし/ダッシュあり）
+          npc        大下さん/田中さん+村人6体（徘徊・犬追従・視線追従）
 systems/ interact   [F/E]プロンプト / objectives 任意目標+光柱 / audio WebAudio
-ui/    hud         コンパス/ミニマップ/ホットバー + 没入オートフェード
+ui/    hud         徹底ミニマルHUD（所持金/ホットバーは変化時のみ表示）
        dialog/shop 会話・購入（現金/PayPay）
        photomode   P: HUD非表示+撮影
 ```
@@ -40,6 +42,11 @@ ui/    hud         コンパス/ミニマップ/ホットバー + 没入オー�
 worldモジュールは `G.scene/G.tex/G.colliders/G.terrain` に依存、
 uiは `G.state/G.player/G.audio` に依存。循環なし（コールバックは
 `quality.onChange` のみ）。
+
+## ビジュアル方針
+キャラ・車・一部民家は **CC0トゥーン素材**（Quaternius / KayKit / Kenney系）、
+建物の手組みプリミティブは**フラット彩色**で統一。ライティングだけは
+実写HDRI+IBLを維持し「絵本の世界に本物の朝の光」を狙う。
 
 ## グラフィックパイプライン
 1. HDRI（spruit_sunrise 1k）→ 背景 + PMREM 1回 → `scene.environment`
