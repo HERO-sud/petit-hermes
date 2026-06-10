@@ -152,7 +152,14 @@ export function createSchool(G) {
   g.add(sign);
 
   // ---- 室内（パン屋 x[2,14] / カフェ x[-11,1.5]）----
-  const inFloor = new THREE.Mesh(new THREE.PlaneGeometry(26, S.d - 0.6), woodMat);
+  // 床は実写の木目（読込成功時）
+  const floorMat = G.tex.hardwood
+    ? new THREE.MeshStandardMaterial({
+        map: G.tex.hardwood.map, bumpMap: G.tex.hardwood.bumpMap, bumpScale: 0.6,
+        roughnessMap: G.tex.hardwood.roughnessMap, roughness: 1, metalness: 0,
+      })
+    : woodMat;
+  const inFloor = new THREE.Mesh(new THREE.PlaneGeometry(26, S.d - 0.6), floorMat);
   inFloor.rotation.x = -Math.PI / 2;
   inFloor.position.set(1.5, 0.06, S.z);
   inFloor.receiveShadow = true;

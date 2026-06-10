@@ -1,153 +1,159 @@
-// プロシージャル人体（カプセルベース・関節階層・歩行サイクル）
+// キャラクター: 実写系リグ済みGLB（Mixamoアニメ内蔵）を共有ソースから複製。
+// GLB読込失敗時のみ簡易プロシージャル人体にフォールバック。
 import * as THREE from 'three';
+import { clone as skeletonClone } from 'three/addons/utils/SkeletonUtils.js';
+import { loadGLB } from '../core/loaders.js';
 
-export function makeCharacter(G, o = {}) {
-  const T = G.tex;
-  const skinMat = new THREE.MeshStandardMaterial({ color: o.skin ?? 0xe8b890, roughness: 0.55 });
-  const clothMat = new THREE.MeshStandardMaterial({
-    color: o.shirt ?? 0xdfe3e8, roughness: 0.9,
-    normalMap: T.fabric.normalMap, normalScale: new THREE.Vector2(0.5, 0.5),
-  });
-  const pantsMat = new THREE.MeshStandardMaterial({
-    color: o.pants ?? 0x33404e, roughness: 0.92,
-    normalMap: T.fabric.normalMap, normalScale: new THREE.Vector2(0.5, 0.5),
-  });
-  const hairMat = new THREE.MeshStandardMaterial({ color: o.hair ?? 0x2c2018, roughness: 0.7 });
-  const shoeMat = new THREE.MeshStandardMaterial({ color: o.shoe ?? 0x3a342e, roughness: 0.6 });
+let baseGLTF = null;
 
-  const g = new THREE.Group();
-
-  // 胴（カプセル）
-  const torso = new THREE.Mesh(new THREE.CapsuleGeometry(0.165, 0.42, 6, 12), clothMat);
-  torso.position.y = 1.12;
-  torso.scale.set(1.25, 1, 0.85);
-  torso.castShadow = true;
-  // 腰
-  const hips = new THREE.Mesh(new THREE.CapsuleGeometry(0.15, 0.12, 6, 12), pantsMat);
-  hips.position.y = 0.86;
-  hips.scale.set(1.2, 1, 0.9);
-  hips.castShadow = true;
-  // 首・頭
-  const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.06, 0.09, 10), skinMat);
-  neck.position.y = 1.44;
-  const head = new THREE.Group();
-  const skull = new THREE.Mesh(new THREE.SphereGeometry(0.115, 18, 14), skinMat);
-  skull.scale.set(0.92, 1.05, 0.98);
-  skull.castShadow = true;
-  head.add(skull);
-  // 髪（控えめ）
-  const hairTop = new THREE.Mesh(new THREE.SphereGeometry(0.118, 16, 12, 0, Math.PI * 2, 0, Math.PI * 0.62), hairMat);
-  hairTop.scale.set(0.95, 1.05, 1.0);
-  hairTop.position.y = 0.012;
-  head.add(hairTop);
-  if (o.kerchief) { // 三角巾
-    const kc = new THREE.Mesh(new THREE.ConeGeometry(0.115, 0.1, 4), new THREE.MeshStandardMaterial({ color: 0xfaf6ec, roughness: 0.9 }));
-    kc.position.y = 0.11; kc.rotation.y = Math.PI / 4;
-    head.add(kc);
+export async function preloadCharacter() {
+  try {
+    baseGLTF = await loadGLB('assets/models/character.glb');
+    baseGLTF.scene.traverse((o) => {
+      if (o.isMesh) { o.castShadow = true; o.frustumCulled = false; }
+    });
+  } catch (e) {
+    console.warn('character.glb の読込に失敗。簡易人体にフォールバックします:', e.message);
+    baseGLTF = null;
   }
-  if (o.strawHat) { // 麦わら帽子
-    const brim = new THREE.Mesh(new THREE.CylinderGeometry(0.23, 0.25, 0.02, 14), new THREE.MeshStandardMaterial({ color: 0xd8bd72, roughness: 0.85 }));
-    brim.position.y = 0.08;
-    const top = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.12, 0.09, 12), brim.material);
-    top.position.y = 0.13;
-    head.add(brim, top);
+}
+
+// ---- 役柄ごとの小物（帽子・三角巾・麦わら帽・エプロン）----
+function buildProps(G, o) {
+  const T = G.tex;
+  const props = { head: [], chest: [] };
+  if (o.kerchief) {
+    const kc = new THREE.Mesh(new THREE.ConeGeometry(0.115, 0.1, 4),
+      new THREE.MeshStandardMaterial({ color: 0xfaf6ec, roughness: 0.9 }));
+    kc.rotation.y = Math.PI / 4;
+    kc.position.y = 0.12;
+    props.head.push(kc);
+  }
+  if (o.strawHat) {
+    const m = new THREE.MeshStandardMaterial({ color: 0xd8bd72, roughness: 0.85 });
+    const brim = new THREE.Mesh(new THREE.CylinderGeometry(0.23, 0.25, 0.02, 14), m);
+    brim.position.y = 0.09;
+    const top = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.12, 0.09, 12), m);
+    top.position.y = 0.14;
+    props.head.push(brim, top);
   }
   if (o.cap) {
-    const cp = new THREE.Mesh(new THREE.SphereGeometry(0.12, 14, 10, 0, Math.PI * 2, 0, Math.PI * 0.5),
-      new THREE.MeshStandardMaterial({ color: o.cap, roughness: 0.8 }));
-    cp.position.y = 0.03;
-    const brim2 = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.015, 0.09), cp.material);
-    brim2.position.set(0, 0.045, 0.13);
-    head.add(cp, brim2);
+    const m = new THREE.MeshStandardMaterial({ color: o.cap, roughness: 0.8 });
+    const cp = new THREE.Mesh(new THREE.SphereGeometry(0.12, 14, 10, 0, Math.PI * 2, 0, Math.PI * 0.5), m);
+    cp.position.y = 0.05;
+    const brim2 = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.015, 0.09), m);
+    brim2.position.set(0, 0.065, 0.13);
+    props.head.push(cp, brim2);
   }
-  // 目（控えめなディテール）
-  const eyeM = new THREE.MeshBasicMaterial({ color: 0x241a12 });
-  for (const ex of [-0.045, 0.045]) {
-    const eye = new THREE.Mesh(new THREE.SphereGeometry(0.012, 8, 6), eyeM);
-    eye.position.set(ex, 0.01, 0.105);
-    head.add(eye);
-  }
-  head.position.y = 1.6;
-
-  // 腕（肩ピボット）
-  const mkArm = (sx) => {
-    const a = new THREE.Group();
-    const up = new THREE.Mesh(new THREE.CapsuleGeometry(0.05, 0.24, 4, 10), clothMat);
-    up.position.y = -0.16;
-    up.castShadow = true;
-    const lo = new THREE.Mesh(new THREE.CapsuleGeometry(0.042, 0.22, 4, 10), skinMat);
-    lo.position.y = -0.44;
-    lo.castShadow = true;
-    const hand = new THREE.Mesh(new THREE.SphereGeometry(0.05, 10, 8), skinMat);
-    hand.position.y = -0.6;
-    a.add(up, lo, hand);
-    a.position.set(sx, 1.38, 0);
-    a.rotation.z = sx > 0 ? -0.08 : 0.08;
-    return a;
-  };
-  // 脚（股関節ピボット）
-  const mkLeg = (sx) => {
-    const l = new THREE.Group();
-    const up = new THREE.Mesh(new THREE.CapsuleGeometry(0.07, 0.3, 4, 10), pantsMat);
-    up.position.y = -0.2;
-    up.castShadow = true;
-    const lo = new THREE.Mesh(new THREE.CapsuleGeometry(0.055, 0.28, 4, 10), pantsMat);
-    lo.position.y = -0.55;
-    lo.castShadow = true;
-    const shoe = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.07, 0.24), shoeMat);
-    shoe.position.set(0, -0.76, 0.04);
-    shoe.castShadow = true;
-    l.add(up, lo, shoe);
-    l.position.set(sx, 0.8, 0);
-    return l;
-  };
-  const lArm = mkArm(-0.26), rArm = mkArm(0.26);
-  const lLeg = mkLeg(-0.1), rLeg = mkLeg(0.1);
-
   if (o.apron) {
-    const ap = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.42, 0.02),
+    const ap = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.46, 0.02),
       new THREE.MeshStandardMaterial({ color: 0xf5efe2, roughness: 0.92, normalMap: T.fabric.normalMap }));
-    ap.position.set(0, 1.0, 0.15);
-    g.add(ap);
+    ap.position.set(0, -0.18, 0.13);
+    props.chest.push(ap);
   }
-  if (o.backpack) {
-    const bp = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.32, 0.13),
-      new THREE.MeshStandardMaterial({ color: 0x4E5D3E, roughness: 0.85, normalMap: T.fabric.normalMap }));
-    bp.position.set(0, 1.18, -0.18);
-    g.add(bp);
+  return props;
+}
+
+function makeGLBCharacter(G, o) {
+  const inner = skeletonClone(baseGLTF.scene);
+  // マテリアルを役柄ごとに複製してティント（軍装感を弱め作業着風に）
+  inner.traverse((m) => {
+    if (m.isMesh) {
+      m.material = m.material.clone();
+      if (o.tint) m.material.color = new THREE.Color(o.tint);
+      m.material.roughness = Math.min(1, (m.material.roughness ?? 0.9) * 1.05);
+      m.castShadow = true;
+    }
+  });
+  // 元モデルは-Z向きのためラッパーで+Z向きに統一（既存のyaw計算と互換）
+  inner.rotation.y = Math.PI;
+  const scale = o.scale ?? 0.93;
+  inner.scale.setScalar(scale);
+  const g = new THREE.Group();
+  g.add(inner);
+
+  // アニメーション（Idle / Walk / Run）
+  const mixer = new THREE.AnimationMixer(inner);
+  const actions = {};
+  for (const clip of baseGLTF.animations) {
+    actions[clip.name] = mixer.clipAction(clip);
   }
+  const idle = actions.Idle, walk = actions.Walk, run = actions.Run;
+  for (const a of [idle, walk, run]) if (a) { a.enabled = true; a.setEffectiveWeight(0); a.play(); }
+  if (idle) idle.setEffectiveWeight(1);
 
-  g.add(torso, hips, neck, head, lArm, rArm, lLeg, rLeg);
+  // 小物をボーンに装着（スケール補正つき）
+  const props = buildProps(G, o);
+  inner.updateMatrixWorld(true);
+  const headBone = inner.getObjectByName('mixamorigHead');
+  const spineBone = inner.getObjectByName('mixamorigSpine2') || inner.getObjectByName('mixamorigSpine1');
+  const _ws = new THREE.Vector3();
+  function attach(bone, meshes, yOff) {
+    if (!bone || !meshes.length) return;
+    bone.getWorldScale(_ws);
+    const inv = 1 / (_ws.x * (1 / scale)) / scale; // ボーンのワールドスケールを打ち消す
+    for (const mesh of meshes) {
+      const holder = new THREE.Group();
+      holder.scale.setScalar(inv);
+      mesh.position.y += yOff;
+      holder.add(mesh);
+      bone.add(holder);
+    }
+  }
+  attach(headBone, props.head, 0.06);
+  attach(spineBone, props.chest, 0);
 
-  let runPhase = 0;
+  let sitting = false;
   return {
-    group: g, head, torso, lArm, rArm, lLeg, rLeg,
-    // 速度に応じた歩行/走行サイクル
-    animate(dt, speed, grounded, time) {
-      const ratio = Math.min(speed / 6.4, 1);
-      runPhase += speed * dt * 2.0;
-      if (!grounded) {
-        lArm.rotation.x = rArm.rotation.x = -0.5;
-        lLeg.rotation.x = 0.35; rLeg.rotation.x = -0.25;
-        return;
-      }
-      if (ratio < 0.03) {
-        const b = Math.sin(time * 1.8) * 0.03;
-        lArm.rotation.x = b; rArm.rotation.x = -b;
-        lLeg.rotation.x = rLeg.rotation.x = 0;
-        torso.rotation.x = 0;
-      } else {
-        const sw = Math.sin(runPhase) * (0.4 + ratio * 0.5);
-        lArm.rotation.x = sw; rArm.rotation.x = -sw;
-        lLeg.rotation.x = -sw * 0.9; rLeg.rotation.x = sw * 0.9;
-        torso.rotation.x = ratio * 0.12;
-      }
+    group: g,
+    animate(dt, speed, grounded) {
+      if (sitting) { mixer.update(dt * 0.2); return; }
+      const r = Math.min(speed / 6.4, 1);
+      const walkW = r < 0.55 ? r / 0.55 : 1 - (r - 0.55) / 0.45;
+      const runW = r > 0.55 ? (r - 0.55) / 0.45 : 0;
+      const idleW = Math.max(0, 1 - r * 2.4);
+      if (idle) idle.setEffectiveWeight(idleW);
+      if (walk) { walk.setEffectiveWeight(Math.max(0, walkW - idleW * 0.3)); walk.setEffectiveTimeScale(0.85 + r * 0.5); }
+      if (run) run.setEffectiveWeight(runW);
+      mixer.update(dt);
     },
-    pose(p) { // 着席など
+    pose(p) {
       if (p === 'sit') {
-        lLeg.rotation.x = rLeg.rotation.x = -1.5;
-        lArm.rotation.x = rArm.rotation.x = -0.4;
+        sitting = true;
+        for (const a of [idle, walk, run]) if (a) a.setEffectiveWeight(a === idle ? 1 : 0);
+        // 簡易着席: 腰を落とし腿を上げる
+        const lu = inner.getObjectByName('mixamorigLeftUpLeg');
+        const ru = inner.getObjectByName('mixamorigRightUpLeg');
+        const ll = inner.getObjectByName('mixamorigLeftLeg');
+        const rl = inner.getObjectByName('mixamorigRightLeg');
+        if (lu && ru) {
+          mixer.stopAllAction();
+          lu.rotation.x -= 1.35; ru.rotation.x -= 1.35;
+          if (ll) ll.rotation.x += 1.25;
+          if (rl) rl.rotation.x += 1.25;
+          inner.position.y = -0.22;
+        }
       }
     },
   };
+}
+
+// ---- フォールバック（GLB読込失敗時のみ）: 旧プロシージャル人体の簡易版 ----
+function makeFallbackCharacter(G, o) {
+  const g = new THREE.Group();
+  const cloth = new THREE.MeshStandardMaterial({ color: o.tint ?? 0xdfe3e8, roughness: 0.9 });
+  const skin = new THREE.MeshStandardMaterial({ color: 0xe8b890, roughness: 0.55 });
+  const torso = new THREE.Mesh(new THREE.CapsuleGeometry(0.17, 0.5, 6, 12), cloth);
+  torso.position.y = 1.05;
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.115, 16, 12), skin);
+  head.position.y = 1.58;
+  const legs = new THREE.Mesh(new THREE.CapsuleGeometry(0.13, 0.6, 6, 10), cloth);
+  legs.position.y = 0.5;
+  torso.castShadow = head.castShadow = legs.castShadow = true;
+  g.add(torso, head, legs);
+  return { group: g, animate() {}, pose() {} };
+}
+
+export function makeCharacter(G, o = {}) {
+  return baseGLTF ? makeGLBCharacter(G, o) : makeFallbackCharacter(G, o);
 }

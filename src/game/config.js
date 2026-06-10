@@ -10,6 +10,7 @@ export const CFG = {
   worldSize: 1200,          // 地形全体
   innerSize: 700,           // 内周高解像度メッシュ
   dayLengthSec: 1200,       // 朝→夕方 実時間20分
+  hdriRotationY: 2.6,       // HDRIの太陽方位をワールド南東に合わせる回転
   spawn: { x: 30.2, z: 44 },  // バス停そば（道路の東脇）
 };
 

@@ -20,11 +20,11 @@ export function createNPCs(G) {
 
   // 大下さん: カウンターの中（店の奥側）
   const oshita = add('oshita',
-    { shirt: 0x6B7D5A, pants: 0x5a4a42, apron: true, kerchief: true, hair: 0x3a2c20, skin: 0xe8b890 },
+    { tint: 0xb9c4a4, apron: true, kerchief: true, scale: 0.9 },
     8, L.school.z - 1.2, Math.PI);
   // 田中さん: 畑
   const tanaka = add('tanaka',
-    { shirt: 0x4d6fa8, pants: 0x3a4450, strawHat: true, skin: 0xd9a878 },
+    { tint: 0xa9bdd4, strawHat: true, scale: 0.92 },
     L.tanakaNpc.x, L.tanakaNpc.z, 2.2);
 
   return {

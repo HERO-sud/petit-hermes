@@ -1,22 +1,33 @@
-// 物理スカイ + 太陽運行 + PMREM環境光(IBL) + フォグ
+// 実写HDRIによる空・環境光(IBL) + 太陽光（影）
+// quarry_01（Poly Haven CC0 / three.js examples 同梱）を背景とIBLに使用。
+// 時刻サイクルは「実写の見た目」を最優先し、影の角度と露出のゆるやかな変化のみ行う。
 import * as THREE from 'three';
-import { Sky } from 'three/addons/objects/Sky.js';
 import { CFG } from '../config.js';
 import { lerp, clamp } from '../gen/noise.js';
+import { loadHDR } from './loaders.js';
 
-export function createSky(G) {
+export async function createSky(G) {
   const { renderer, scene } = G;
 
-  const sky = new Sky();
-  sky.scale.setScalar(8000);
-  const u = sky.material.uniforms;
-  u.turbidity.value = 3;
-  u.rayleigh.value = 1.6;
-  u.mieCoefficient.value = 0.005;
-  u.mieDirectionalG.value = 0.8;
-  scene.add(sky);
+  // ---- HDRI: 背景 + IBL（起動時に1回だけPMREM）----
+  const hdr = await loadHDR('assets/hdri/morning_1k.hdr');
+  hdr.mapping = THREE.EquirectangularReflectionMapping;
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  const envRT = pmrem.fromEquirectangular(hdr);
+  scene.environment = envRT.texture;
+  scene.environmentIntensity = 1.0;
+  scene.background = hdr;
+  scene.backgroundIntensity = 1.0;
+  scene.backgroundBlurriness = 0.0;
+  // HDRIの方位をワールドに合わせる（太陽が南東上空に来るよう回転）
+  scene.backgroundRotation = new THREE.Euler(0, CFG.hdriRotationY, 0);
+  scene.environmentRotation = new THREE.Euler(0, CFG.hdriRotationY, 0);
+  pmrem.dispose();
 
-  const sun = new THREE.DirectionalLight(0xfff0dd, 3.2);
+  renderer.toneMappingExposure = 1.0;
+
+  // ---- 太陽光（影用）。HDRIの太陽位置に合わせて配置 ----
+  const sun = new THREE.DirectionalLight(0xfff2e0, 2.6);
   sun.castShadow = true;
   sun.shadow.bias = -0.0004;
   sun.shadow.normalBias = 0.02;
@@ -24,30 +35,24 @@ export function createSky(G) {
   sun.shadow.camera.far = 420;
   scene.add(sun, sun.target);
 
-  const hemi = new THREE.HemisphereLight(0xbcd8f0, 0x8a7a55, 0.25);
+  const hemi = new THREE.HemisphereLight(0xbcd8f0, 0x8a7a55, 0.3);
   scene.add(hemi);
+  scene.environmentIntensity = 1.15;
 
-  scene.fog = new THREE.FogExp2(0xc3d6e8, 0.0016);
-
-  // IBL: Sky単独シーンからPMREM生成
-  const pmrem = new THREE.PMREMGenerator(renderer);
-  pmrem.compileEquirectangularShader();
-  const skyOnly = new THREE.Scene();
-  const skyClone = new Sky();
-  skyClone.scale.setScalar(8000);
-  skyOnly.add(skyClone);
-  let envRT = null;
-  let lastEnvElev = -99;
+  scene.fog = new THREE.FogExp2(0xcfdce8, 0.0016);
 
   const sunDir = new THREE.Vector3();
 
   const S = {
-    sky, sun, hemi,
-    timeOfDay: 0,        // 0..1（朝→夕）
-    elevDeg: 55,
+    sun, hemi,
+    timeOfDay: 0, // 0..1（朝→夕。見た目はHDRI固定、影と露出のみ変化）
+    elevDeg: 48,
 
     setShadowSize(size) {
       sun.shadow.mapSize.set(size, size);
+      // アクネ防止: シャドウテクセルのワールドサイズに比例した法線バイアス
+      const half = (sun.shadow.camera.right - sun.shadow.camera.left) / 2 || 60;
+      sun.shadow.normalBias = (half * 2 / size) * 1.8;
       if (sun.shadow.map) { sun.shadow.map.dispose(); sun.shadow.map = null; }
     },
     setShadowArea(half) {
@@ -59,24 +64,16 @@ export function createSky(G) {
     update(dt, playerPos) {
       S.timeOfDay = clamp(S.timeOfDay + dt / CFG.dayLengthSec, 0, 1);
       const t = S.timeOfDay;
-      const elev = lerp(55, 12, t);             // 仰角 55°→12°
-      const azim = lerp(150, 245, t);           // 南東→南西
+      // 日の出HDRIに合わせた低めの太陽（朝の長い影）
+      const elev = lerp(16, 34, t);
+      const azim = lerp(125, 195, t);
       S.elevDeg = elev;
       const phi = THREE.MathUtils.degToRad(90 - elev);
       const theta = THREE.MathUtils.degToRad(azim);
       sunDir.setFromSphericalCoords(1, phi, theta);
-      u.sunPosition.value.copy(sunDir);
-      skyClone.material.uniforms.sunPosition.value.copy(sunDir);
-      skyClone.material.uniforms.turbidity.value = u.turbidity.value;
-      skyClone.material.uniforms.rayleigh.value = lerp(1.6, 2.6, t);
-      u.rayleigh.value = skyClone.material.uniforms.rayleigh.value;
-
-      // 太陽光の色・強さ（夕方は暖色・弱め）
-      const warm = new THREE.Color(0xfff0dd).lerp(new THREE.Color(0xffd0a0), t);
-      sun.color.copy(warm);
-      sun.intensity = lerp(3.2, 1.9, t);
-      G.renderer.toneMappingExposure = lerp(0.55, 0.44, t);
-      scene.fog.color.set(new THREE.Color(0xc3d6e8).lerp(new THREE.Color(0xe0c4a0), t));
+      sun.color.set(new THREE.Color(0xffe2b8).lerp(new THREE.Color(0xfff0dd), t));
+      sun.intensity = lerp(2.4, 2.8, t);
+      G.renderer.toneMappingExposure = lerp(1.05, 0.95, t);
 
       // プレイヤー追従シャドウ（テクセルスナップでシマー防止）
       if (playerPos) {
@@ -87,18 +84,7 @@ export function createSky(G) {
         sun.position.set(sx + sunDir.x * 220, sunDir.y * 220, sz + sunDir.z * 220);
         sun.target.position.set(sx, 0, sz);
       }
-
-      // 太陽が3°動くごとにIBL再生成
-      if (Math.abs(elev - lastEnvElev) > 3) {
-        lastEnvElev = elev;
-        const old = envRT;
-        envRT = pmrem.fromScene(skyOnly);
-        scene.environment = envRT.texture;
-        scene.environmentIntensity = lerp(0.9, 0.65, t);
-        if (old) old.dispose();
-        return true; // 重い処理が走ったフレーム
-      }
-      return false;
+      return false; // HDRIは固定なので重い再生成フレームは存在しない
     },
   };
 

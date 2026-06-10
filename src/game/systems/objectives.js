@@ -11,7 +11,7 @@ export function createObjectives(G) {
   const beacon = new THREE.Mesh(
     new THREE.CylinderGeometry(1.4, 1.4, 120, 10, 1, true),
     new THREE.MeshBasicMaterial({
-      color: 0xffd98a, transparent: true, opacity: 0.07,
+      color: 0xffd98a, transparent: true, opacity: 0.04,
       blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide,
     }));
   beacon.position.y = 60;
