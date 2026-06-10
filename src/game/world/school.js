@@ -279,7 +279,7 @@ export function createSchool(G) {
     wall(gy.x, 3.2, gy.z, gy.w, 6.4, gy.d);
     const arch = new THREE.Mesh(
       new THREE.CylinderGeometry(gy.d / 2, gy.d / 2, gy.w, 18, 1, false, 0, Math.PI).rotateZ(Math.PI / 2),
-      new THREE.MeshStandardMaterial({ map: T.corrugated.map, normalMap: T.corrugated.normalMap, roughness: 0.5, metalness: 0.4 }));
+      M.corrugated);
     arch.scale.y = 0.5;
     arch.position.set(gy.x, 6.4, gy.z);
     arch.castShadow = true;

@@ -13,6 +13,7 @@ import { createWater } from './world/water.js';
 import { createVegetation } from './world/vegetation.js';
 import { createSchool } from './world/school.js';
 import { createVillage } from './world/village.js';
+import { preloadProps } from './world/props.js';
 import { createPlayer } from './entities/player.js';
 import { createNPCs } from './entities/npc.js';
 import { preloadCharacters } from './entities/character.js';
@@ -74,7 +75,10 @@ async function boot() {
   }
 
   loadNote('キャラクターをよみこみ中…');
-  await preloadCharacters(['Casual_Male', 'Casual_Female', 'Worker_Male']);
+  await Promise.all([
+    preloadCharacters(['Casual_Male', 'Casual_Female', 'Worker_Male']),
+    preloadProps(),
+  ]);
 
   loadNote('地形を生成中…');
   await tick();

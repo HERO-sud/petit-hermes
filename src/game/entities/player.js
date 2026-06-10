@@ -36,9 +36,11 @@ export function createPlayer(G) {
   });
   addEventListener('keyup', (e) => { keys[e.code] = false; });
 
+  // requestPointerLock のPromise拒否は無害（ロック要求中のフェーズ遷移等）なので握りつぶす
+  const tryLock = () => { try { canvas.requestPointerLock()?.catch?.(() => {}); } catch { /* noop */ } };
   canvas.addEventListener('click', () => {
     if (!G.quality.isTouch && !pointerLocked && ['PLAY', 'PHOTO'].includes(G.state.phase)) {
-      canvas.requestPointerLock();
+      tryLock();
     }
   });
   document.addEventListener('pointerlockchange', () => {
@@ -152,7 +154,7 @@ export function createPlayer(G) {
     get speed() { return Math.hypot(vel.x, vel.z); },
     pos: player.position,
     exitLock() { if (document.pointerLockElement) document.exitPointerLock(); },
-    requestLock() { if (!G.quality.isTouch) canvas.requestPointerLock(); },
+    requestLock() { if (!G.quality.isTouch) tryLock(); },
     teleport(x, z) {
       player.position.set(x, colliders.getGroundY(x, z), z);
       vel.set(0, 0, 0);
