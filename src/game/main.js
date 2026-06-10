@@ -15,7 +15,7 @@ import { createSchool } from './world/school.js';
 import { createVillage } from './world/village.js';
 import { createPlayer } from './entities/player.js';
 import { createNPCs } from './entities/npc.js';
-import { preloadCharacter } from './entities/character.js';
+import { preloadCharacters } from './entities/character.js';
 import { loadTex } from './core/loaders.js';
 import { createInteract } from './systems/interact.js';
 import { createObjectives } from './systems/objectives.js';
@@ -74,7 +74,7 @@ async function boot() {
   }
 
   loadNote('キャラクターをよみこみ中…');
-  await preloadCharacter();
+  await preloadCharacters(['Casual_Male', 'Casual_Female', 'Worker_Male']);
 
   loadNote('地形を生成中…');
   await tick();

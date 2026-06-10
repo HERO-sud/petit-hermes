@@ -7,7 +7,7 @@ import { clamp, dampAngle } from '../gen/noise.js';
 export function createPlayer(G) {
   const { scene, camera, colliders, canvas } = G;
 
-  const char = makeCharacter(G, { tint: 0xcfd4d8, cap: 0x4E5D3E });
+  const char = makeCharacter(G, { model: 'Casual_Male' });
   const player = char.group;
   player.position.set(CFG.spawn.x, colliders.getGroundY(CFG.spawn.x, CFG.spawn.z), CFG.spawn.z);
   scene.add(player);
