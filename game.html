@@ -3,312 +3,288 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>パンクエスト 〜旧南方小学校へ降下せよ！〜 | プチヘルメース</title>
-<meta name="description" content="フォートナイト風の操作で、広島県北広島町の廃校のパン屋「プチヘルメース」へパンを買いに行ける擬似体験ゲーム（ファンメイドの架空デモ）。">
-<meta property="og:title" content="パンクエスト 〜旧南方小学校へ降下せよ！〜">
-<meta property="og:description" content="空から降下して、廃校のパン屋プチヘルメースへパンを買いに行こう！">
+<title>みなみがたの朝 〜廃校のパン屋へ〜 | プチヘルメース</title>
+<meta name="description" content="広島県北広島町南方の谷あいを再現したオープンワールドで、廃校のパン屋「プチヘルメース」を訪ねる擬似体験ゲーム（ファンメイドの架空デモ）。">
+<meta property="og:title" content="みなみがたの朝 〜廃校のパン屋へ〜">
+<meta property="og:description" content="里山の朝をあるいて、廃校のパン屋プチヘルメースへ。">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍞</text></svg>">
 <script type="importmap">
 {
   "imports": {
-    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    "three": "https://unpkg.com/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.170.0/examples/jsm/"
   }
 }
 </script>
+<!-- unpkg障害時の代替: https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js
+     ローカル検証は http サーバ必須（file:// 不可）: 例 `npx serve` / `python3 -m http.server` -->
 <style>
-/* ===== BASE ===== */
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#87bfe8;
-  font-family:"Hiragino Maru Gothic ProN","Hiragino Kaku Gothic ProN",system-ui,sans-serif;
-  -webkit-user-select:none;user-select:none;touch-action:none}
+html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#0c1016;
+  font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans",system-ui,sans-serif;
+  -webkit-user-select:none;user-select:none;touch-action:none;color:#e9e6df}
 canvas#game{display:block;width:100%;height:100%}
 .hidden{display:none!important}
 
-/* ===== HUD COMMON ===== */
-#hud{position:fixed;inset:0;pointer-events:none;z-index:10}
-.panel{background:rgba(20,24,18,.62);border-radius:10px;color:#fff;
-  box-shadow:0 2px 10px rgba(0,0,0,.25)}
+/* ===== HUD（ミニマル・シネマティック） ===== */
+#hud{position:fixed;inset:0;pointer-events:none;z-index:10;
+  transition:opacity .35s}
+#hud.photo{opacity:0}
+.glass{background:rgba(12,16,20,.45);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.08);
+  border-radius:10px}
 
-/* compass */
-#compassWrap{position:absolute;top:10px;left:50%;transform:translateX(-50%);
-  width:min(420px,60vw);height:34px;border-radius:8px;overflow:hidden;background:rgba(20,24,18,.5)}
+#compassWrap{position:absolute;top:14px;left:50%;transform:translateX(-50%);
+  width:min(380px,56vw);height:26px;border-radius:13px;overflow:hidden;
+  background:rgba(12,16,20,.35);border:1px solid rgba(255,255,255,.08)}
 #compass{width:100%;height:100%}
 
-/* minimap */
-#minimapWrap{position:absolute;top:12px;right:12px;width:min(170px,26vw);height:min(170px,26vw);
-  border-radius:50%;overflow:hidden;border:3px solid rgba(255,255,255,.85);
-  box-shadow:0 3px 14px rgba(0,0,0,.35);background:#9db86a}
+#minimapWrap{position:absolute;top:14px;right:14px;width:min(150px,24vw);height:min(150px,24vw);
+  border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,.35);
+  box-shadow:0 4px 18px rgba(0,0,0,.45);background:#7e8c66}
 #minimap{width:100%;height:100%}
 
-/* quest banner */
-#banner{position:absolute;top:64px;left:50%;transform:translateX(-50%) scale(.4);
-  padding:10px 34px;background:linear-gradient(180deg,#ffd84d,#f6a823);color:#3a2c00;
-  font-weight:900;font-size:clamp(18px,3.4vw,30px);border-radius:10px;white-space:nowrap;
-  border:3px solid #fff;box-shadow:0 6px 22px rgba(0,0,0,.4);opacity:0;
-  transition:transform .35s cubic-bezier(.2,1.6,.4,1),opacity .3s}
-#banner.show{opacity:1;transform:translateX(-50%) scale(1)}
-#bannerSub{position:absolute;top:118px;left:50%;transform:translateX(-50%);
-  color:#fff;font-weight:700;font-size:clamp(12px,2vw,16px);text-shadow:0 2px 6px rgba(0,0,0,.6);
-  opacity:0;transition:opacity .3s;white-space:nowrap}
-#bannerSub.show{opacity:1}
+#objHint{position:absolute;left:16px;bottom:88px;max-width:min(300px,52vw);padding:10px 14px;
+  border-left:3px solid #e8b35a}
+#objHint .oTitle{font-size:10px;letter-spacing:.18em;color:#e8b35a;font-weight:700;margin-bottom:3px}
+#objHint .oText{font-size:13px;font-weight:600;line-height:1.5}
+#objHint .oSub{font-size:11px;color:rgba(233,230,223,.65);margin-top:2px}
 
-/* quest tracker */
-#tracker{position:absolute;left:12px;top:38%;padding:10px 14px;max-width:min(260px,42vw);
-  border-left:4px solid #ffd84d}
-#tracker .tTitle{font-size:11px;color:#ffd84d;font-weight:800;letter-spacing:.1em;margin-bottom:3px}
-#tracker .tName{font-size:14px;font-weight:800;line-height:1.35}
-#tracker .tProg{font-size:12px;color:#bfe6a0;font-weight:700;margin-top:3px}
+#money{position:absolute;left:16px;bottom:46px;padding:7px 14px;font-weight:700;
+  font-size:14px;color:#f0d9a8;letter-spacing:.04em}
 
-/* gauges */
-#gauges{position:absolute;left:12px;bottom:64px;width:min(230px,38vw)}
-.gauge{height:15px;border-radius:8px;background:rgba(20,24,18,.62);margin-top:6px;
-  overflow:hidden;position:relative;border:2px solid rgba(255,255,255,.65)}
-.gauge .fill{height:100%;border-radius:6px;transition:width .25s}
-#hungerFill{background:linear-gradient(90deg,#7ec850,#b6e388);width:80%}
-#staminaFill{background:linear-gradient(90deg,#52c7e8,#9fe8ff);width:100%}
-.gauge .glabel{position:absolute;left:8px;top:50%;transform:translateY(-50%);
-  font-size:9px;font-weight:900;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.7);letter-spacing:.1em}
+#hotbar{position:absolute;right:14px;bottom:14px;display:flex;gap:5px}
+.slot{width:min(46px,9vw);height:min(46px,9vw);border-radius:8px;background:rgba(12,16,20,.45);
+  border:1px solid rgba(255,255,255,.14);position:relative;display:flex;align-items:center;
+  justify-content:center;font-size:clamp(17px,4vw,22px);transition:transform .15s;pointer-events:auto}
+.slot.pop{transform:scale(1.15);border-color:#e8b35a}
+.slot .num{position:absolute;top:1px;left:4px;font-size:8px;color:rgba(255,255,255,.5);font-weight:700}
+.slot .cnt{position:absolute;bottom:0;right:4px;font-size:10px;color:#fff;font-weight:800;text-shadow:0 1px 3px #000}
 
-/* hotbar + money */
-#money{position:absolute;right:12px;bottom:96px;padding:6px 14px;font-weight:900;
-  font-size:17px;color:#ffd84d;text-align:right}
-#hotbar{position:absolute;right:12px;bottom:14px;display:flex;gap:6px}
-.slot{width:min(56px,11vw);height:min(56px,11vw);border-radius:9px;background:rgba(20,24,18,.62);
-  border:2px solid rgba(255,255,255,.4);position:relative;display:flex;align-items:center;
-  justify-content:center;font-size:clamp(20px,5vw,28px);transition:transform .15s;pointer-events:auto}
-.slot.pop{transform:scale(1.18);border-color:#ffd84d}
-.slot .num{position:absolute;top:1px;left:4px;font-size:9px;color:rgba(255,255,255,.75);font-weight:800}
-.slot .cnt{position:absolute;bottom:1px;right:4px;font-size:11px;color:#fff;font-weight:900;
-  text-shadow:0 1px 3px #000}
+#reticle{position:absolute;left:50%;top:50%;width:3px;height:3px;margin:-1.5px;border-radius:50%;
+  background:rgba(255,255,255,.75);box-shadow:0 0 4px rgba(0,0,0,.6)}
+#prompt{position:absolute;left:50%;top:57%;transform:translateX(-50%);
+  display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:9px;
+  background:rgba(12,16,20,.6);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.12);
+  font-weight:600;font-size:14px;pointer-events:auto}
+#prompt .key{background:rgba(255,255,255,.92);color:#1a1a1a;border-radius:5px;padding:2px 8px;
+  font-weight:800;font-size:12px}
 
-/* XP bar */
-#xpWrap{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);
-  width:min(300px,46vw);display:flex;align-items:center;gap:8px}
-#lvBadge{background:linear-gradient(180deg,#ffd84d,#f6a823);color:#3a2c00;font-weight:900;
-  border-radius:8px;padding:4px 9px;font-size:13px;border:2px solid #fff;white-space:nowrap}
-#xpBar{flex:1;height:9px;border-radius:5px;background:rgba(20,24,18,.62);overflow:hidden;
-  border:1.5px solid rgba(255,255,255,.5)}
-#xpFill{height:100%;background:linear-gradient(90deg,#a97fff,#d9beff);width:0%}
-
-/* interact prompt + reticle */
-#reticle{position:absolute;left:50%;top:50%;width:4px;height:4px;margin:-2px;
-  border-radius:50%;background:rgba(255,255,255,.85)}
-#prompt{position:absolute;left:50%;top:58%;transform:translateX(-50%);
-  display:flex;align-items:center;gap:9px;padding:8px 16px;border-radius:10px;
-  background:rgba(20,24,18,.75);color:#fff;font-weight:800;font-size:15px;pointer-events:auto}
-#prompt .key{background:#fff;color:#222;border-radius:6px;padding:3px 9px;font-weight:900;
-  box-shadow:0 2px 0 #aaa;font-size:14px}
-
-/* toast (XP float / message) */
-#toastWrap{position:absolute;left:50%;top:34%;transform:translateX(-50%);display:flex;
+#toastWrap{position:absolute;left:50%;top:30%;transform:translateX(-50%);display:flex;
   flex-direction:column;align-items:center;gap:4px}
-.toast{color:#fff;font-weight:900;font-size:17px;text-shadow:0 2px 8px rgba(0,0,0,.6);
-  animation:toastUp 1.6s forwards}
-.toast.xp{color:#d9beff}.toast.coin{color:#ffd84d}.toast.special{color:#bfe6a0;font-size:20px}
-@keyframes toastUp{0%{opacity:0;transform:translateY(14px)}15%{opacity:1;transform:none}
-  75%{opacity:1}100%{opacity:0;transform:translateY(-26px)}}
+.toast{color:#fff;font-weight:700;font-size:15px;text-shadow:0 2px 10px rgba(0,0,0,.8);
+  animation:toastUp 2s forwards;white-space:nowrap}
+.toast.gold{color:#f0d9a8}.toast.green{color:#bcd9a0}
+@keyframes toastUp{0%{opacity:0;transform:translateY(12px)}12%{opacity:1;transform:none}
+  78%{opacity:1}100%{opacity:0;transform:translateY(-20px)}}
 
-/* center telop */
-#telop{position:absolute;left:0;right:0;top:42%;text-align:center;color:#fff;
-  font-weight:900;font-size:clamp(20px,4vw,34px);text-shadow:0 3px 14px rgba(0,0,0,.7);
-  opacity:0;transition:opacity .6s;pointer-events:none}
+#telop{position:absolute;left:0;right:0;top:40%;text-align:center;
+  font-weight:700;font-size:clamp(19px,3.4vw,30px);text-shadow:0 3px 16px rgba(0,0,0,.8);
+  letter-spacing:.08em;opacity:0;transition:opacity .8s;pointer-events:none}
 #telop.show{opacity:1}
-#telopSub{display:block;font-size:clamp(12px,2vw,17px);font-weight:700;margin-top:8px;color:#ffe9b0}
+#telopSub{display:block;font-size:clamp(11px,1.8vw,15px);font-weight:600;margin-top:8px;color:#f0d9a8}
 
-/* altitude meter (drop phase) */
-#alt{position:absolute;right:14px;top:46%;color:#fff;font-weight:900;font-size:24px;
-  text-shadow:0 2px 8px rgba(0,0,0,.6);text-align:right}
-#alt small{display:block;font-size:11px;color:#cfe8ff}
+#locTitle{position:absolute;left:0;right:0;top:18%;text-align:center;opacity:0;transition:opacity 1.2s;
+  pointer-events:none}
+#locTitle.show{opacity:1}
+#locTitle .lMain{font-size:clamp(22px,4vw,36px);font-weight:300;letter-spacing:.3em;
+  text-shadow:0 3px 18px rgba(0,0,0,.7)}
+#locTitle .lSub{font-size:clamp(10px,1.6vw,13px);letter-spacing:.4em;color:rgba(233,230,223,.7);margin-top:6px}
 
-/* ===== DIALOG ===== */
-#dialog{position:fixed;left:50%;bottom:4%;transform:translateX(-50%);width:min(640px,92vw);
-  background:rgba(18,22,15,.88);border:2px solid rgba(255,255,255,.35);border-radius:14px;
-  color:#fff;padding:16px 20px 14px;z-index:30;pointer-events:auto}
-#dlgName{color:#ffd84d;font-weight:900;font-size:14px;margin-bottom:6px}
-#dlgText{font-size:16px;line-height:1.7;font-weight:600;min-height:54px}
-#dlgNext{text-align:right;color:#bfe6a0;font-weight:800;font-size:13px;margin-top:4px;
-  animation:blink 1s infinite}
-@keyframes blink{50%{opacity:.25}}
+#keyguide{position:absolute;right:16px;bottom:78px;text-align:right;font-size:10px;
+  color:rgba(233,230,223,.55);line-height:1.9;letter-spacing:.05em}
+#keyguide b{color:rgba(233,230,223,.85)}
 
-/* ===== SHOP ===== */
+/* ===== 目標一覧（M） ===== */
+#objPanel{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  background:rgba(6,9,12,.6);backdrop-filter:blur(4px);z-index:35;pointer-events:auto}
+#objCard{width:min(460px,92vw);max-height:86vh;overflow:auto;background:rgba(16,20,24,.92);
+  border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:22px 24px}
+#objCard h2{margin:0 0 4px;font-size:17px;font-weight:700;letter-spacing:.1em;color:#f0d9a8}
+#objCard .sub{font-size:11px;color:rgba(233,230,223,.6);margin-bottom:14px}
+.objRow{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid rgba(255,255,255,.07)}
+.objRow .mk{font-size:16px;width:22px}
+.objRow .bd{flex:1}
+.objRow .nm{font-size:13px;font-weight:700}
+.objRow .ds{font-size:11px;color:rgba(233,230,223,.6);margin-top:2px;line-height:1.5}
+.objRow.done{opacity:.45}.objRow.done .nm{text-decoration:line-through}
+#objClose{display:block;margin:16px auto 0;padding:9px 32px;border:1px solid rgba(255,255,255,.2);
+  border-radius:9px;background:transparent;color:#e9e6df;font-weight:700;font-size:13px;cursor:pointer}
+
+/* ===== 会話 ===== */
+#dialog{position:fixed;left:50%;bottom:5%;transform:translateX(-50%);width:min(620px,92vw);
+  background:rgba(10,13,16,.82);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.14);
+  border-radius:13px;padding:16px 20px 12px;z-index:30;pointer-events:auto}
+#dlgName{color:#e8b35a;font-weight:700;font-size:13px;margin-bottom:6px;letter-spacing:.06em}
+#dlgText{font-size:15px;line-height:1.8;font-weight:500;min-height:52px}
+#dlgNext{text-align:right;color:rgba(233,230,223,.5);font-weight:600;font-size:11px;margin-top:4px;
+  animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.2}}
+
+/* ===== ショップ ===== */
 #shop{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
-  background:rgba(10,14,8,.55);z-index:40;pointer-events:auto}
-#shopCard{width:min(680px,94vw);max-height:92vh;overflow:auto;background:#FAF8F4;
-  border-radius:18px;padding:18px 20px;color:#2A2A25;border:4px solid #4E5D3E}
-#shopCard h2{margin:0 0 2px;font-size:20px;color:#3A4A2F}
-#shopCard .sub{font-size:12px;color:#6B6860;margin-bottom:12px}
-#shopGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
-.item{background:#fff;border:2px solid #E3DDD2;border-radius:12px;padding:10px;text-align:center;
+  background:rgba(6,9,12,.55);backdrop-filter:blur(4px);z-index:40;pointer-events:auto}
+#shopCard{width:min(640px,94vw);max-height:92vh;overflow:auto;background:#FAF8F4;
+  border-radius:16px;padding:20px 22px;color:#2A2A25;border:1px solid #E3DDD2}
+#shopCard h2{margin:0 0 2px;font-size:19px;color:#3A4A2F;letter-spacing:.04em}
+#shopCard .sub{font-size:11px;color:#6B6860;margin-bottom:12px}
+#shopGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(135px,1fr));gap:9px}
+.item{background:#fff;border:1px solid #E3DDD2;border-radius:11px;padding:10px;text-align:center;
   cursor:pointer;transition:transform .12s,border-color .12s}
 .item:hover{transform:translateY(-2px);border-color:#A67C52}
-.item .em{font-size:34px}
-.item .nm{font-size:12px;font-weight:800;margin:4px 0 2px;line-height:1.3}
-.item .pr{font-size:14px;font-weight:900;color:#4E5D3E}
-.item.sold{opacity:.45;pointer-events:none}
-#shopWallet{margin:12px 0 4px;font-weight:900;font-size:16px;color:#A67C52}
-#shopClose{display:block;margin:10px auto 0;padding:10px 34px;border:none;border-radius:10px;
-  background:#4E5D3E;color:#fff;font-weight:900;font-size:15px;cursor:pointer}
-/* pay modal */
+.item .em{font-size:30px}
+.item .nm{font-size:11px;font-weight:700;margin:4px 0 2px;line-height:1.35}
+.item .pr{font-size:13px;font-weight:800;color:#4E5D3E}
+#shopWallet{margin:12px 0 4px;font-weight:800;font-size:15px;color:#A67C52}
+#shopClose{display:block;margin:8px auto 0;padding:10px 32px;border:none;border-radius:9px;
+  background:#4E5D3E;color:#fff;font-weight:700;font-size:14px;cursor:pointer}
 #pay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
-  background:rgba(10,14,8,.6);z-index:50;pointer-events:auto}
-#payCard{background:#fff;border-radius:16px;padding:22px 26px;text-align:center;width:min(360px,90vw)}
-#payCard h3{margin:0 0 4px;color:#2A2A25}
-#payCard .pp{font-size:13px;color:#6B6860;margin-bottom:14px}
-.payBtn{display:block;width:100%;margin-top:9px;padding:13px;border-radius:10px;border:2px solid #E3DDD2;
-  background:#fff;font-size:16px;font-weight:900;cursor:pointer}
+  background:rgba(6,9,12,.6);z-index:50;pointer-events:auto}
+#payCard{background:#fff;border-radius:14px;padding:22px 26px;text-align:center;width:min(340px,90vw);color:#2A2A25}
+#payCard h3{margin:0 0 4px}
+#payCard .pp{font-size:12px;color:#6B6860;margin-bottom:14px}
+.payBtn{display:block;width:100%;margin-top:8px;padding:12px;border-radius:9px;border:1px solid #E3DDD2;
+  background:#fff;font-size:15px;font-weight:800;cursor:pointer}
 .payBtn.paypay{background:#ff0033;color:#fff;border-color:#ff0033}
 
-/* ===== TITLE ===== */
+/* ===== タイトル ===== */
 #title{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;background:linear-gradient(180deg,#8ec9ef 0%,#bfe3f7 45%,#9db86a 100%);
-  color:#2A2A25;text-align:center;padding:18px;pointer-events:auto}
-#stamp{background:#FAF8F4;border-radius:8px;padding:22px 30px 18px;position:relative;
-  box-shadow:0 14px 50px rgba(0,0,0,.25);max-width:min(520px,92vw)}
-#stamp::before{content:"";position:absolute;inset:-9px;border-radius:12px;z-index:-1;
-  background:radial-gradient(circle,transparent 5px,#fff 5px);background-size:18px 18px;
-  background-position:9px 9px}
-#stamp .tEm{font-size:54px}
-#stamp h1{margin:6px 0 2px;font-size:clamp(20px,4.4vw,30px);color:#3A4A2F;letter-spacing:.04em}
-#stamp .tSub{font-size:clamp(12px,2.4vw,15px);font-weight:700;color:#A67C52;margin-bottom:10px}
-#stamp .tDesc{font-size:12px;line-height:1.8;color:#6B6860}
-#startBtn{margin-top:16px;padding:15px 52px;font-size:19px;font-weight:900;color:#fff;border:3px solid #fff;
-  border-radius:12px;background:linear-gradient(180deg,#f6a823,#e8821a);cursor:pointer;
-  box-shadow:0 6px 0 #b5650f,0 10px 24px rgba(0,0,0,.3);transition:transform .12s}
-#startBtn:active{transform:translateY(4px)}
-#ctl{margin-top:14px;display:flex;gap:14px;flex-wrap:wrap;justify-content:center;font-size:11px;
-  font-weight:700;color:#3A4A2F}
-#ctl span{background:rgba(255,255,255,.75);border-radius:7px;padding:5px 10px}
-#titleDisc{margin-top:14px;font-size:10px;color:#5d5a52;max-width:480px;line-height:1.7;
-  background:rgba(255,255,255,.55);border-radius:8px;padding:7px 12px}
-#loadNote{margin-top:8px;font-size:11px;color:#3A4A2F;font-weight:700}
+  justify-content:center;text-align:center;padding:18px;pointer-events:auto;
+  background:linear-gradient(180deg,#27384d 0%,#5a7896 38%,#c8ad84 72%,#3c4634 100%)}
+#title::after{content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 110%, rgba(0,0,0,.55), transparent 55%);pointer-events:none}
+#titleInner{position:relative;z-index:1;max-width:min(560px,94vw)}
+#tKicker{font-size:clamp(10px,1.6vw,12px);letter-spacing:.5em;color:rgba(255,255,255,.75);font-weight:600}
+#tMain{font-size:clamp(30px,6.5vw,52px);font-weight:300;letter-spacing:.22em;margin:10px 0 4px;
+  text-shadow:0 4px 30px rgba(0,0,0,.5)}
+#tSub{font-size:clamp(12px,2.2vw,16px);letter-spacing:.3em;color:#f0d9a8;font-weight:600}
+#tDesc{font-size:clamp(11px,1.8vw,13px);line-height:2;color:rgba(255,255,255,.85);margin:20px 0 6px}
+#startBtn{margin-top:18px;padding:14px 56px;font-size:16px;font-weight:700;color:#fff;
+  letter-spacing:.2em;border:1px solid rgba(255,255,255,.5);border-radius:3px;
+  background:rgba(255,255,255,.08);backdrop-filter:blur(4px);cursor:pointer;transition:background .2s}
+#startBtn:hover{background:rgba(255,255,255,.22)}
+#tLoad{margin-top:12px;font-size:11px;color:rgba(255,255,255,.7);letter-spacing:.1em;min-height:16px}
+#ctl{margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;font-size:10px;
+  font-weight:600;color:rgba(255,255,255,.85)}
+#ctl span{background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.15);border-radius:6px;padding:4px 9px}
+#titleDisc{margin-top:16px;font-size:9.5px;color:rgba(255,255,255,.62);max-width:470px;line-height:1.8;
+  background:rgba(0,0,0,.25);border-radius:8px;padding:7px 12px;margin-left:auto;margin-right:auto}
 
-/* ===== END CARD ===== */
+/* ===== エンドカード ===== */
 #endcard{position:fixed;inset:0;z-index:70;display:flex;align-items:center;justify-content:center;
-  background:rgba(14,18,10,.78);pointer-events:auto;padding:14px}
-#endInner{background:#FAF8F4;border-radius:18px;max-width:min(560px,94vw);max-height:92vh;overflow:auto;
-  padding:26px 28px;text-align:center;color:#2A2A25;border:4px solid #A67C52}
-#endInner h2{color:#3A4A2F;margin:4px 0 8px;font-size:24px}
-#endInner .endEm{font-size:46px}
-#endStats{display:flex;gap:10px;justify-content:center;margin:12px 0;flex-wrap:wrap}
-#endStats div{background:#F4EFE7;border-radius:10px;padding:8px 14px;font-weight:900;font-size:13px;color:#4E5D3E}
-#endMsg{font-size:13px;line-height:1.9;color:#6B6860;margin:10px 0}
-#endShop{background:#F4EFE7;border-radius:12px;padding:12px;font-size:12px;line-height:1.9;
-  color:#2A2A25;margin:12px 0;font-weight:700}
-#endDisc{font-size:10px;color:#9B978E;line-height:1.7;margin-top:10px}
-#againBtn{margin-top:14px;padding:13px 44px;font-size:16px;font-weight:900;color:#fff;border:none;
-  border-radius:11px;background:#4E5D3E;cursor:pointer;box-shadow:0 4px 0 #2c3823}
+  background:rgba(8,11,9,.82);backdrop-filter:blur(6px);pointer-events:auto;padding:14px}
+#endInner{background:#FAF8F4;border-radius:16px;max-width:min(540px,94vw);max-height:92vh;overflow:auto;
+  padding:26px 28px;text-align:center;color:#2A2A25;border:1px solid #E3DDD2}
+#endInner h2{color:#3A4A2F;margin:4px 0 8px;font-size:22px;letter-spacing:.06em}
+#endInner .endEm{font-size:42px}
+#endStats{display:flex;gap:8px;justify-content:center;margin:12px 0;flex-wrap:wrap}
+#endStats div{background:#F4EFE7;border-radius:9px;padding:7px 13px;font-weight:800;font-size:12px;color:#4E5D3E}
+#endMsg{font-size:12.5px;line-height:2;color:#6B6860;margin:10px 0}
+#endShop{background:#F4EFE7;border-radius:11px;padding:12px;font-size:11.5px;line-height:1.9;
+  color:#2A2A25;margin:12px 0;font-weight:600}
+#endDisc{font-size:9.5px;color:#9B978E;line-height:1.7;margin-top:10px}
+#againBtn{margin-top:12px;padding:12px 40px;font-size:14px;font-weight:700;color:#fff;border:none;
+  border-radius:9px;background:#4E5D3E;cursor:pointer}
 
-/* ===== TOUCH UI ===== */
+/* ===== タッチUI ===== */
 #touchUI{position:fixed;inset:0;z-index:20;pointer-events:none}
-#joyBase{position:absolute;left:26px;bottom:96px;width:118px;height:118px;border-radius:50%;
-  background:rgba(255,255,255,.16);border:2px solid rgba(255,255,255,.5);pointer-events:auto}
-#joyStick{position:absolute;left:50%;top:50%;width:52px;height:52px;border-radius:50%;
-  background:rgba(255,255,255,.65);transform:translate(-50%,-50%)}
-.tBtn{position:absolute;border-radius:50%;background:rgba(255,255,255,.22);
-  border:2px solid rgba(255,255,255,.6);color:#fff;font-weight:900;display:flex;align-items:center;
-  justify-content:center;pointer-events:auto;font-size:13px;text-shadow:0 1px 3px #000}
-#btnJump{right:30px;bottom:150px;width:72px;height:72px;font-size:24px}
-#btnDash{right:118px;bottom:108px;width:56px;height:56px}
-#btnAct{right:46px;bottom:248px;width:64px;height:64px;background:rgba(246,168,35,.8)}
-#btnDash.on{background:rgba(82,199,232,.7)}
+#joyBase{position:absolute;left:24px;bottom:90px;width:112px;height:112px;border-radius:50%;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.35);pointer-events:auto}
+#joyStick{position:absolute;left:50%;top:50%;width:48px;height:48px;border-radius:50%;
+  background:rgba(255,255,255,.5);transform:translate(-50%,-50%)}
+.tBtn{position:absolute;border-radius:50%;background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.4);color:#fff;font-weight:800;display:flex;align-items:center;
+  justify-content:center;pointer-events:auto;font-size:12px;text-shadow:0 1px 3px #000}
+#btnJump{right:28px;bottom:140px;width:64px;height:64px;font-size:20px}
+#btnDash{right:106px;bottom:100px;width:50px;height:50px}
+#btnAct{right:44px;bottom:228px;width:58px;height:58px;background:rgba(232,179,90,.65)}
+#btnDash.on{background:rgba(120,190,230,.55)}
 
-/* confetti */
-.confetti{position:fixed;top:-12px;width:9px;height:14px;z-index:65;pointer-events:none;
-  animation:confFall linear forwards}
-@keyframes confFall{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(105vh) rotate(720deg)}}
-
+#fade{position:fixed;inset:0;background:#000;z-index:55;pointer-events:none;opacity:1;transition:opacity 1.2s}
 #fps{position:fixed;left:6px;top:6px;color:#fff;font:11px monospace;z-index:99;
-  background:rgba(0,0,0,.4);padding:2px 6px;border-radius:4px}
+  background:rgba(0,0,0,.45);padding:2px 6px;border-radius:4px}
 </style>
 </head>
 <body>
 <canvas id="game"></canvas>
 
-<!-- ===== HUD ===== -->
 <div id="hud" class="hidden">
   <div id="compassWrap"><canvas id="compass"></canvas></div>
   <div id="minimapWrap"><canvas id="minimap"></canvas></div>
-  <div id="banner"></div><div id="bannerSub"></div>
-  <div id="tracker" class="panel">
-    <div class="tTitle">クエスト</div><div class="tName" id="tName"></div><div class="tProg" id="tProg"></div>
+  <div id="objHint" class="glass">
+    <div class="oTitle">もくひょう（M でいちらん）</div>
+    <div class="oText" id="objText"></div>
+    <div class="oSub" id="objSub"></div>
   </div>
-  <div id="gauges">
-    <div class="gauge"><div class="fill" id="hungerFill"></div><span class="glabel">おなか</span></div>
-    <div class="gauge"><div class="fill" id="staminaFill"></div><span class="glabel">げんき</span></div>
-  </div>
-  <div id="money" class="panel">🪙 1,000円</div>
+  <div id="money" class="glass">🪙 1,000円</div>
   <div id="hotbar"></div>
-  <div id="xpWrap"><div id="lvBadge">Lv.1</div><div id="xpBar"><div id="xpFill"></div></div></div>
   <div id="reticle"></div>
   <div id="prompt" class="hidden"><span class="key" id="promptKey">F</span><span id="promptLabel"></span></div>
   <div id="toastWrap"></div>
   <div id="telop"><span id="telopMain"></span><span id="telopSub"></span></div>
-  <div id="alt" class="hidden">0m<small>こうど</small></div>
+  <div id="locTitle"><div class="lMain" id="locMain"></div><div class="lSub" id="locSub"></div></div>
+  <div id="keyguide">V <b>視点</b> ・ P <b>フォト</b> ・ M <b>目標</b></div>
 </div>
 
-<!-- ===== DIALOG ===== -->
+<div id="objPanel" class="hidden"><div id="objCard">
+  <h2>きょうの もくひょう</h2>
+  <div class="sub">どれも じゆう。すきな じゅんばんで たのしんでね</div>
+  <div id="objList"></div>
+  <button id="objClose">とじる（M）</button>
+</div></div>
+
 <div id="dialog" class="hidden">
   <div id="dlgName"></div><div id="dlgText"></div><div id="dlgNext">▶ つぎへ（F / タップ）</div>
 </div>
 
-<!-- ===== SHOP ===== -->
-<div id="shop" class="hidden">
-  <div id="shopCard">
-    <h2>🍞 プチヘルメース のパン</h2>
-    <div class="sub">きょうのパン — すきなのをえらんでね（かったパンは 3〜6 キーでたべられるよ）</div>
-    <div id="shopGrid"></div>
-    <div id="shopWallet"></div>
-    <button id="shopClose">おみせをでる</button>
-  </div>
-</div>
-<div id="pay" class="hidden">
-  <div id="payCard">
-    <h3 id="payTitle">おしはらい</h3>
-    <div class="pp" id="payDesc"></div>
-    <button class="payBtn" id="payCash">💴 げんきん</button>
-    <button class="payBtn paypay" id="payPay">📱 PayPay</button>
-  </div>
-</div>
+<div id="shop" class="hidden"><div id="shopCard">
+  <h2>🍞 プチヘルメース のパン</h2>
+  <div class="sub">きょうのパン — すきなのをえらんでね（かったパンは 3〜6 キーでたべられるよ）</div>
+  <div id="shopGrid"></div>
+  <div id="shopWallet"></div>
+  <button id="shopClose">おみせをでる</button>
+</div></div>
+<div id="pay" class="hidden"><div id="payCard">
+  <h3 id="payTitle">おしはらい</h3>
+  <div class="pp" id="payDesc"></div>
+  <button class="payBtn" id="payCash">💴 げんきん</button>
+  <button class="payBtn paypay" id="payPay">📱 PayPay</button>
+</div></div>
 
-<!-- ===== TITLE ===== -->
 <div id="title">
-  <div id="stamp">
-    <div class="tEm">🍞</div>
-    <h1>パンクエスト</h1>
-    <div class="tSub">〜旧南方小学校へ降下せよ！〜</div>
-    <div class="tDesc">空からパラシュートで降下して、山あいの村をたんけん。<br>
-    廃校（はいこう）の中のパン屋さん「プチヘルメース」へ<br>パンを買いにいこう！</div>
-    <button id="startBtn">🪂 降下スタート！</button>
+  <div id="titleInner">
+    <div id="tKicker">HIROSHIMA · KITAHIROSHIMA · MINAMIGATA</div>
+    <div id="tMain">みなみがたの朝</div>
+    <div id="tSub">〜 廃校のパン屋へ 〜</div>
+    <div id="tDesc">里山の谷に、朝の光がさしこむ。<br>
+    田んぼのあぜ道をあるいて、廃校（はいこう）のなかのパン屋さん<br>
+    「プチヘルメース」をたずねる、ちいさな旅。</div>
+    <button id="startBtn">旅をはじめる</button>
+    <div id="tLoad"></div>
     <div id="ctl">
-      <span>🖱️ マウス：カメラ</span><span>WASD：いどう</span><span>Space：ジャンプ</span>
-      <span>Shift：ダッシュ</span><span>F / E：しらべる</span><span>G：エモート</span>
+      <span>WASD 移動</span><span>Shift 走る</span><span>マウス カメラ</span><span>F/E しらべる</span>
+      <span>V 一人称⇔三人称</span><span>P フォトモード</span><span>M 目標</span>
     </div>
-    <div id="loadNote">スマホは 左スティックで移動・画面ドラッグでカメラ だよ📱</div>
     <div id="titleDisc">※これはAIの実験で自動生成された『架空のファンメイドデモゲーム』です。
     実際のプチヘルメースの店舗情報・価格・メニューとは異なります。
     本物の情報は公式Instagram（@petit_hermes）をご確認ください。</div>
   </div>
 </div>
 
-<!-- ===== END CARD ===== -->
-<div id="endcard" class="hidden">
-  <div id="endInner">
-    <div class="endEm">🍞☕</div>
-    <h2>ごちそうさまでした！</h2>
-    <div id="endStats"></div>
-    <div id="endMsg">きょう買ったパンは、やきたてから日がたつごとに<br>あじわいが深くなっていくよ。<br>
-    「<b>今日のパンが、明日の野菜に。</b>」— めぐる、めぐる。</div>
-    <div id="endShop">🏫 本物の プチヘルメース<br>
-    広島県山県郡北広島町・旧南方小学校の1階<br>
-    えいぎょう：水曜・土曜 11:30〜15:30<br>
-    Instagram：@petit_hermes</div>
-    <div id="endDisc">※これはAIの実験で自動生成された『架空のファンメイドデモゲーム』です。
-    実際の店舗情報・価格・メニューとは異なります。本物の情報は公式Instagramをご確認ください。</div>
-    <button id="againBtn">🪂 もういちど降下する！</button>
-  </div>
-</div>
+<div id="endcard" class="hidden"><div id="endInner">
+  <div class="endEm">🍞☕</div>
+  <h2>ごちそうさまでした！</h2>
+  <div id="endStats"></div>
+  <div id="endMsg">きょう買ったパンは、やきたてから日がたつごとに<br>あじわいが深くなっていくよ。<br>
+  「<b>今日のパンが、明日の野菜に。</b>」— めぐる、めぐる。</div>
+  <div id="endShop">🏫 本物の プチヘルメース<br>
+  広島県山県郡北広島町・旧南方小学校の1階<br>
+  えいぎょう：水曜・土曜 11:30〜15:30<br>
+  Instagram：@petit_hermes</div>
+  <div id="endDisc">※これはAIの実験で自動生成された『架空のファンメイドデモゲーム』です。
+  実際の店舗情報・価格・メニューとは異なります。本物の情報は公式Instagramをご確認ください。</div>
+  <button id="againBtn">もういちど あそぶ</button>
+</div></div>
 
 <div id="touchUI" class="hidden">
   <div id="joyBase"><div id="joyStick"></div></div>
@@ -317,2153 +293,9 @@ canvas#game{display:block;width:100%;height:100%}
   <div class="tBtn" id="btnAct">F</div>
 </div>
 
+<div id="fade"></div>
 <div id="fps" class="hidden"></div>
 
-<script type="module">
-import * as THREE from 'three';
-import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
-
-// ============================================================
-// 01 CONFIG
-// ============================================================
-const CFG = {
-  walkSpeed: 4.5, sprintSpeed: 7.0, accel: 40, jumpVel: 6.5, gravity: -18,
-  freefallVy: -35, glideVy: -7, glideFwd: 12, glideStartH: 30,
-  camDist: 4.2, camDistIndoor: 2.6, camShoulder: 0.55, camHeight: 1.55,
-  playerR: 0.4, startMoney: 1000, coinValue: 100,
-  spawn: { x: 0, y: 150, z: 168 },
-  colors: {
-    sky: 0x8ec9ef, fogC: 0xa8d4ee,
-    grass: 0x7fae4e, dirt: 0xb99a68, road: 0xb8b2a4,
-    schoolWall: 0xf3ead7, schoolRoof: 0x9a5b45, wood: 0x8a6743,
-  },
-};
-
-// 看板や黒板などで使う共通ディスクレーマー（index.html と同方針）
-const DISCLAIMER = "※架空のファンメイドデモです。実際の情報は公式Instagram @petit_hermes へ";
-
-// ---- ショップ商品（実商品をモチーフにしたゲーム内表記）----
-const SHOP_ITEMS = [
-  { id:'camp_plain',  em:'🍞', name:'プチカンパーニュ プレーン', price:600 },
-  { id:'camp_raisin', em:'🍇', name:'プチカンパーニュ レーズン', price:600 },
-  { id:'camp_choco',  em:'🍫', name:'プチカンパーニュ チョコ',   price:600 },
-  { id:'camp_walnut', em:'🌰', name:'プチカンパーニュ クルミ',   price:600 },
-  { id:'shokupan',    em:'🍞', name:'食パン（ふんわり）',        price:700 },
-  { id:'focaccia',    em:'🫓', name:'フォカッチャ',              price:450 },
-  { id:'confiture',   em:'🍓', name:'季節のコンフィチュール',    price:1000 },
-  { id:'coffee',      em:'☕', name:'オリジナルブレンドコーヒー', price:400 },
-];
-
-// ---- クエスト定義（直列ステートマシン）----
-// target: コンパス/ミニマップ/光の柱のマーカー位置
-const QUESTS = [
-  { id:0, name:'バスから降下！',                   sub:'プチヘルメースの村へとびこもう',  target:{x:0,z:-80}, xp:50 },
-  { id:1, name:'村をたんけんして 学校をめざせ',     sub:'まずは農家の田中さんにあいさつ',  target:{x:-52,z:62}, xp:50 },
-  { id:2, name:'きかく外やさいを 3つ あつめよう',   sub:'形がわるいだけで あじは一級品！', target:{x:-60,z:55}, xp:100, count:3 },
-  { id:3, name:'ゆずを 3つ しゅうかくしよう',       sub:'ゆず酵母（こうぼ）のもとになるよ', target:{x:70,z:20},  xp:100, count:3 },
-  { id:4, name:'ぐるぐるコンポストに くずを入れよう', sub:'校舎のうらがわにあるよ',        target:{x:15,z:-93}, xp:100 },
-  { id:5, name:'パン屋さんに 入ろう',               sub:'コーンの駐車場をとおって校舎1階へ', target:{x:8,z:-74}, xp:50 },
-  { id:6, name:'店主の大下さんと お話ししよう',      sub:'やさいとゆずを わたそう',        target:{x:8,z:-81},  xp:100 },
-  { id:7, name:'パンを かおう',                    sub:'すきなパンをえらんでね',          target:{x:8,z:-81},  xp:200 },
-  { id:8, name:'カフェで ひとやすみ',               sub:'となりの教室カフェへ',            target:{x:-6,z:-78}, xp:100 },
-];
-
-// ---- セリフ ----
-const DIALOGS = {
-  tanaka1: { name:'農家の田中さん', lines:[
-    'おお、空からきた子じゃね！ようこそ南方（みなみがた）へ。',
-    'うちの畑のやさい、ちょっと形がわるうて お店に出せんのよ。でもな、あじは一級品なんじゃ。',
-    'パン屋のプチヘルメースさんが「酵母（こうぼ）」にして パンにいかしてくれるけえ、3つ もっていってくれんかね？',
-  ]},
-  tanaka2: { name:'農家の田中さん', lines:[
-    'すまんのう！のこりのやさいも たのんだで。',
-  ]},
-  tanaka3: { name:'農家の田中さん', lines:[
-    'ようけ あつめてくれたのう！つぎは「ゆずの丘」で ゆずを 3つ もいでいきんさい。',
-    'すてるはずのものが パンになる。「今日のパンが、明日の野菜に。」っちゅうやつじゃ。',
-  ]},
-  petitkun: { name:'プチカンパーニュくん', lines:[
-    'ぼく、プチカンパーニュくん！プチヘルメースの 看板キャラだよ🍞',
-    'ここのパンはね、やきたてから 日がたつごとに あじわいが ふかくなるんだ。すごいでしょ！',
-    'コインをあつめると おこづかいがふえるよ。がんばって！',
-  ]},
-  oshita1: { name:'店主の大下さん', lines:[
-    'いらっしゃいませ、プチヘルメースへ ようこそ！',
-    'あら、そのやさいとゆず…田中さんとこのじゃね！ありがとう、げんきな酵母（こうぼ）に そだてるね。',
-    '「ヘルメース」はね、泉から出てきて しあわせをくばる 神さまの名前。きみにも しあわせのおすそわけ！',
-    'はい、おつかいのおれい。おこづかい500円！すきなパンを えらんでね。',
-  ]},
-  oshita2: { name:'店主の大下さん', lines:[
-    'パンをえらぶ？ どうぞ ゆっくりみていってね。',
-  ]},
-  oshitaEarly: { name:'店主の大下さん', lines:[
-    'いらっしゃいませ！…あら、田中さんの おつかいの とちゅうかな？',
-    'やさいとゆずを あつめて きてくれたら、とっておきのパンを よういして まってるね！',
-  ]},
-  oshitaAfter: { name:'店主の大下さん', lines:[
-    'おとなりの教室は カフェになってるんよ。グラウンドをながめて ひとやすみしていきんさい☕',
-  ]},
-  compost: { name:'ぐるぐるコンポスト', lines:[
-    'やさいのくずを 入れた！ 生ごみが ふかふかの土に もどっていく…',
-  ]},
-};
-
-// ============================================================
-// 02 UTIL
-// ============================================================
-const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
-const lerp = (a, b, t) => a + (b - a) * t;
-// フレームレート非依存の指数スムージング
-const damp = (cur, target, lambda, dt) => lerp(cur, target, 1 - Math.exp(-lambda * dt));
-function dampAngle(cur, target, lambda, dt) {
-  let d = (target - cur) % (Math.PI * 2);
-  if (d > Math.PI) d -= Math.PI * 2;
-  if (d < -Math.PI) d += Math.PI * 2;
-  return cur + d * (1 - Math.exp(-lambda * dt));
-}
-let _seed = 12345;
-const rand = () => (_seed = (_seed * 16807) % 2147483647) / 2147483647; // 再現性のある乱数
-const randR = (a, b) => a + rand() * (b - a);
-
-function makeCanvas(w, h, fn) {
-  const c = document.createElement('canvas');
-  c.width = w; c.height = h;
-  fn(c.getContext('2d'), w, h);
-  return c;
-}
-function makeTexture(w, h, fn, repeat) {
-  const t = new THREE.CanvasTexture(makeCanvas(w, h, fn));
-  t.colorSpace = THREE.SRGBColorSpace;
-  if (repeat) { t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(repeat[0], repeat[1]); }
-  return t;
-}
-
-// ============================================================
-// 03 TEXTURES（全てcanvas生成・外部アセットなし）
-// ============================================================
-function noisePatch(ctx, w, h, base, blobs, n, rMin, rMax) {
-  ctx.fillStyle = base; ctx.fillRect(0, 0, w, h);
-  for (let i = 0; i < n; i++) {
-    ctx.fillStyle = blobs[i % blobs.length];
-    ctx.beginPath();
-    ctx.arc(Math.random() * w, Math.random() * h, rMin + Math.random() * (rMax - rMin), 0, 7);
-    ctx.fill();
-  }
-}
-const TEX = {
-  grass: makeTexture(256, 256, (c, w, h) =>
-    noisePatch(c, w, h, '#7fae4e', ['#74a546', '#8ab858', '#6d9c42', '#92c062'], 260, 3, 9), [40, 40]),
-  dirt: makeTexture(256, 256, (c, w, h) =>
-    noisePatch(c, w, h, '#c2a26e', ['#b89764', '#cbaa78', '#af8f5e'], 200, 3, 8), [10, 8]),
-  road: makeTexture(128, 256, (c, w, h) => {
-    noisePatch(c, w, h, '#b8b2a4', ['#b0aa9c', '#c0baac', '#a8a294'], 90, 2, 6);
-    c.fillStyle = 'rgba(120,114,104,.5)';
-    c.fillRect(0, 0, 3, h); c.fillRect(w - 3, 0, 3, h);
-  }, [1, 60]),
-  paddy: makeTexture(128, 128, (c, w, h) => {
-    c.fillStyle = '#86b34f'; c.fillRect(0, 0, w, h);
-    c.strokeStyle = '#9cc763'; c.lineWidth = 5;
-    for (let y = 8; y < h; y += 16) { c.beginPath(); c.moveTo(0, y); c.lineTo(w, y); c.stroke(); }
-    c.strokeStyle = '#76a242'; c.lineWidth = 2;
-    for (let y = 16; y < h; y += 16) { c.beginPath(); c.moveTo(0, y); c.lineTo(w, y); c.stroke(); }
-  }, [2, 2]),
-  water: makeTexture(128, 128, (c, w, h) => {
-    c.fillStyle = '#6db5c9'; c.fillRect(0, 0, w, h);
-    c.strokeStyle = 'rgba(255,255,255,.35)'; c.lineWidth = 2;
-    for (let i = 0; i < 10; i++) {
-      const y = Math.random() * h;
-      c.beginPath(); c.moveTo(Math.random() * w, y); c.lineTo(Math.random() * w, y); c.stroke();
-    }
-  }, [3, 30]),
-  wall: makeTexture(256, 256, (c, w, h) => {
-    c.fillStyle = '#f3ead7'; c.fillRect(0, 0, w, h);
-    c.strokeStyle = 'rgba(160,140,105,.35)'; c.lineWidth = 2;
-    for (let y = 0; y < h; y += 18) { c.beginPath(); c.moveTo(0, y); c.lineTo(w, y); c.stroke(); }
-  }, [8, 2]),
-  // 黒板メニュー（パン屋の壁）
-  board: makeTexture(512, 320, (c, w, h) => {
-    c.fillStyle = '#7a5b3a'; c.fillRect(0, 0, w, h);
-    c.fillStyle = '#2e4636'; c.fillRect(12, 12, w - 24, h - 24);
-    c.fillStyle = '#fff'; c.textAlign = 'center';
-    c.font = '900 34px system-ui, sans-serif';
-    c.fillText('🍞 きょうのパン', w / 2, 62);
-    c.font = '700 24px system-ui, sans-serif'; c.fillStyle = '#ffe9b0';
-    c.fillText('プチカンパーニュ 各¥600', w / 2, 116);
-    c.fillText('食パン ¥700 ・ フォカッチャ ¥450', w / 2, 156);
-    c.fillText('コンフィチュール ・ コーヒー', w / 2, 196);
-    c.fillStyle = '#bfe6a0'; c.font = '700 20px system-ui, sans-serif';
-    c.fillText('きょうの酵母：ゆず🍋', w / 2, 244);
-    c.fillStyle = 'rgba(255,255,255,.5)'; c.font = '700 14px system-ui, sans-serif';
-    c.fillText('今日のパンが、明日の野菜に。', w / 2, 284);
-  }),
-  // 店舗看板
-  sign: makeTexture(512, 128, (c, w, h) => {
-    c.fillStyle = '#FAF8F4'; c.fillRect(0, 0, w, h);
-    c.strokeStyle = '#4E5D3E'; c.lineWidth = 8; c.strokeRect(6, 6, w - 12, h - 12);
-    c.fillStyle = '#3A4A2F'; c.textAlign = 'center';
-    c.font = '900 52px system-ui, sans-serif';
-    c.fillText('🍞 プチヘルメース', w / 2, 72);
-    c.fillStyle = '#A67C52'; c.font = '700 22px system-ui, sans-serif';
-    c.fillText('petit hermes — 自家製天然酵母パン', w / 2, 106);
-  }),
-  // 校門プレート
-  gate: makeTexture(256, 384, (c, w, h) => {
-    c.fillStyle = '#e8e2d4'; c.fillRect(0, 0, w, h);
-    c.strokeStyle = '#777'; c.lineWidth = 6; c.strokeRect(4, 4, w - 8, h - 8);
-    c.fillStyle = '#333'; c.textAlign = 'center';
-    c.font = '900 64px system-ui, sans-serif';
-    const s = '旧南方小学校';
-    for (let i = 0; i < s.length; i++) c.fillText(s[i], w / 2, 70 + i * 54);
-  }),
-  // コインの顔（プチカンパーニュくん）
-  coin: makeTexture(128, 128, (c, w, h) => {
-    c.fillStyle = '#f6a823'; c.beginPath(); c.arc(64, 64, 62, 0, 7); c.fill();
-    c.fillStyle = '#c8893b'; c.beginPath(); c.arc(64, 64, 50, 0, 7); c.fill();
-    c.fillStyle = '#e8b86b'; c.beginPath(); c.arc(64, 58, 42, 0, 7); c.fill();
-    c.strokeStyle = '#8a5a28'; c.lineWidth = 4;
-    c.beginPath(); c.moveTo(40, 38); c.lineTo(56, 46); c.stroke();
-    c.beginPath(); c.moveTo(88, 38); c.lineTo(72, 46); c.stroke();
-    c.fillStyle = '#4a3013';
-    c.beginPath(); c.arc(50, 62, 5, 0, 7); c.fill();
-    c.beginPath(); c.arc(78, 62, 5, 0, 7); c.fill();
-    c.beginPath(); c.arc(64, 76, 7, 0, Math.PI); c.fill();
-  }),
-  // プチカンパーニュくんの顔
-  face: makeTexture(128, 128, (c) => {
-    c.clearRect(0, 0, 128, 128);
-    c.fillStyle = '#4a3013';
-    c.beginPath(); c.arc(44, 56, 7, 0, 7); c.fill();
-    c.beginPath(); c.arc(84, 56, 7, 0, 7); c.fill();
-    c.beginPath(); c.arc(64, 78, 10, 0, Math.PI); c.fill();
-    c.fillStyle = 'rgba(240,120,90,.55)';
-    c.beginPath(); c.arc(32, 74, 8, 0, 7); c.fill();
-    c.beginPath(); c.arc(96, 74, 8, 0, 7); c.fill();
-  }),
-  // 体育館ポスター
-  poster: makeTexture(256, 320, (c, w, h) => {
-    c.fillStyle = '#fffbe8'; c.fillRect(0, 0, w, h);
-    c.strokeStyle = '#A67C52'; c.lineWidth = 6; c.strokeRect(4, 4, w - 8, h - 8);
-    c.fillStyle = '#3A4A2F'; c.textAlign = 'center';
-    c.font = '900 40px system-ui, sans-serif';
-    c.fillText('ACT南方', w / 2, 70);
-    c.font = '700 22px system-ui, sans-serif'; c.fillStyle = '#555';
-    c.fillText('みんなの活動 やってます', w / 2, 130);
-    c.font = '40px system-ui'; c.fillText('🏫🍞🌱', w / 2, 200);
-    c.font = '700 18px system-ui, sans-serif';
-    c.fillText('廃校を、みんなの場所に。', w / 2, 260);
-  }),
-  // コンポスト看板
-  compost: makeTexture(320, 192, (c, w, h) => {
-    c.fillStyle = '#fffbe8'; c.fillRect(0, 0, w, h);
-    c.strokeStyle = '#4E5D3E'; c.lineWidth = 6; c.strokeRect(4, 4, w - 8, h - 8);
-    c.fillStyle = '#3A4A2F'; c.textAlign = 'center';
-    c.font = '900 36px system-ui, sans-serif';
-    c.fillText('ぐるぐる', w / 2, 58);
-    c.fillText('コンポスト 🌀', w / 2, 104);
-    c.fillStyle = '#777'; c.font = '700 18px system-ui, sans-serif';
-    c.fillText('生ごみ → ふかふかの土', w / 2, 150);
-  }),
-  // 酵母瓶ラベル
-  yeast: makeTexture(128, 96, (c, w, h) => {
-    c.fillStyle = '#fffbe8'; c.fillRect(0, 0, w, h);
-    c.fillStyle = '#3A4A2F'; c.textAlign = 'center';
-    c.font = '900 30px system-ui, sans-serif';
-    c.fillText('ゆず酵母', w / 2, 40);
-    c.font = '26px system-ui'; c.fillText('🍋', w / 2, 78);
-  }),
-};
-// 空のグラデーション
-const skyTex = new THREE.CanvasTexture(makeCanvas(16, 256, (c) => {
-  const g = c.createLinearGradient(0, 0, 0, 256);
-  g.addColorStop(0, '#5ba8e8'); g.addColorStop(0.55, '#a3d4f5'); g.addColorStop(1, '#dceefa');
-  c.fillStyle = g; c.fillRect(0, 0, 16, 256);
-}));
-skyTex.colorSpace = THREE.SRGBColorSpace;
-
-// ============================================================
-// 04 MATERIALS（トゥーン3段階）
-// ============================================================
-const gradMap = new THREE.DataTexture(new Uint8Array([90, 180, 255]), 3, 1, THREE.RedFormat);
-gradMap.needsUpdate = true; gradMap.minFilter = gradMap.magFilter = THREE.NearestFilter;
-const _matCache = {};
-function toonMat(color, opt = {}) {
-  const key = color + JSON.stringify(opt);
-  if (!_matCache[key]) _matCache[key] = new THREE.MeshToonMaterial({ color, gradientMap: gradMap, ...opt });
-  return _matCache[key];
-}
-function texMat(tex, opt = {}) { return new THREE.MeshToonMaterial({ map: tex, gradientMap: gradMap, ...opt }); }
-
-// ============================================================
-// SCENE SETUP
-// ============================================================
-const canvas = document.getElementById('game');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
-renderer.setSize(innerWidth, innerHeight);
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-const scene = new THREE.Scene();
-scene.background = skyTex;
-scene.fog = new THREE.Fog(CFG.colors.fogC, 120, 330);
-
-const camera = new THREE.PerspectiveCamera(70, innerWidth / innerHeight, 0.1, 600);
-
-const hemiLight = new THREE.HemisphereLight(0xcfe8ff, 0x8a7a55, 1.0);
-scene.add(hemiLight);
-const sun = new THREE.DirectionalLight(0xfff2dd, 1.6);
-sun.position.set(60, 100, 40);
-sun.castShadow = true;
-sun.shadow.mapSize.set(2048, 2048);
-// 影は学校エリアに限定（性能予算）
-sun.shadow.camera.left = -70; sun.shadow.camera.right = 70;
-sun.shadow.camera.top = 70; sun.shadow.camera.bottom = -70;
-sun.shadow.camera.near = 20; sun.shadow.camera.far = 250;
-sun.target.position.set(0, 0, -60);
-scene.add(sun, sun.target);
-
-addEventListener('resize', () => {
-  camera.aspect = innerWidth / innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(innerWidth, innerHeight);
-});
-
-// ============================================================
-// 06 COLLIDERS（先に登録ヘルパーを定義）
-// ============================================================
-const boxColliders = [];   // {minX,minZ,maxX,maxZ}
-const circleColliders = []; // {x,z,r}
-function addBoxCollider(cx, cz, sx, sz) {
-  boxColliders.push({ minX: cx - sx / 2, minZ: cz - sz / 2, maxX: cx + sx / 2, maxZ: cz + sz / 2 });
-}
-function addCircleCollider(x, z, r) { circleColliders.push({ x, z, r }); }
-
-// 地面の高さ（ゆずの丘のマウンドのみ起伏）
-function getGroundY(x, z) {
-  const dx = x - 70, dz = z - 20;
-  const d = Math.sqrt(dx * dx + dz * dz);
-  if (d < 16) { const t = Math.cos(d / 16 * Math.PI) * 0.5 + 0.5; return 2.2 * t * t; }
-  return 0;
-}
-
-// ============================================================
-// 05 WORLD
-// ============================================================
-const world = new THREE.Group();
-scene.add(world);
-
-// メッシュ生成ヘルパー
-function box(w, h, d, mat) { return new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat); }
-function addBox(parent, x, y, z, w, h, d, mat, collide = false) {
-  const m = box(w, h, d, mat);
-  m.position.set(x, y, z);
-  parent.add(m);
-  if (collide) addBoxCollider(x, z, w, d);
-  return m;
-}
-// 三角プリズム屋根（3角柱シリンダーを利用）
-function roofPrism(w, h, d, mat) {
-  const g = new THREE.CylinderGeometry(0.5, 0.5, 1, 3, 1);
-  g.rotateZ(Math.PI / 2); g.rotateY(Math.PI / 2); // 稜線をX方向に
-  const m = new THREE.Mesh(g, mat);
-  m.scale.set(w, h * 2, d);
-  return m;
-}
-
-// ---- ミニマップ用にレイアウトデータを宣言 ----
-const PADDIES = [];
-for (let i = 0; i < 7; i++) {
-  PADDIES.push({ x: -17, z: 32 + i * 21, w: 16, d: 11 });
-  PADDIES.push({ x: 17, z: 42 + i * 21, w: 16, d: 11 });
-}
-const HOUSES = [
-  { x: -32, z: 120, ry: 0.3 }, { x: 32, z: 100, ry: -0.4 }, { x: -34, z: 80, ry: 0.1 },
-  { x: 36, z: 64, ry: 0.5 }, { x: -36, z: 30, ry: -0.2 }, { x: 34, z: 150, ry: 0.2 },
-  { x: -30, z: 160, ry: -0.5 },
-];
-const SCHOOL = { x: 0, z: -80, w: 60, d: 10 };
-const GROUNDS = { x: 0, z: -46, w: 70, d: 48 };
-const GYM = { x: -45, z: -86, w: 20, d: 15 };
-const RIVER = { x: 124, w: 14 };
-
-// ---- 地面・グラウンド・道 ----
-{
-  const ground = new THREE.Mesh(new THREE.PlaneGeometry(560, 560), texMat(TEX.grass));
-  ground.rotation.x = -Math.PI / 2;
-  ground.receiveShadow = true;
-  world.add(ground);
-
-  // ゆずの丘マウンド（見た目）
-  const mound = new THREE.Mesh(new THREE.SphereGeometry(16, 24, 12, 0, Math.PI * 2, 0, Math.PI / 2), texMat(TEX.grass.clone()));
-  mound.material.map.repeat.set(5, 5);
-  mound.material.map.needsUpdate = true;
-  mound.scale.y = 2.2 / 16;
-  mound.position.set(70, 0, 20);
-  world.add(mound);
-
-  // グラウンド（土）
-  const gnd = new THREE.Mesh(new THREE.PlaneGeometry(GROUNDS.w, GROUNDS.d), texMat(TEX.dirt));
-  gnd.rotation.x = -Math.PI / 2;
-  gnd.position.set(GROUNDS.x, 0.02, GROUNDS.z);
-  gnd.receiveShadow = true;
-  world.add(gnd);
-
-  // メイン道路（南北）
-  const road = new THREE.Mesh(new THREE.PlaneGeometry(4.4, 208), texMat(TEX.road));
-  road.rotation.x = -Math.PI / 2;
-  road.position.set(0, 0.03, 82);
-  world.add(road);
-  // 農家への小道
-  const p1 = new THREE.Mesh(new THREE.PlaneGeometry(58, 3.2), texMat(TEX.road.clone()));
-  p1.material.map.repeat.set(14, 1);
-  p1.material.map.needsUpdate = true;
-  p1.rotation.x = -Math.PI / 2;
-  p1.position.set(-29, 0.03, 62);
-  world.add(p1);
-  // ゆずの丘への小道
-  const p2 = new THREE.Mesh(new THREE.PlaneGeometry(52, 3.2), texMat(TEX.road.clone()));
-  p2.material.map.repeat.set(12, 1);
-  p2.material.map.needsUpdate = true;
-  p2.rotation.x = -Math.PI / 2;
-  p2.position.set(28, 0.03, 20);
-  world.add(p2);
-}
-
-// ---- 田んぼ（マージして1ドローコール）----
-{
-  const geos = [];
-  for (const p of PADDIES) {
-    const g = new THREE.BoxGeometry(p.w, 0.25, p.d);
-    g.translate(p.x, 0.12, p.z);
-    geos.push(g);
-  }
-  const m = new THREE.Mesh(mergeGeometries(geos), texMat(TEX.paddy));
-  m.receiveShadow = true;
-  world.add(m);
-  // あぜ道は当たり判定なし（またげる高さ）
-}
-
-// ---- 川（東側の風景）----
-{
-  const water = new THREE.Mesh(new THREE.PlaneGeometry(RIVER.w, 360), texMat(TEX.water, { transparent: true, opacity: 0.92 }));
-  water.rotation.x = -Math.PI / 2;
-  water.position.set(RIVER.x, 0.05, 20);
-  world.add(water);
-  const bankMat = toonMat(0x9a8a66);
-  for (const off of [-RIVER.w / 2 - 0.6, RIVER.w / 2 + 0.6]) {
-    const bank = box(1.2, 0.5, 360, bankMat);
-    bank.position.set(RIVER.x + off, 0.25, 20);
-    world.add(bank);
-  }
-}
-
-// ---- 外周の山なみ（マージ）----
-{
-  const geos = [];
-  const cols = [0x5d8a52, 0x6f9a5e, 0x4f7d62, 0x77a368];
-  for (let i = 0; i < 26; i++) {
-    const a = (i / 26) * Math.PI * 2;
-    const r = 245 + rand() * 60;
-    const h = 50 + rand() * 70;
-    const g = new THREE.ConeGeometry(45 + rand() * 40, h, 7);
-    g.translate(Math.cos(a) * r, h / 2 - 4, Math.sin(a) * r);
-    const col = new THREE.Color(cols[i % cols.length]);
-    const cnt = g.attributes.position.count;
-    const arr = new Float32Array(cnt * 3);
-    for (let j = 0; j < cnt; j++) { arr[j * 3] = col.r; arr[j * 3 + 1] = col.g; arr[j * 3 + 2] = col.b; }
-    g.setAttribute('color', new THREE.BufferAttribute(arr, 3));
-    geos.push(g);
-  }
-  world.add(new THREE.Mesh(mergeGeometries(geos), toonMat(0xffffff, { vertexColors: true })));
-}
-
-// ---- 木（幹と葉をそれぞれマージ：2ドローコール）----
-{
-  const trunkGeos = [], leafGeos = [];
-  const leafCols = [0x55903e, 0x6aa84c, 0xd98a2b, 0xc9622f, 0x7fb558, 0xe0a23a];
-  const treeSpots = [];
-  for (let i = 0; i < 130; i++) {
-    const x = randR(-185, 185), z = randR(-185, 185);
-    if (Math.abs(x) < 8 && z > -30) continue;                  // 道路
-    if (x > -42 && x < 42 && z > -100 && z < -14) continue;     // 学校・グラウンド
-    if (x > -78 && x < -42 && z > 40 && z < 80) continue;       // 農家
-    if (Math.hypot(x - 70, z - 20) < 22) continue;              // ゆずの丘
-    if (Math.abs(x - RIVER.x) < 12) continue;                   // 川
-    if (PADDIES.some(p => Math.abs(x - p.x) < p.w / 2 + 2 && Math.abs(z - p.z) < p.d / 2 + 2)) continue;
-    treeSpots.push({ x, z });
-  }
-  for (const s of treeSpots) {
-    const sc = randR(0.8, 1.5);
-    const tg = new THREE.CylinderGeometry(0.22 * sc, 0.34 * sc, 2.4 * sc, 5);
-    tg.translate(s.x, 1.2 * sc, s.z);
-    trunkGeos.push(tg);
-    const col = new THREE.Color(leafCols[Math.floor(rand() * leafCols.length)]);
-    for (let k = 0; k < 2; k++) {
-      const lg = new THREE.IcosahedronGeometry((1.5 - k * 0.45) * sc, 0);
-      lg.translate(s.x + (k ? randR(-0.5, 0.5) : 0), (2.6 + k * 1.1) * sc, s.z + (k ? randR(-0.5, 0.5) : 0));
-      const cnt = lg.attributes.position.count;
-      const arr = new Float32Array(cnt * 3);
-      for (let j = 0; j < cnt; j++) { arr[j * 3] = col.r; arr[j * 3 + 1] = col.g; arr[j * 3 + 2] = col.b; }
-      lg.setAttribute('color', new THREE.BufferAttribute(arr, 3));
-      leafGeos.push(lg);
-    }
-    addCircleCollider(s.x, s.z, 0.45 * sc);
-  }
-  world.add(new THREE.Mesh(mergeGeometries(trunkGeos), toonMat(0x6e4f33)));
-  const leaves = new THREE.Mesh(mergeGeometries(leafGeos), toonMat(0xffffff, { vertexColors: true }));
-  world.add(leaves);
-}
-
-// ---- 民家 ----
-{
-  const wallCols = [0xf0e6d2, 0xe8dcc4, 0xdcd2c0, 0xf5ecd8];
-  const roofCols = [0x46555e, 0x5a4a42, 0x4a5a50];
-  HOUSES.forEach((hd, i) => {
-    const g = new THREE.Group();
-    const w = 7 + (i % 3), d = 6 + (i % 2) * 2, h = 3.4;
-    const body = box(w, h, d, toonMat(wallCols[i % wallCols.length]));
-    body.position.y = h / 2;
-    g.add(body);
-    const roof = roofPrism(w + 1.2, 1.6, d + 1.2, toonMat(roofCols[i % roofCols.length]));
-    roof.position.y = h + 0.8;
-    g.add(roof);
-    const door = box(1.1, 1.9, 0.1, toonMat(0x7a5b3a));
-    door.position.set(w * 0.2, 0.95, d / 2 + 0.03);
-    g.add(door);
-    g.position.set(hd.x, 0, hd.z);
-    g.rotation.y = hd.ry;
-    world.add(g);
-    // 当たり判定は回転を包含する正方形で近似
-    const s = Math.max(w, d) * 1.05;
-    addBoxCollider(hd.x, hd.z, s, s);
-  });
-}
-
-// ---- 校舎（旧南方小学校）----
-// 建物: x[-30,30] z[-85,-75] 高さ7.6 / 1階東側がパン屋、その西どなりが教室カフェ
-let bakeryDoor; // 近づくと開くドア
-{
-  const wallM = texMat(TEX.wall);
-  const trimM = toonMat(0x8a6743);
-  const glassM = toonMat(0xbfe3f0, { transparent: true, opacity: 0.45 });
-  const winM = toonMat(0xd6ecf5);
-
-  // --- 1階 正面の壁（z=-75.15）: 開口部 = カフェ大窓 / パン屋ドア ---
-  addBox(world, -20.25, 1.6, -75.15, 19.5, 3.2, 0.3, wallM, true); // 西側
-  addBox(world, 2.85, 1.6, -75.15, 8.7, 3.2, 0.3, wallM, true);    // 中央（昇降口の右）
-  addBox(world, 19.4, 1.6, -75.15, 21.2, 3.2, 0.3, wallM, true);   // 東側
-  // カフェ大窓 x[-10.5,-1.5]
-  addBox(world, -6, 0.45, -75.15, 9, 0.9, 0.3, wallM, true);       // 腰壁（窓越えは不可）
-  addBox(world, -6, 2.8, -75.15, 9, 0.8, 0.3, wallM, false);
-  const cafeGlass = box(9, 1.5, 0.06, glassM);
-  cafeGlass.position.set(-6, 1.65, -75.15);
-  world.add(cafeGlass);
-  // パン屋ドア開口 x[7.2,8.8] の上部
-  addBox(world, 8, 2.7, -75.15, 1.6, 1.0, 0.3, wallM, false);
-
-  // --- 2階バンド（y3.2〜7.6）+ 窓列 ---
-  addBox(world, 0, 5.4, -75.15, 60, 4.4, 0.3, wallM, false);
-  for (let x = -27; x <= 27; x += 4.5) {
-    const w2 = box(2.4, 1.6, 0.1, winM);
-    w2.position.set(x, 5.2, -74.95);
-    world.add(w2);
-    if (x < -11 || x > 10) { // 1階の窓（カフェ窓・ドア・昇降口を避ける）
-      const w1 = box(2.4, 1.5, 0.1, winM);
-      w1.position.set(x, 1.95, -74.95);
-      world.add(w1);
-    }
-  }
-
-  // --- 背面・側面・屋根 ---
-  addBox(world, 0, 3.8, -84.85, 60, 7.6, 0.3, wallM, true);
-  addBox(world, -29.85, 3.8, -80, 0.3, 7.6, 10, wallM, true);
-  addBox(world, 29.85, 3.8, -80, 0.3, 7.6, 10, wallM, true);
-  const roof = roofPrism(62, 2.1, 12.5, toonMat(CFG.colors.schoolRoof));
-  roof.position.set(0, 8.6, -80);
-  roof.castShadow = true;
-  world.add(roof);
-
-  // --- 昇降口ポーチ（中央・装飾）---
-  addBox(world, 0, 1.5, -74.6, 3.4, 3.0, 1.0, wallM, true);
-  const pd = box(2.0, 2.2, 0.12, trimM);
-  pd.position.set(0, 1.1, -74.05);
-  world.add(pd);
-  const porchRoof = box(4.2, 0.25, 1.8, toonMat(CFG.colors.schoolRoof));
-  porchRoof.position.set(0, 3.1, -74.3);
-  world.add(porchRoof);
-
-  // --- 店舗看板（パン屋入口の上）---
-  const sign = new THREE.Mesh(new THREE.PlaneGeometry(4.0, 1.0), texMat(TEX.sign));
-  sign.position.set(8, 3.4, -74.9);
-  world.add(sign);
-
-  // --- 室内 床・天井（1階の店舗部分のみ作り込み）---
-  const floor = new THREE.Mesh(new THREE.PlaneGeometry(28, 9.7), texMat(TEX.wall.clone(), {}));
-  floor.material.map = null; floor.material.color = new THREE.Color(0xc9a876);
-  floor.rotation.x = -Math.PI / 2;
-  floor.position.set(1, 0.04, -80);
-  world.add(floor);
-  const ceil = new THREE.Mesh(new THREE.PlaneGeometry(28, 9.7), toonMat(0xf7f2e6));
-  ceil.rotation.x = Math.PI / 2;
-  ceil.position.set(1, 3.2, -80);
-  world.add(ceil);
-
-  // --- 室内仕切り ---
-  addBox(world, -12.7, 1.6, -80, 0.3, 3.2, 10, wallM, true); // 西キャップ
-  addBox(world, 14.7, 1.6, -80, 0.3, 3.2, 10, wallM, true);  // 東キャップ
-  // カフェ⇔パン屋の仕切り（通路 z[-80.8,-79.2]）
-  addBox(world, 1.5, 1.6, -82.9, 0.3, 3.2, 4.2, wallM, true);
-  addBox(world, 1.5, 1.6, -77.1, 0.3, 3.2, 4.2, wallM, true);
-  addBox(world, 1.5, 2.7, -80, 0.3, 1.0, 1.6, wallM, false);
-
-  // --- パン屋のドア（自動で開く）---
-  bakeryDoor = new THREE.Group();
-  const dr = box(1.5, 2.15, 0.08, trimM);
-  dr.position.x = 0.75; // ヒンジを左端に
-  const drWin = box(0.6, 0.7, 0.1, glassM);
-  drWin.position.set(0.75, 0.45, 0);
-  bakeryDoor.add(dr, drWin);
-  bakeryDoor.position.set(7.25, 1.08, -75.15);
-  world.add(bakeryDoor);
-
-  // --- パン屋の内装 ---
-  const woodM = toonMat(CFG.colors.wood);
-  const breadM = toonMat(0xc8893b);
-  const breadM2 = toonMat(0xa96f2c);
-  // カウンター
-  addBox(world, 8, 0.55, -81.4, 5, 1.1, 1.0, woodM, true);
-  const counterTop = box(5.3, 0.08, 1.2, toonMat(0xa9885f));
-  counterTop.position.set(8, 1.13, -81.4);
-  world.add(counterTop);
-  // カウンターの上のパン（プチカンパーニュ）
-  for (let i = 0; i < 5; i++) {
-    const b = new THREE.Mesh(new THREE.SphereGeometry(0.22, 8, 6), i % 2 ? breadM : breadM2);
-    b.scale.y = 0.65;
-    b.position.set(6.2 + i * 0.9, 1.3, -81.4);
-    world.add(b);
-  }
-  // 背面の棚 + パン
-  addBox(world, 8, 1.1, -84.4, 6, 2.2, 0.5, woodM, true);
-  for (let r = 0; r < 2; r++) for (let i = 0; i < 6; i++) {
-    const b = new THREE.Mesh(new THREE.SphereGeometry(0.26, 8, 6), (i + r) % 2 ? breadM : breadM2);
-    b.scale.set(1.2, 0.7, 0.8);
-    b.position.set(5.6 + i * 0.95, 1.0 + r * 0.85, -84.3);
-    world.add(b);
-  }
-  // 黒板メニュー
-  const board = new THREE.Mesh(new THREE.PlaneGeometry(3.4, 2.1), texMat(TEX.board));
-  board.position.set(8, 2.4, -84.6);
-  world.add(board);
-  // 薪オーブン
-  addBox(world, 13.2, 1.1, -83.5, 2.0, 2.2, 1.6, toonMat(0x6e6258), true);
-  const ovenMouth = new THREE.Mesh(new THREE.CircleGeometry(0.45, 12),
-    new THREE.MeshBasicMaterial({ color: 0xff8c2e }));
-  ovenMouth.position.set(13.2, 0.9, -82.66);
-  world.add(ovenMouth);
-  const chimney = box(0.5, 1.4, 0.5, toonMat(0x55504a));
-  chimney.position.set(13.2, 2.9, -83.5);
-  world.add(chimney);
-  // 酵母瓶の棚
-  addBox(world, 2.6, 1.0, -83.8, 1.6, 2.0, 0.5, woodM, true);
-  const jarM = toonMat(0xd9c79a, { transparent: true, opacity: 0.85 });
-  for (let i = 0; i < 3; i++) {
-    const jar = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.16, 0.42, 8), jarM);
-    jar.position.set(2.2 + i * 0.42, 2.25, -83.8);
-    world.add(jar);
-  }
-  const yLabel = new THREE.Mesh(new THREE.PlaneGeometry(1.1, 0.8), texMat(TEX.yeast));
-  yLabel.position.set(2.6, 1.3, -83.5);
-  world.add(yLabel);
-  // 店内のあたたかい光
-  const warm = new THREE.PointLight(0xffd9a0, 14, 14, 1.6);
-  warm.position.set(7, 2.6, -80.5);
-  scene.add(warm);
-
-  // --- カフェの内装（元教室）---
-  const deskM = toonMat(0xb59262);
-  const seatM = toonMat(0x86a06b);
-  const deskSpots = [[-9.5, -82], [-6.5, -82], [-9.5, -78.5], [-3.5, -80.5]];
-  for (const [dx, dz] of deskSpots) {
-    addBox(world, dx, 0.38, dz, 1.3, 0.76, 0.85, deskM, true);
-    const ch = new THREE.Group();
-    const st = box(0.5, 0.1, 0.5, seatM); st.position.y = 0.45;
-    const bk = box(0.5, 0.55, 0.08, seatM); bk.position.set(0, 0.75, -0.22);
-    const lg = box(0.42, 0.45, 0.42, deskM); lg.position.y = 0.22;
-    ch.add(st, bk, lg);
-    ch.position.set(dx, 0, dz + 1.0);
-    world.add(ch);
-  }
-  // 窓ぎわの「ひとやすみチェア」（クエスト用）
-  const sitCh = new THREE.Group();
-  const st2 = box(0.55, 0.1, 0.55, toonMat(0xA67C52)); st2.position.y = 0.45;
-  const bk2 = box(0.55, 0.6, 0.09, toonMat(0xA67C52)); bk2.position.set(0, 0.78, -0.26);
-  const lg2 = box(0.46, 0.45, 0.46, deskM); lg2.position.y = 0.22;
-  sitCh.add(st2, bk2, lg2);
-  sitCh.position.set(-6, 0, -76.6); // グラウンドを向く窓ぎわ
-  world.add(sitCh);
-  // カフェ黒板
-  const cafeBoard = new THREE.Mesh(new THREE.PlaneGeometry(2.6, 1.6),
-    texMat(makeTexture(384, 240, (c, w, h) => {
-      c.fillStyle = '#7a5b3a'; c.fillRect(0, 0, w, h);
-      c.fillStyle = '#2e4636'; c.fillRect(10, 10, w - 20, h - 20);
-      c.fillStyle = '#fff'; c.textAlign = 'center';
-      c.font = '900 36px system-ui, sans-serif';
-      c.fillText('☕ 教室カフェ', w / 2, 76);
-      c.font = '700 24px system-ui, sans-serif'; c.fillStyle = '#ffe9b0';
-      c.fillText('ようこそ ACT南方', w / 2, 130);
-      c.fillStyle = '#bfe6a0'; c.font = '700 20px system-ui, sans-serif';
-      c.fillText('グラウンドを ながめて ひとやすみ', w / 2, 180);
-    })));
-  cafeBoard.position.set(-6, 2.1, -84.6);
-  world.add(cafeBoard);
-}
-
-// ---- 体育館 ----
-{
-  const gymM = texMat(TEX.wall.clone());
-  gymM.map.needsUpdate = true;
-  addBox(world, GYM.x, 3, GYM.z, GYM.w, 6, GYM.d, gymM, true);
-  const rg = new THREE.CylinderGeometry(GYM.d / 2, GYM.d / 2, GYM.w, 14, 1, false, 0, Math.PI);
-  rg.rotateZ(Math.PI / 2);
-  const roofG = new THREE.Mesh(rg, toonMat(0x7f8c94));
-  roofG.scale.y = 0.55;
-  roofG.position.set(GYM.x, 6, GYM.z);
-  world.add(roofG);
-  const poster = new THREE.Mesh(new THREE.PlaneGeometry(2.2, 2.75), texMat(TEX.poster));
-  poster.position.set(GYM.x + 4, 1.9, GYM.z + GYM.d / 2 + 0.05);
-  world.add(poster);
-}
-
-// ---- 校門 + グラウンドのフェンス ----
-{
-  const pillarM = toonMat(0xb9b2a2);
-  addBox(world, -2.8, 1.1, -21, 0.9, 2.2, 0.9, pillarM, true);
-  addBox(world, 2.8, 1.1, -21, 0.9, 2.2, 0.9, pillarM, true);
-  const plate = new THREE.Mesh(new THREE.PlaneGeometry(0.62, 0.95), texMat(TEX.gate));
-  plate.position.set(2.8, 1.35, -20.5);
-  world.add(plate);
-
-  // フェンス（白）: 西・東・南（門の開口あり）
-  const postGeos = [], railGeos = [];
-  const addFenceLine = (x1, z1, x2, z2) => {
-    const len = Math.hypot(x2 - x1, z2 - z1);
-    const n = Math.round(len / 3.5);
-    for (let i = 0; i <= n; i++) {
-      const t = i / n;
-      const g = new THREE.BoxGeometry(0.14, 1.1, 0.14);
-      g.translate(lerp(x1, x2, t), 0.55, lerp(z1, z2, t));
-      postGeos.push(g);
-    }
-    for (const ry of [0.45, 0.95]) {
-      const g = new THREE.BoxGeometry(len, 0.08, 0.08);
-      g.rotateY(Math.atan2(-(z2 - z1), x2 - x1));
-      g.translate((x1 + x2) / 2, ry, (z1 + z2) / 2);
-      railGeos.push(g);
-    }
-    addBoxCollider((x1 + x2) / 2, (z1 + z2) / 2,
-      Math.abs(x2 - x1) + 0.3, Math.abs(z2 - z1) + 0.3);
-  };
-  addFenceLine(-35, -22, -35, -70);
-  addFenceLine(35, -22, 35, -70);
-  addFenceLine(-35, -22, -3.4, -22);
-  addFenceLine(3.4, -22, 35, -22);
-  const fenceM = toonMat(0xf2f2ee);
-  world.add(new THREE.Mesh(mergeGeometries(postGeos), fenceM));
-  world.add(new THREE.Mesh(mergeGeometries(railGeos), fenceM));
-}
-
-// ---- カラーコーン（駐車エリア・校舎側）----
-{
-  const geos = [];
-  for (let i = 0; i < 8; i++) {
-    const x = -16 + i * 4.6;
-    const base = new THREE.BoxGeometry(0.55, 0.07, 0.55); base.translate(x, 0.035, -67);
-    geos.push(base);
-    const cone = new THREE.ConeGeometry(0.26, 0.78, 10); cone.translate(x, 0.45, -67);
-    geos.push(cone);
-  }
-  const m = new THREE.Mesh(mergeGeometries(geos), toonMat(0xf05a28));
-  m.castShadow = true;
-  world.add(m);
-  // 白帯
-  const bands = [];
-  for (let i = 0; i < 8; i++) {
-    const b = new THREE.CylinderGeometry(0.185, 0.215, 0.14, 10);
-    b.translate(-16 + i * 4.6, 0.42, -67);
-    bands.push(b);
-  }
-  world.add(new THREE.Mesh(mergeGeometries(bands), toonMat(0xffffff)));
-}
-
-// ---- ぐるぐるコンポスト（校舎裏）----
-{
-  const bin = new THREE.Mesh(new THREE.CylinderGeometry(1.1, 0.95, 1.0, 10), toonMat(0x8a6743));
-  bin.position.set(15, 0.5, -93);
-  world.add(bin);
-  const soil = new THREE.Mesh(new THREE.CircleGeometry(0.95, 10), toonMat(0x4f3a26));
-  soil.rotation.x = -Math.PI / 2;
-  soil.position.set(15, 1.02, -93);
-  world.add(soil);
-  addCircleCollider(15, -93, 1.2);
-  const post = box(0.12, 1.6, 0.12, toonMat(0x6e4f33));
-  post.position.set(13.4, 0.8, -93);
-  world.add(post);
-  const sgn = new THREE.Mesh(new THREE.PlaneGeometry(1.7, 1.0), texMat(TEX.compost));
-  sgn.position.set(13.4, 1.6, -93);
-  sgn.rotation.y = Math.PI; // 北向き（裏から来る人へ）
-  world.add(sgn);
-}
-
-// ---- 農家・田中さんの畑 ----
-{
-  // 畑
-  const soil = box(15, 0.3, 10, toonMat(0x6b5034));
-  soil.position.set(-60, 0.15, 55);
-  world.add(soil);
-  const rows = [];
-  for (let r = 0; r < 4; r++) {
-    const g = new THREE.BoxGeometry(13.5, 0.25, 0.8);
-    g.translate(-60, 0.42, 51.5 + r * 2.3);
-    rows.push(g);
-  }
-  world.add(new THREE.Mesh(mergeGeometries(rows), toonMat(0x5e8c3c)));
-  // 農家の家
-  const fh = new THREE.Group();
-  const body = box(8, 3.4, 7, toonMat(0xeadfc8)); body.position.y = 1.7;
-  const fr = roofPrism(9.2, 1.7, 8.2, toonMat(0x5a4a42)); fr.position.y = 4.2;
-  fh.add(body, fr);
-  fh.position.set(-69, 0, 67);
-  fh.rotation.y = 0.4;
-  world.add(fh);
-  addBoxCollider(-69, 67, 9, 9);
-}
-
-// ---- ゆずの丘の木 ----
-{
-  const spots = [[64, 14], [76, 14], [62, 25], [78, 25], [70, 29]];
-  for (const [x, z] of spots) {
-    const y = getGroundY(x, z);
-    const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.26, 1.8, 5), toonMat(0x6e4f33));
-    trunk.position.set(x, y + 0.9, z);
-    world.add(trunk);
-    const leaf = new THREE.Mesh(new THREE.IcosahedronGeometry(1.3, 0), toonMat(0x3f7032));
-    leaf.position.set(x, y + 2.4, z);
-    world.add(leaf);
-    for (let i = 0; i < 6; i++) {
-      const f = new THREE.Mesh(new THREE.SphereGeometry(0.14, 6, 5), toonMat(0xf5d327));
-      const a = rand() * Math.PI * 2;
-      f.position.set(x + Math.cos(a) * 1.1, y + 2.1 + rand() * 0.8, z + Math.sin(a) * 1.1);
-      world.add(f);
-    }
-    addCircleCollider(x, z, 0.4);
-  }
-}
-
-// ---- 収集物：規格外やさい / ゆず / コイン ----
-const veggies = [];   // クエスト2
-const yuzus = [];     // クエスト3
-const coins = [];     // 常時
-{
-  // 曲がりトマト
-  const tomato = new THREE.Group();
-  const t1 = new THREE.Mesh(new THREE.SphereGeometry(0.3, 8, 6), toonMat(0xe04b3a));
-  t1.scale.set(1.2, 0.85, 1);
-  const t2 = new THREE.Mesh(new THREE.SphereGeometry(0.18, 8, 6), toonMat(0xe04b3a));
-  t2.position.set(0.25, 0.12, 0);
-  const stem = new THREE.Mesh(new THREE.ConeGeometry(0.1, 0.18, 5), toonMat(0x4a7a35));
-  stem.position.y = 0.32;
-  tomato.add(t1, t2, stem);
-  // 二股にんじん
-  const carrot = new THREE.Group();
-  const c1 = new THREE.Mesh(new THREE.ConeGeometry(0.14, 0.6, 6), toonMat(0xed7a2a));
-  c1.rotation.z = Math.PI + 0.25; c1.position.x = -0.1;
-  const c2 = new THREE.Mesh(new THREE.ConeGeometry(0.11, 0.5, 6), toonMat(0xed7a2a));
-  c2.rotation.z = Math.PI - 0.3; c2.position.x = 0.12;
-  const cl = new THREE.Mesh(new THREE.IcosahedronGeometry(0.14, 0), toonMat(0x5e8c3c));
-  cl.position.y = 0.34;
-  carrot.add(c1, c2, cl);
-  // でこぼこじゃがいも
-  const potato = new THREE.Group();
-  const p1 = new THREE.Mesh(new THREE.IcosahedronGeometry(0.28, 0), toonMat(0xb58a52));
-  p1.scale.set(1.25, 0.8, 1);
-  const p2 = new THREE.Mesh(new THREE.IcosahedronGeometry(0.15, 0), toonMat(0xb58a52));
-  p2.position.set(0.26, 0.1, 0.08);
-  potato.add(p1, p2);
-
-  const vDefs = [
-    { mesh: tomato, x: -57, z: 53, label: 'まがりトマトを ひろう' },
-    { mesh: carrot, x: -62, z: 57, label: 'ふたまたにんじんを ひろう' },
-    { mesh: potato, x: -55.5, z: 58, label: 'でこぼこじゃがいもを ひろう' },
-  ];
-  for (const d of vDefs) {
-    d.mesh.position.set(d.x, 0.9, d.z);
-    world.add(d.mesh);
-    veggies.push({ mesh: d.mesh, x: d.x, z: d.z, label: d.label, taken: false });
-  }
-
-  const yuzuSpots = [[66, 17], [74, 17], [70, 26]];
-  for (const [x, z] of yuzuSpots) {
-    const f = new THREE.Mesh(new THREE.SphereGeometry(0.26, 8, 6), toonMat(0xf5d327));
-    f.position.set(x, getGroundY(x, z) + 1.0, z);
-    world.add(f);
-    yuzus.push({ mesh: f, x, z, label: 'ゆずを しゅうかくする', taken: false });
-  }
-
-  // コイン
-  const coinGeo = new THREE.CylinderGeometry(0.45, 0.45, 0.09, 18);
-  coinGeo.rotateX(Math.PI / 2);
-  const coinMat = [
-    toonMat(0xd98c12),
-    texMat(TEX.coin),
-    texMat(TEX.coin),
-  ];
-  const coinSpots = [
-    [1.5, 150], [-1.5, 130], [1.5, 110], [-1.5, 90], [1.5, 70], [-1.5, 50], [1.5, 35],
-    [-20, 62], [-40, 62], [20, 20], [45, 20], [60, 22],
-    [-10, -40], [0, -50], [10, -40], [0, -30], [8, -70], [-20, -60],
-    [30, 140], [-25, 100],
-  ];
-  for (const [x, z] of coinSpots) {
-    const m = new THREE.Mesh(coinGeo, coinMat);
-    m.position.set(x, getGroundY(x, z) + 1.0, z);
-    world.add(m);
-    coins.push({ mesh: m, x, z, taken: false });
-  }
-}
-
-// ---- 目標ビーコン（光の柱）----
-const beacon = new THREE.Mesh(
-  new THREE.CylinderGeometry(2.6, 2.6, 170, 12, 1, true),
-  new THREE.MeshBasicMaterial({ color: 0xffd84d, transparent: true, opacity: 0.22,
-    blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide }));
-beacon.position.set(0, 85, -78);
-scene.add(beacon);
-
-// マップ外周の透明壁（半径195m）
-function clampToWorld(p) {
-  const r = Math.hypot(p.x, p.z);
-  if (r > 195) { p.x *= 195 / r; p.z *= 195 / r; }
-}
-
-// ============================================================
-// 07 AVATAR（フォートナイト風プロポーションの箱人形）
-// ============================================================
-function makeCharacter(o = {}) {
-  const g = new THREE.Group();
-  const skin = toonMat(o.skin || 0xf3c79b);
-  const shirt = toonMat(o.shirt || 0xffffff);
-  const pants = toonMat(o.pants || 0x39414f);
-
-  const torso = box(0.52, 0.62, 0.3, shirt);
-  torso.position.y = 1.06;
-  torso.castShadow = true;
-
-  const head = new THREE.Group();
-  const hd = box(0.36, 0.36, 0.36, skin);
-  head.add(hd);
-  if (o.cap) { // キャップ帽
-    const cp = box(0.4, 0.14, 0.4, toonMat(o.cap));
-    cp.position.y = 0.22; head.add(cp);
-    const brim = box(0.4, 0.05, 0.2, toonMat(o.cap));
-    brim.position.set(0, 0.16, 0.27); head.add(brim);
-  }
-  if (o.hair) {
-    const hr = box(0.4, 0.12, 0.4, toonMat(o.hair));
-    hr.position.y = 0.21; head.add(hr);
-    const hrB = box(0.4, 0.3, 0.1, toonMat(o.hair));
-    hrB.position.set(0, 0.05, -0.16); head.add(hrB);
-  }
-  if (o.strawHat) { // 麦わら帽子
-    const sh1 = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.46, 0.05, 10), toonMat(0xe0c277));
-    sh1.position.y = 0.2; head.add(sh1);
-    const sh2 = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.23, 0.18, 10), toonMat(0xe0c277));
-    sh2.position.y = 0.3; head.add(sh2);
-  }
-  if (o.kerchief) { // 三角巾
-    const kc = new THREE.Mesh(new THREE.ConeGeometry(0.3, 0.26, 4), toonMat(0xfff8ec));
-    kc.position.y = 0.26; kc.rotation.y = Math.PI / 4; head.add(kc);
-  }
-  // 目
-  const eyeM = new THREE.MeshBasicMaterial({ color: 0x2b2018 });
-  for (const ex of [-0.09, 0.09]) {
-    const eye = new THREE.Mesh(new THREE.CircleGeometry(0.032, 8), eyeM);
-    eye.position.set(ex, 0.03, 0.185);
-    head.add(eye);
-  }
-  head.position.y = 1.58;
-
-  const mkArm = (sx) => {
-    const a = new THREE.Group();
-    const up = box(0.15, 0.56, 0.15, shirt);
-    up.position.y = -0.24;
-    const hand = box(0.13, 0.12, 0.13, skin);
-    hand.position.y = -0.56;
-    a.add(up, hand);
-    a.position.set(sx, 1.34, 0);
-    return a;
-  };
-  const mkLeg = (sx) => {
-    const l = new THREE.Group();
-    const lo = box(0.17, 0.7, 0.17, pants);
-    lo.position.y = -0.33;
-    const shoe = box(0.18, 0.1, 0.26, toonMat(o.shoe || 0xf2cf3a));
-    shoe.position.set(0, -0.7, 0.04);
-    l.add(lo, shoe);
-    l.position.set(sx, 0.76, 0);
-    return l;
-  };
-  const lArm = mkArm(-0.34), rArm = mkArm(0.34);
-  const lLeg = mkLeg(-0.14), rLeg = mkLeg(0.14);
-
-  if (o.apron) { // エプロン
-    const ap = box(0.46, 0.5, 0.04, toonMat(0xfff8ec));
-    ap.position.set(0, 0.96, 0.17);
-    g.add(ap);
-  }
-  if (o.backpack) { // リュック（降下プレイヤーらしさ）
-    const bp = box(0.36, 0.42, 0.18, toonMat(0x4E5D3E));
-    bp.position.set(0, 1.12, -0.26);
-    g.add(bp);
-  }
-  g.add(torso, head, lArm, rArm, lLeg, rLeg);
-  return { group: g, head, lArm, rArm, lLeg, rLeg, torso };
-}
-
-// ---- プレイヤー ----
-const av = makeCharacter({ shirt: 0xffffff, pants: 0x39414f, cap: 0xf2cf3a, backpack: true });
-const player = av.group;
-player.position.set(CFG.spawn.x, CFG.spawn.y, CFG.spawn.z);
-scene.add(player);
-// 丸影
-const blobShadow = new THREE.Mesh(new THREE.CircleGeometry(0.45, 14),
-  new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.28, depthWrite: false }));
-blobShadow.rotation.x = -Math.PI / 2;
-scene.add(blobShadow);
-
-// ---- パン傘グライダー（赤白ストライプの傘）----
-const glider = new THREE.Group();
-{
-  const stripeTex = makeTexture(256, 64, (c, w, h) => {
-    for (let i = 0; i < 8; i++) { c.fillStyle = i % 2 ? '#e84438' : '#fff6ec'; c.fillRect(i * 32, 0, 32, h); }
-  });
-  const canopy = new THREE.Mesh(
-    new THREE.SphereGeometry(1.7, 16, 6, 0, Math.PI * 2, 0, Math.PI / 2.6),
-    texMat(stripeTex, { side: THREE.DoubleSide }));
-  canopy.position.y = 0.6;
-  const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 1.8, 6), toonMat(0x8a6743));
-  pole.position.y = -0.2;
-  glider.add(canopy, pole);
-  glider.position.y = 2.5;
-  glider.visible = false;
-  player.add(glider);
-}
-
-// ============================================================
-// 08 NPC
-// ============================================================
-const npcs = [];
-function addNPC(id, opts, x, z, ry) {
-  const c = makeCharacter(opts);
-  c.group.position.set(x, getGroundY(x, z), z);
-  c.group.rotation.y = ry;
-  scene.add(c.group);
-  const n = { id, ...c, x, z, baseRy: ry };
-  npcs.push(n);
-  addCircleCollider(x, z, 0.45);
-  return n;
-}
-// 店主・大下さん（カウンターの中）
-const npcOshita = addNPC('oshita',
-  { shirt: 0x6B7D5A, pants: 0x5a4a42, apron: true, kerchief: true, hair: 0x4a3526, shoe: 0x8a6743 },
-  8, -82.6, Math.PI);
-// 農家・田中さん
-const npcTanaka = addNPC('tanaka',
-  { shirt: 0x4d6fa8, pants: 0x39414f, strawHat: true, shoe: 0x444444 },
-  -52, 62, 2.4);
-// プチカンパーニュくん（グラウンド）
-const petitkun = new THREE.Group();
-{
-  const body = new THREE.Mesh(new THREE.SphereGeometry(0.55, 12, 9), toonMat(0xe0b269));
-  body.scale.set(1.1, 0.82, 1);
-  const top = new THREE.Mesh(new THREE.SphereGeometry(0.45, 10, 7), toonMat(0xc8893b));
-  top.scale.set(1.05, 0.6, 0.95);
-  top.position.y = 0.22;
-  const face = new THREE.Mesh(new THREE.PlaneGeometry(0.8, 0.8),
-    new THREE.MeshBasicMaterial({ map: TEX.face, transparent: true }));
-  face.position.set(0, 0.05, 0.56);
-  const feet1 = box(0.2, 0.12, 0.3, toonMat(0x8a5a28)); feet1.position.set(-0.2, -0.42, 0.1);
-  const feet2 = box(0.2, 0.12, 0.3, toonMat(0x8a5a28)); feet2.position.set(0.2, -0.42, 0.1);
-  petitkun.add(body, top, face, feet1, feet2);
-  petitkun.position.set(-8, 0.55, -35);
-  scene.add(petitkun);
-  addCircleCollider(-8, -35, 0.6);
-}
-
-// ============================================================
-// 09 INPUT
-// ============================================================
-const keys = {};
-const input = { x: 0, z: 0, jump: false, sprint: false, act: false, useSlot: 0, emote: false };
-const isTouch = matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window;
-let pointerLocked = false;
-let camYaw = 0;   // 0 = 北（-Z）向き
-let camPitch = 0.35;
-
-addEventListener('keydown', (e) => {
-  if (e.repeat) return;
-  keys[e.code] = true;
-  if (e.code === 'Space') {
-    if (state.phase === 'PLAY' || state.phase === 'FREEFALL' || state.phase === 'GLIDE') input.jump = true;
-    e.preventDefault();
-  }
-  if (e.code === 'KeyF' || e.code === 'KeyE') input.act = true;
-  if (e.code === 'KeyG') input.emote = true;
-  if (/^Digit[1-6]$/.test(e.code)) input.useSlot = +e.code.slice(5);
-});
-addEventListener('keyup', (e) => { keys[e.code] = false; });
-
-canvas.addEventListener('click', () => {
-  if (!isTouch && !pointerLocked && ['PLAY', 'FREEFALL', 'GLIDE'].includes(state.phase)) {
-    canvas.requestPointerLock();
-  }
-});
-document.addEventListener('pointerlockchange', () => {
-  pointerLocked = document.pointerLockElement === canvas;
-});
-addEventListener('mousemove', (e) => {
-  if (pointerLocked) {
-    camYaw -= e.movementX * 0.0022;
-    camPitch = clamp(camPitch + e.movementY * 0.0022, -0.5, 1.2);
-  }
-});
-// 非ポインターロック時のドラッグ操作（フォールバック）
-let dragId = null, dragLast = null;
-canvas.addEventListener('mousedown', (e) => { if (!pointerLocked) dragLast = [e.clientX, e.clientY]; });
-addEventListener('mousemove', (e) => {
-  if (!pointerLocked && dragLast && e.buttons) {
-    camYaw -= (e.clientX - dragLast[0]) * 0.005;
-    camPitch = clamp(camPitch + (e.clientY - dragLast[1]) * 0.005, -0.5, 1.2);
-    dragLast = [e.clientX, e.clientY];
-  }
-});
-addEventListener('mouseup', () => { dragLast = null; });
-
-// ---- タッチUI ----
-const joy = { active: false, id: null, x: 0, y: 0 };
-if (isTouch) {
-  document.getElementById('touchUI').classList.remove('hidden');
-  const joyBase = document.getElementById('joyBase');
-  const joyStick = document.getElementById('joyStick');
-  const baseR = 59;
-  const setStick = (dx, dy) => {
-    const d = Math.hypot(dx, dy), max = baseR * 0.7;
-    if (d > max) { dx *= max / d; dy *= max / d; }
-    joyStick.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
-    joy.x = dx / max; joy.y = dy / max;
-  };
-  joyBase.addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    const t = e.changedTouches[0];
-    joy.active = true; joy.id = t.identifier;
-    const r = joyBase.getBoundingClientRect();
-    setStick(t.clientX - r.left - baseR, t.clientY - r.top - baseR);
-  }, { passive: false });
-  joyBase.addEventListener('touchmove', (e) => {
-    e.preventDefault();
-    for (const t of e.changedTouches) if (t.identifier === joy.id) {
-      const r = joyBase.getBoundingClientRect();
-      setStick(t.clientX - r.left - baseR, t.clientY - r.top - baseR);
-    }
-  }, { passive: false });
-  const endJoy = (e) => {
-    for (const t of e.changedTouches) if (t.identifier === joy.id) {
-      joy.active = false; joy.x = joy.y = 0;
-      joyStick.style.transform = 'translate(-50%,-50%)';
-    }
-  };
-  joyBase.addEventListener('touchend', endJoy);
-  joyBase.addEventListener('touchcancel', endJoy);
-
-  // 画面右側ドラッグでカメラ
-  let lookId = null, lookLast = null;
-  canvas.addEventListener('touchstart', (e) => {
-    for (const t of e.changedTouches) {
-      if (t.clientX > innerWidth * 0.4 && lookId === null) {
-        lookId = t.identifier; lookLast = [t.clientX, t.clientY];
-      }
-    }
-  }, { passive: true });
-  canvas.addEventListener('touchmove', (e) => {
-    for (const t of e.changedTouches) if (t.identifier === lookId) {
-      camYaw -= (t.clientX - lookLast[0]) * 0.006;
-      camPitch = clamp(camPitch + (t.clientY - lookLast[1]) * 0.006, -0.5, 1.2);
-      lookLast = [t.clientX, t.clientY];
-    }
-  }, { passive: true });
-  const endLook = (e) => { for (const t of e.changedTouches) if (t.identifier === lookId) lookId = null; };
-  canvas.addEventListener('touchend', endLook);
-  canvas.addEventListener('touchcancel', endLook);
-
-  document.getElementById('btnJump').addEventListener('touchstart', (e) => { e.preventDefault(); input.jump = true; }, { passive: false });
-  const btnDash = document.getElementById('btnDash');
-  btnDash.addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    state.touchSprint = !state.touchSprint;
-    btnDash.classList.toggle('on', state.touchSprint);
-  }, { passive: false });
-  document.getElementById('btnAct').addEventListener('touchstart', (e) => { e.preventDefault(); input.act = true; }, { passive: false });
-}
-
-// ============================================================
-// GAME STATE
-// ============================================================
-const state = {
-  phase: 'TITLE',          // TITLE FREEFALL GLIDE PLAY DIALOG SHOP SIT END
-  questIndex: -1,
-  money: CFG.startMoney,
-  xp: 0, level: 1,
-  hunger: 80, stamina: 100,
-  vegCount: 0, yuzuCount: 0, compostDone: false,
-  breadsBought: [],        // SHOP_ITEMS の参照
-  coinsGot: 0, eatenCount: 0, hungerWarned: false,
-  paidOnce: false, metTanaka: false, talkedOshita: false,
-  touchSprint: false,
-  emoteT: 0, sitT: 0, time: 0,
-};
-
-// ============================================================
-// 10-12 CONTROLLER / CAMERA / COLLISION
-// ============================================================
-const vel = new THREE.Vector3();
-let onGround = false, coyote = 0, runPhase = 0, modelYaw = Math.PI;
-const _v1 = new THREE.Vector3(), _v2 = new THREE.Vector3(), _camTarget = new THREE.Vector3();
-const _camIdeal = new THREE.Vector3(), _camCur = new THREE.Vector3(0, 160, 180);
-
-function resolveCollision(p) {
-  for (let it = 0; it < 2; it++) {
-    for (const b of boxColliders) {
-      const qx = clamp(p.x, b.minX, b.maxX), qz = clamp(p.z, b.minZ, b.maxZ);
-      const dx = p.x - qx, dz = p.z - qz;
-      const d2 = dx * dx + dz * dz;
-      if (d2 < CFG.playerR * CFG.playerR) {
-        if (d2 > 1e-8) {
-          const d = Math.sqrt(d2), push = (CFG.playerR - d) / d;
-          p.x += dx * push; p.z += dz * push;
-        } else {
-          // 中に入ってしまった場合は最短面へ押し出す
-          const l = p.x - b.minX, r = b.maxX - p.x, t = p.z - b.minZ, bt = b.maxZ - p.z;
-          const m = Math.min(l, r, t, bt);
-          if (m === l) p.x = b.minX - CFG.playerR;
-          else if (m === r) p.x = b.maxX + CFG.playerR;
-          else if (m === t) p.z = b.minZ - CFG.playerR;
-          else p.z = b.maxZ + CFG.playerR;
-        }
-      }
-    }
-    for (const c of circleColliders) {
-      const dx = p.x - c.x, dz = p.z - c.z;
-      const rr = CFG.playerR + c.r;
-      const d2 = dx * dx + dz * dz;
-      if (d2 < rr * rr && d2 > 1e-8) {
-        const d = Math.sqrt(d2), push = (rr - d) / d;
-        p.x += dx * push; p.z += dz * push;
-      }
-    }
-  }
-  clampToWorld(p);
-}
-
-function isIndoors() {
-  const p = player.position;
-  return p.x > -13 && p.x < 15 && p.z > -85.5 && p.z < -75 && p.y < 3.4;
-}
-
-function updatePlayer(dt) {
-  const ph = state.phase;
-  // ---- 入力ベクトル（カメラ基準）----
-  let ix = 0, iz = 0;
-  if (ph === 'PLAY' || ph === 'FREEFALL' || ph === 'GLIDE') {
-    ix = (keys['KeyD'] ? 1 : 0) - (keys['KeyA'] ? 1 : 0) + joy.x;
-    iz = (keys['KeyS'] ? 1 : 0) - (keys['KeyW'] ? 1 : 0) + joy.y;
-    const l = Math.hypot(ix, iz);
-    if (l > 1) { ix /= l; iz /= l; }
-  }
-  const sin = Math.sin(camYaw), cos = Math.cos(camYaw);
-  // カメラ前方（XZ）: yaw=PIで-Z（北）
-  const wishX = cos * ix + sin * iz;
-  const wishZ = -sin * ix + cos * iz;
-
-  if (ph === 'FREEFALL') {
-    vel.y = Math.max(vel.y + CFG.gravity * 3 * dt, CFG.freefallVy);
-    vel.x = damp(vel.x, wishX * 10, 3, dt);
-    vel.z = damp(vel.z, wishZ * 10, 3, dt);
-    player.position.addScaledVector(vel, dt);
-    const gy = getGroundY(player.position.x, player.position.z);
-    if (player.position.y - gy <= CFG.glideStartH) {
-      state.phase = 'GLIDE';
-      glider.visible = true;
-      sfx.open();
-    }
-    poseAirborne(dt, 1);
-    return;
-  }
-  if (ph === 'GLIDE') {
-    vel.y = CFG.glideVy;
-    // 前進はカメラの向き、左右入力で旋回
-    camYaw -= ix * 1.4 * dt;
-    const fx = Math.sin(camYaw + Math.PI), fz = Math.cos(camYaw + Math.PI);
-    const spd = CFG.glideFwd * (iz < 0 ? 1.25 : 1);
-    vel.x = damp(vel.x, fx * spd, 4, dt);
-    vel.z = damp(vel.z, fz * spd, 4, dt);
-    player.position.addScaledVector(vel, dt);
-    resolveCollision(player.position);
-    modelYaw = dampAngle(modelYaw, Math.atan2(vel.x, vel.z), 8, dt);
-    player.rotation.y = modelYaw;
-    glider.rotation.z = damp(glider.rotation.z, -ix * 0.4, 6, dt);
-    const gy = getGroundY(player.position.x, player.position.z);
-    if (player.position.y <= gy + 0.02) {
-      player.position.y = gy;
-      vel.set(0, 0, 0);
-      glider.visible = false;
-      state.phase = 'PLAY';
-      onLanded();
-    }
-    poseAirborne(dt, 0.4);
-    return;
-  }
-  if (ph !== 'PLAY' && ph !== 'SIT') return;
-  if (ph === 'SIT') { vel.set(0, 0, 0); return; }
-
-  // ---- 地上移動 ----
-  const sprinting = (keys['ShiftLeft'] || keys['ShiftRight'] || state.touchSprint) && state.stamina > 0 && (ix || iz);
-  const maxSpd = sprinting ? CFG.sprintSpeed : CFG.walkSpeed;
-  if (ix || iz) {
-    vel.x += wishX * CFG.accel * dt;
-    vel.z += wishZ * CFG.accel * dt;
-  } else {
-    const f = Math.pow(0.0001, dt);
-    vel.x *= f; vel.z *= f;
-  }
-  const hs = Math.hypot(vel.x, vel.z);
-  if (hs > maxSpd) { vel.x *= maxSpd / hs; vel.z *= maxSpd / hs; }
-
-  // スタミナ・おなか
-  if (sprinting) state.stamina = Math.max(0, state.stamina - 16 * dt);
-  else state.stamina = Math.min(100, state.stamina + 10 * dt);
-  state.hunger = Math.max(0, state.hunger - (sprinting ? 0.5 : 0.18) * dt);
-
-  // ジャンプ
-  const gy = getGroundY(player.position.x, player.position.z);
-  if (onGround) coyote = 0.1; else coyote -= dt;
-  if (input.jump && coyote > 0) {
-    vel.y = CFG.jumpVel;
-    onGround = false; coyote = 0;
-    sfx.jump();
-  }
-  input.jump = false;
-
-  vel.y += CFG.gravity * dt;
-  player.position.addScaledVector(vel, dt);
-  resolveCollision(player.position);
-  if (player.position.y <= gy) {
-    player.position.y = gy;
-    vel.y = 0;
-    onGround = true;
-  } else onGround = false;
-
-  // ---- モデルの向きとアニメ ----
-  if (hs > 0.3) modelYaw = dampAngle(modelYaw, Math.atan2(vel.x, vel.z), 12, dt);
-  if (state.emoteT > 0) {
-    state.emoteT -= dt;
-    player.rotation.y += dt * 9;
-    av.lArm.rotation.z = 2.4; av.rArm.rotation.z = -2.4;
-    av.lArm.rotation.x = av.rArm.rotation.x = 0;
-  } else {
-    player.rotation.y = modelYaw;
-    const spdRatio = clamp(hs / CFG.sprintSpeed, 0, 1);
-    runPhase += hs * dt * 2.2;
-    const sw = Math.sin(runPhase) * 0.85 * spdRatio;
-    if (!onGround) {
-      av.lArm.rotation.x = av.rArm.rotation.x = -2.6;
-      av.lArm.rotation.z = 0.3; av.rArm.rotation.z = -0.3;
-      av.lLeg.rotation.x = 0.4; av.rLeg.rotation.x = -0.3;
-    } else {
-      av.lArm.rotation.x = sw; av.rArm.rotation.x = -sw;
-      av.lLeg.rotation.x = -sw; av.rLeg.rotation.x = sw;
-      av.lArm.rotation.z = av.rArm.rotation.z = 0;
-      // アイドル時のゆれ
-      if (spdRatio < 0.05) {
-        const b = Math.sin(state.time * 2.2) * 0.04;
-        av.lArm.rotation.x = b; av.rArm.rotation.x = -b;
-        av.lLeg.rotation.x = av.rLeg.rotation.x = 0;
-      }
-    }
-  }
-}
-
-function poseAirborne(dt, spread) {
-  av.lArm.rotation.z = damp(av.lArm.rotation.z, 2.2 * spread, 8, dt);
-  av.rArm.rotation.z = damp(av.rArm.rotation.z, -2.2 * spread, 8, dt);
-  av.lArm.rotation.x = av.rArm.rotation.x = 0;
-  av.lLeg.rotation.x = 0.35; av.rLeg.rotation.x = -0.25;
-}
-
-// ---- カメラ ----
-function pointBlocked(x, y, z) {
-  if (y > 7) return false;
-  for (const b of boxColliders) {
-    if (x > b.minX - 0.1 && x < b.maxX + 0.1 && z > b.minZ - 0.1 && z < b.maxZ + 0.1) return true;
-  }
-  return false;
-}
-function updateCamera(dt) {
-  const ph = state.phase;
-  const p = player.position;
-  if (ph === 'FREEFALL' || ph === 'GLIDE') {
-    _camTarget.set(p.x, p.y + 1.2, p.z);
-    const d = 7.5;
-    const cy = camYaw, cp = 0.55;
-    _camIdeal.set(
-      p.x - Math.sin(cy + Math.PI) * d * Math.cos(cp),
-      p.y + 1.2 + d * Math.sin(cp),
-      p.z - Math.cos(cy + Math.PI) * d * Math.cos(cp));
-    _camCur.lerp(_camIdeal, 1 - Math.exp(-6 * dt));
-    camera.position.copy(_camCur);
-    camera.lookAt(_camTarget);
-    return;
-  }
-  if (ph === 'SIT') {
-    // カフェの窓からグラウンドをながめる演出（ゆっくり旋回）
-    state.sitT += dt;
-    const a = state.sitT * 0.18;
-    camera.position.set(p.x + Math.sin(a) * 2.6, p.y + 1.9, p.z + 1.2 + Math.cos(a) * 1.8);
-    camera.lookAt(p.x, p.y + 1.0, p.z - 12);
-    return;
-  }
-  const dist = isIndoors() ? CFG.camDistIndoor : CFG.camDist;
-  const cy = camYaw, cp = camPitch;
-  const sideX = Math.cos(cy) * CFG.camShoulder, sideZ = -Math.sin(cy) * CFG.camShoulder;
-  _camTarget.set(p.x + sideX, p.y + CFG.camHeight, p.z + sideZ);
-  let d = dist;
-  const dirX = -Math.sin(cy + Math.PI) * Math.cos(cp);
-  const dirY = Math.sin(cp);
-  const dirZ = -Math.cos(cy + Math.PI) * Math.cos(cp);
-  // 遮蔽: 3点サンプルでブーム短縮
-  for (const t of [0.45, 0.7, 1.0]) {
-    const sx = _camTarget.x + dirX * dist * t;
-    const sy = _camTarget.y + dirY * dist * t;
-    const sz = _camTarget.z + dirZ * dist * t;
-    if (pointBlocked(sx, sy, sz)) { d = Math.min(d, dist * t - 0.5); }
-  }
-  d = Math.max(d, 1.1);
-  _camIdeal.set(_camTarget.x + dirX * d, Math.max(_camTarget.y + dirY * d, getGroundY(p.x, p.z) + 0.4), _camTarget.z + dirZ * d);
-  _camCur.lerp(_camIdeal, 1 - Math.exp(-14 * dt));
-  camera.position.copy(_camCur);
-  camera.lookAt(_camTarget);
-}
-
-// ============================================================
-// 17 AUDIO（WebAudioでプロシージャル効果音）
-// ============================================================
-let AC = null;
-function audioInit() {
-  if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)();
-  if (AC.state === 'suspended') AC.resume();
-}
-function tone(freq, dur, type = 'sine', delay = 0, vol = 0.16) {
-  if (!AC) return;
-  const t0 = AC.currentTime + delay;
-  const o = AC.createOscillator(), g = AC.createGain();
-  o.type = type; o.frequency.value = freq;
-  g.gain.setValueAtTime(vol, t0);
-  g.gain.exponentialRampToValueAtTime(0.001, t0 + dur);
-  o.connect(g).connect(AC.destination);
-  o.start(t0); o.stop(t0 + dur + 0.02);
-}
-const sfx = {
-  coin() { tone(880, 0.07, 'square', 0, 0.1); tone(1318, 0.14, 'square', 0.07, 0.1); },
-  pickup() { tone(523, 0.08, 'triangle'); tone(784, 0.14, 'triangle', 0.08); },
-  jump() { tone(300, 0.1, 'triangle', 0, 0.08); },
-  open() { tone(440, 0.18, 'triangle'); tone(587, 0.2, 'triangle', 0.1); },
-  banner() { tone(659, 0.1, 'triangle'); tone(880, 0.2, 'triangle', 0.1); },
-  levelup() { [523, 659, 784, 1047].forEach((f, i) => tone(f, 0.13, 'triangle', i * 0.09)); },
-  paypay() { tone(1568, 0.09, 'sine', 0, 0.2); tone(2093, 0.25, 'sine', 0.09, 0.2); },
-  buy() { [659, 784, 988, 1319].forEach((f, i) => tone(f, 0.11, 'triangle', i * 0.07)); },
-  talk() { tone(700, 0.04, 'square', 0, 0.05); },
-  eat() { tone(392, 0.08); tone(523, 0.12, 'sine', 0.08); },
-  telop() { tone(523, 0.35, 'sine', 0, 0.1); tone(659, 0.5, 'sine', 0.18, 0.1); },
-};
-
-// ============================================================
-// 15 HUD
-// ============================================================
-const $ = (id) => document.getElementById(id);
-const hudEls = {
-  hud: $('hud'), hungerFill: $('hungerFill'), staminaFill: $('staminaFill'),
-  money: $('money'), hotbar: $('hotbar'), xpFill: $('xpFill'), lvBadge: $('lvBadge'),
-  prompt: $('prompt'), promptKey: $('promptKey'), promptLabel: $('promptLabel'),
-  banner: $('banner'), bannerSub: $('bannerSub'), tName: $('tName'), tProg: $('tProg'),
-  toastWrap: $('toastWrap'), telop: $('telop'), telopMain: $('telopMain'), telopSub: $('telopSub'),
-  alt: $('alt'), btnAct: $('btnAct'),
-};
-
-function toast(text, cls = '') {
-  const d = document.createElement('div');
-  d.className = 'toast ' + cls;
-  d.textContent = text;
-  hudEls.toastWrap.appendChild(d);
-  setTimeout(() => d.remove(), 1700);
-}
-let bannerTimer = null;
-function showBanner(name, sub) {
-  hudEls.banner.textContent = name;
-  hudEls.bannerSub.textContent = sub || '';
-  hudEls.banner.classList.add('show');
-  hudEls.bannerSub.classList.add('show');
-  sfx.banner();
-  clearTimeout(bannerTimer);
-  bannerTimer = setTimeout(() => {
-    hudEls.banner.classList.remove('show');
-    hudEls.bannerSub.classList.remove('show');
-  }, 2800);
-}
-function showTelop(main, sub) {
-  hudEls.telopMain.textContent = main;
-  hudEls.telopSub.textContent = sub || '';
-  hudEls.telop.classList.add('show');
-  sfx.telop();
-  setTimeout(() => hudEls.telop.classList.remove('show'), 3400);
-}
-
-function addXP(n) {
-  state.xp += n;
-  toast(`+${n} XP`, 'xp');
-  const newLv = Math.min(9, Math.floor(state.xp / 100) + 1);
-  if (newLv > state.level) {
-    state.level = newLv;
-    showTelop(`⭐ レベル ${newLv} に アップ！`);
-    sfx.levelup();
-  }
-}
-function addMoney(n) {
-  state.money += n;
-  toast(`+${n}円`, 'coin');
-}
-
-// ---- ホットバー ----
-// スロット: 1=やさい 2=ゆず 3-6=買ったパン
-function renderHotbar() {
-  const slots = [];
-  slots.push({ num: 1, em: state.vegCount ? '🥕' : '', cnt: state.vegCount });
-  slots.push({ num: 2, em: state.yuzuCount ? '🍋' : '', cnt: state.yuzuCount });
-  for (let i = 0; i < 4; i++) {
-    const b = state.breadsBought[i];
-    slots.push({ num: 3 + i, em: b ? b.em : '', cnt: 0 });
-  }
-  hudEls.hotbar.innerHTML = slots.map(s =>
-    `<div class="slot" data-n="${s.num}"><span class="num">${s.num}</span>${s.em}` +
-    (s.cnt ? `<span class="cnt">×${s.cnt}</span>` : '') + `</div>`).join('');
-}
-function popSlot(n) {
-  const el = hudEls.hotbar.querySelector(`[data-n="${n}"]`);
-  if (el) { el.classList.add('pop'); setTimeout(() => el.classList.remove('pop'), 220); }
-}
-// タップでパンをたべる（スマホ）
-$('hotbar').addEventListener('click', (e) => {
-  const s = e.target.closest('.slot');
-  if (s) useSlot(+s.dataset.n);
-});
-function useSlot(n) {
-  if (n >= 3 && n <= 6) {
-    const i = n - 3;
-    const b = state.breadsBought[i];
-    if (b && b.id !== 'coffee' && b.id !== 'confiture') {
-      state.breadsBought.splice(i, 1);
-      state.eatenCount++;
-      state.hunger = 100;
-      renderHotbar();
-      sfx.eat();
-      toast(`🍞 ${b.name} をたべた！おなかいっぱい！`, 'special');
-      addXP(20);
-    } else if (b) {
-      state.hunger = Math.min(100, state.hunger + 30);
-      state.breadsBought.splice(i, 1);
-      state.eatenCount++;
-      renderHotbar();
-      sfx.eat();
-      toast(`${b.em} ごちそうさま！`, 'special');
-    }
-  }
-}
-
-// ---- コンパス ----
-const compassCv = $('compass');
-const compassCtx = compassCv.getContext('2d');
-const DIRS = [['北', 0], ['北東', 45], ['東', 90], ['南東', 135], ['南', 180], ['南西', 225], ['西', 270], ['北西', 315]];
-function headingRad() {
-  const fx = Math.sin(camYaw + Math.PI), fz = Math.cos(camYaw + Math.PI);
-  return Math.atan2(fx, -fz);
-}
-function drawCompass() {
-  const w = compassCv.clientWidth, h = compassCv.clientHeight;
-  if (compassCv.width !== w * 2) { compassCv.width = w * 2; compassCv.height = h * 2; }
-  const c = compassCtx;
-  c.setTransform(2, 0, 0, 2, 0, 0);
-  c.clearRect(0, 0, w, h);
-  const hd = (headingRad() * 180 / Math.PI + 360) % 360;
-  const pxPerDeg = w / 160;
-  c.textAlign = 'center'; c.textBaseline = 'middle';
-  for (const [label, deg] of DIRS) {
-    let dd = ((deg - hd + 540) % 360) - 180;
-    const x = w / 2 + dd * pxPerDeg;
-    if (x < -20 || x > w + 20) continue;
-    c.fillStyle = deg % 90 === 0 ? '#fff' : 'rgba(255,255,255,.6)';
-    c.font = (deg % 90 === 0 ? '900 13px' : '700 10px') + ' system-ui, sans-serif';
-    c.fillText(label, x, h / 2);
-  }
-  // 小目盛り
-  c.fillStyle = 'rgba(255,255,255,.35)';
-  for (let deg = 0; deg < 360; deg += 15) {
-    let dd = ((deg - hd + 540) % 360) - 180;
-    const x = w / 2 + dd * pxPerDeg;
-    if (x < 0 || x > w || deg % 45 === 0) continue;
-    c.fillRect(x, h / 2 - 2, 1.5, 4);
-  }
-  // クエスト目標マーカー
-  const q = QUESTS[state.questIndex];
-  if (q) {
-    const p = player.position;
-    const bearing = (Math.atan2(q.target.x - p.x, -(q.target.z - p.z)) * 180 / Math.PI + 360) % 360;
-    let dd = ((bearing - hd + 540) % 360) - 180;
-    const x = clamp(w / 2 + dd * pxPerDeg, 10, w - 10);
-    c.font = '14px system-ui';
-    c.fillText('🍞', x, h / 2 - 1);
-  }
-  // 中央インジケータ
-  c.fillStyle = '#ffd84d';
-  c.fillRect(w / 2 - 1, 1, 2, 5);
-}
-
-// ---- ミニマップ ----
-const mapStatic = makeCanvas(1024, 1024, (c) => {
-  const S = 1024 / 400; // world[-200,200] → [0,1024]
-  const W = (x) => (x + 200) * S, Z = (z) => (z + 200) * S;
-  c.fillStyle = '#8fb45e'; c.fillRect(0, 0, 1024, 1024);
-  // 山（外周を暗く）
-  c.strokeStyle = '#5d8a52'; c.lineWidth = 60;
-  c.beginPath(); c.arc(512, 512, 540, 0, 7); c.stroke();
-  // 田んぼ
-  c.fillStyle = '#a4c96b';
-  for (const p of PADDIES) c.fillRect(W(p.x - p.w / 2), Z(p.z - p.d / 2), p.w * S, p.d * S);
-  // 川
-  c.fillStyle = '#6db5c9';
-  c.fillRect(W(RIVER.x - RIVER.w / 2), Z(-160), RIVER.w * S, 360 * S);
-  // 道
-  c.fillStyle = '#cfc7b4';
-  c.fillRect(W(-2.2), Z(-22), 4.4 * S, 208 * S);
-  c.fillRect(W(-58), Z(60.4), 58 * S, 3.2 * S);
-  c.fillRect(W(2), Z(18.4), 52 * S, 3.2 * S);
-  // グラウンド
-  c.fillStyle = '#c2a26e';
-  c.fillRect(W(GROUNDS.x - GROUNDS.w / 2), Z(GROUNDS.z - GROUNDS.d / 2), GROUNDS.w * S, GROUNDS.d * S);
-  // 校舎・体育館
-  c.fillStyle = '#f3ead7';
-  c.fillRect(W(SCHOOL.x - SCHOOL.w / 2), Z(SCHOOL.z - SCHOOL.d / 2), SCHOOL.w * S, SCHOOL.d * S);
-  c.fillRect(W(GYM.x - GYM.w / 2), Z(GYM.z - GYM.d / 2), GYM.w * S, GYM.d * S);
-  // 農家の畑
-  c.fillStyle = '#8c6b42';
-  c.fillRect(W(-67.5), Z(50), 15 * S, 10 * S);
-  // ゆずの丘
-  c.fillStyle = '#9ec45f';
-  c.beginPath(); c.arc(W(70), Z(20), 16 * S, 0, 7); c.fill();
-  // 民家
-  c.fillStyle = '#e8dcc4';
-  for (const hh of HOUSES) c.fillRect(W(hh.x - 4), Z(hh.z - 4), 8 * S, 8 * S);
-});
-const mmCv = $('minimap');
-const mmCtx = mmCv.getContext('2d');
-function drawMinimap() {
-  const sz = mmCv.clientWidth;
-  if (mmCv.width !== sz * 2) { mmCv.width = mmCv.height = sz * 2; }
-  const c = mmCtx;
-  c.setTransform(2, 0, 0, 2, 0, 0);
-  c.clearRect(0, 0, sz, sz);
-  c.save();
-  c.beginPath(); c.arc(sz / 2, sz / 2, sz / 2, 0, 7); c.clip();
-  const view = 130; // 表示範囲(m)
-  const scale = sz / view;
-  const p = player.position;
-  const px = (p.x + 200) * (1024 / 400), pz = (p.z + 200) * (1024 / 400);
-  const half = view / 2 * (1024 / 400);
-  c.drawImage(mapStatic, px - half, pz - half, half * 2, half * 2, 0, 0, sz, sz);
-  // クエスト目標
-  const q = QUESTS[state.questIndex];
-  if (q) {
-    let mx = (q.target.x - p.x) * scale + sz / 2;
-    let mz = (q.target.z - p.z) * scale + sz / 2;
-    const dx = mx - sz / 2, dz = mz - sz / 2, dd = Math.hypot(dx, dz);
-    const maxR = sz / 2 - 12;
-    if (dd > maxR) { mx = sz / 2 + dx / dd * maxR; mz = sz / 2 + dz / dd * maxR; }
-    c.font = '16px system-ui'; c.textAlign = 'center'; c.textBaseline = 'middle';
-    c.fillText('🍞', mx, mz);
-  }
-  // プレイヤー矢印（視線方向）
-  c.save();
-  c.translate(sz / 2, sz / 2);
-  c.rotate(headingRad());
-  c.fillStyle = '#fff';
-  c.strokeStyle = 'rgba(0,0,0,.4)'; c.lineWidth = 2;
-  c.beginPath(); c.moveTo(0, -9); c.lineTo(6, 6); c.lineTo(0, 2.5); c.lineTo(-6, 6); c.closePath();
-  c.fill(); c.stroke();
-  c.restore();
-  c.restore();
-}
-
-// ---- ゲージなどのDOM更新（値が変わったときだけ）----
-const hudCache = {};
-function setHud(key, el, val, fn) {
-  if (hudCache[key] !== val) { hudCache[key] = val; fn(el, val); }
-}
-function updateHUD() {
-  setHud('hunger', hudEls.hungerFill, Math.round(state.hunger), (el, v) => el.style.width = v + '%');
-  setHud('stam', hudEls.staminaFill, Math.round(state.stamina), (el, v) => el.style.width = v + '%');
-  setHud('money', hudEls.money, state.money, (el, v) => el.textContent = `🪙 ${v.toLocaleString()}円`);
-  setHud('xp', hudEls.xpFill, Math.round((state.xp % 100)), (el, v) => el.style.width = v + '%');
-  setHud('lv', hudEls.lvBadge, state.level, (el, v) => el.textContent = `Lv.${v}`);
-  drawCompass();
-  drawMinimap();
-  if (state.phase === 'FREEFALL' || state.phase === 'GLIDE') {
-    const gy = getGroundY(player.position.x, player.position.z);
-    const a = Math.max(0, Math.round(player.position.y - gy));
-    setHud('alt', hudEls.alt, a, (el, v) => el.firstChild.textContent = v + 'm');
-  }
-}
-
-// ============================================================
-// 16 UI（ダイアログ / ショップ / 支払い / エンドカード）
-// ============================================================
-let dlgState = { lines: [], i: 0, cb: null };
-let interactCooldown = 0;
-function startDialog(d, cb) {
-  state.phase = 'DIALOG';
-  if (document.pointerLockElement) document.exitPointerLock();
-  dlgState = { lines: d.lines, i: 0, cb };
-  $('dlgName').textContent = d.name;
-  $('dlgText').textContent = d.lines[0];
-  $('dialog').classList.remove('hidden');
-  sfx.talk();
-}
-function dlgNext() {
-  dlgState.i++;
-  if (dlgState.i < dlgState.lines.length) {
-    $('dlgText').textContent = dlgState.lines[dlgState.i];
-    sfx.talk();
-  } else {
-    $('dialog').classList.add('hidden');
-    state.phase = 'PLAY';
-    interactCooldown = 0.35;
-    const cb = dlgState.cb;
-    dlgState.cb = null;
-    if (cb) cb();
-  }
-}
-$('dialog').addEventListener('click', dlgNext);
-addEventListener('keydown', (e) => {
-  if (state.phase === 'DIALOG' && (e.code === 'KeyF' || e.code === 'KeyE' || e.code === 'Space' || e.code === 'Enter')) {
-    e.preventDefault();
-    dlgNext();
-  }
-});
-
-// ---- ショップ ----
-let pendingItem = null;
-function openShop() {
-  state.phase = 'SHOP';
-  if (document.pointerLockElement) document.exitPointerLock();
-  renderShop();
-  $('shop').classList.remove('hidden');
-}
-function renderShop() {
-  $('shopGrid').innerHTML = SHOP_ITEMS.map((it, i) =>
-    `<div class="item" data-i="${i}">
-      <div class="em">${it.em}</div>
-      <div class="nm">${it.name}</div>
-      <div class="pr">¥${it.price.toLocaleString()}</div>
-    </div>`).join('');
-  $('shopWallet').textContent = `おさいふ：🪙 ${state.money.toLocaleString()}円`;
-}
-$('shopGrid').addEventListener('click', (e) => {
-  const el = e.target.closest('.item');
-  if (!el) return;
-  const it = SHOP_ITEMS[+el.dataset.i];
-  if (state.money < it.price) { toast('お金がたりない…コインをさがそう！', ''); return; }
-  if (state.breadsBought.length >= 4) { toast('リュックがいっぱい！パンをたべてからね', ''); return; }
-  if (!state.paidOnce) {
-    pendingItem = it;
-    $('payTitle').textContent = `おしはらい ¥${it.price.toLocaleString()}`;
-    $('payDesc').textContent = 'プチヘルメースは キャッシュレスもOK！どっちで はらう？';
-    $('pay').classList.remove('hidden');
-  } else {
-    completePurchase(it, null);
-  }
-});
-function completePurchase(it, method) {
-  state.money -= it.price;
-  state.breadsBought.push(it);
-  renderHotbar();
-  popSlot(2 + state.breadsBought.length);
-  renderShop();
-  if (method === 'paypay') sfx.paypay(); else sfx.buy();
-  toast(`${it.em} ${it.name} をかった！`, 'special');
-  if (state.questIndex === 7) {
-    advanceQuest(); // → Q8
-    state.emoteT = 2.4;
-    confetti();
-  }
-}
-$('payCash').addEventListener('click', () => {
-  $('pay').classList.add('hidden');
-  state.paidOnce = true;
-  if (pendingItem) completePurchase(pendingItem, 'cash');
-  pendingItem = null;
-});
-$('payPay').addEventListener('click', () => {
-  $('pay').classList.add('hidden');
-  state.paidOnce = true;
-  if (pendingItem) completePurchase(pendingItem, 'paypay');
-  pendingItem = null;
-});
-$('shopClose').addEventListener('click', () => {
-  $('shop').classList.add('hidden');
-  state.phase = 'PLAY';
-  interactCooldown = 0.35;
-  if (!isTouch) canvas.requestPointerLock();
-});
-
-function confetti() {
-  const cols = ['#ffd84d', '#f05a28', '#6B7D5A', '#52c7e8', '#e84438', '#a97fff'];
-  for (let i = 0; i < 60; i++) {
-    const d = document.createElement('div');
-    d.className = 'confetti';
-    d.style.left = Math.random() * 100 + 'vw';
-    d.style.background = cols[i % cols.length];
-    d.style.animationDuration = (1.4 + Math.random() * 1.6) + 's';
-    d.style.animationDelay = Math.random() * 0.4 + 's';
-    document.body.appendChild(d);
-    setTimeout(() => d.remove(), 3600);
-  }
-}
-
-// ---- エンドカード ----
-function showEndcard() {
-  state.phase = 'END';
-  if (document.pointerLockElement) document.exitPointerLock();
-  $('endStats').innerHTML =
-    `<div>🪙 コイン ${state.coinsGot}/20</div>` +
-    `<div>🍞 かったパン ${state.breadsBought.length + state.eatenCount}こ</div>` +
-    `<div>⭐ レベル ${state.level}</div>`;
-  $('endcard').classList.remove('hidden');
-  sfx.levelup();
-  confetti();
-}
-$('againBtn').addEventListener('click', () => location.reload());
-
-// ============================================================
-// 13 INTERACT
-// ============================================================
-const interactables = [];
-function addInteract(o) { interactables.push(o); return o; }
-
-addInteract({
-  x: npcTanaka.x, z: npcTanaka.z, r: 3.4, key: 'F', label: '田中さんと 話す',
-  enabled: () => state.questIndex >= 1,
-  onUse() {
-    if (state.questIndex === 1) {
-      startDialog(DIALOGS.tanaka1, () => advanceQuest());
-      state.metTanaka = true;
-    } else if (state.questIndex === 2) {
-      startDialog(DIALOGS.tanaka2);
-    } else {
-      startDialog(DIALOGS.tanaka3);
-    }
-  },
-});
-for (const v of veggies) {
-  addInteract({
-    x: v.x, z: v.z, r: 2.8, key: 'E', label: v.label,
-    enabled: () => state.questIndex === 2 && !v.taken,
-    onUse() {
-      v.taken = true;
-      v.mesh.visible = false;
-      state.vegCount++;
-      renderHotbar(); popSlot(1);
-      sfx.pickup();
-      toast('🥕 きかく外やさい をひろった！');
-      addXP(15);
-      if (state.vegCount >= 3) {
-        startDialog(DIALOGS.tanaka3, () => advanceQuest());
-      }
-    },
-  });
-}
-for (const y of yuzus) {
-  addInteract({
-    x: y.x, z: y.z, r: 2.8, key: 'E', label: y.label,
-    enabled: () => state.questIndex === 3 && !y.taken,
-    onUse() {
-      y.taken = true;
-      y.mesh.visible = false;
-      state.yuzuCount++;
-      renderHotbar(); popSlot(2);
-      sfx.pickup();
-      toast('🍋 ゆず をしゅうかくした！');
-      addXP(15);
-      if (state.yuzuCount >= 3) advanceQuest();
-    },
-  });
-}
-addInteract({
-  x: 15, z: -93, r: 3.2, key: 'F', label: 'やさいくずを 入れる',
-  enabled: () => state.questIndex === 4,
-  onUse() {
-    startDialog(DIALOGS.compost, () => {
-      showTelop('「今日のパンが、明日の野菜に。」', '生ごみ → たいひ → やさい → パン。ぐるぐるめぐる！');
-      advanceQuest();
-    });
-  },
-});
-addInteract({
-  x: npcOshita.x, z: npcOshita.z, r: 3.6, key: 'F', label: '大下さんと 話す',
-  enabled: () => state.questIndex >= 1,
-  onUse() {
-    if (state.questIndex < 6) {
-      startDialog(DIALOGS.oshitaEarly);
-    } else if (state.questIndex === 6) {
-      startDialog(DIALOGS.oshita1, () => {
-        state.vegCount = 0; state.yuzuCount = 0;
-        renderHotbar();
-        addMoney(500);
-        state.talkedOshita = true;
-        advanceQuest(); // → Q7
-        openShop();
-      });
-    } else if (state.questIndex === 7) {
-      startDialog(DIALOGS.oshita2, () => openShop());
-    } else {
-      startDialog(DIALOGS.oshitaAfter);
-    }
-  },
-});
-let petitkunTalked = false;
-addInteract({
-  x: -8, z: -35, r: 3.2, key: 'F', label: 'プチカンパーニュくんと 話す',
-  enabled: () => true,
-  onUse() {
-    startDialog(DIALOGS.petitkun, () => {
-      if (!petitkunTalked) { petitkunTalked = true; addXP(50); }
-    });
-  },
-});
-addInteract({
-  x: -6, z: -76.6, r: 2.4, key: 'F', label: 'すわって ひとやすみ',
-  enabled: () => state.questIndex === 8,
-  onUse() {
-    state.phase = 'SIT';
-    state.sitT = 0;
-    player.position.set(-6, 0.45, -76.6);
-    player.rotation.y = 0; // 窓（グラウンド側）を向く
-    av.lLeg.rotation.x = av.rLeg.rotation.x = -1.45;
-    av.lArm.rotation.x = av.rArm.rotation.x = -0.5;
-    hudEls.prompt.classList.add('hidden');
-  },
-});
-
-let currentInteract = null;
-function updateInteract() {
-  if (state.phase !== 'PLAY' || interactCooldown > 0) {
-    if (state.phase === 'PLAY') { /* cooldown中はプロンプトだけ更新しない */ }
-    hudEls.prompt.classList.add('hidden');
-    currentInteract = null;
-    return;
-  }
-  const p = player.position;
-  let best = null, bestD = 1e9;
-  for (const it of interactables) {
-    if (!it.enabled()) continue;
-    const d = Math.hypot(it.x - p.x, it.z - p.z);
-    if (d < it.r && d < bestD) { best = it; bestD = d; }
-  }
-  currentInteract = best;
-  if (best) {
-    hudEls.promptKey.textContent = best.key;
-    hudEls.promptLabel.textContent = best.label;
-    hudEls.prompt.classList.remove('hidden');
-    if (isTouch) hudEls.btnAct.textContent = best.key;
-  } else {
-    hudEls.prompt.classList.add('hidden');
-  }
-  if (input.act && best) best.onUse();
-}
-
-// ============================================================
-// 14 QUEST
-// ============================================================
-function setQuest(i) {
-  state.questIndex = i;
-  const q = QUESTS[i];
-  if (!q) return;
-  showBanner(q.name, q.sub);
-  hudEls.tName.textContent = q.name;
-  updateTracker();
-  beacon.position.x = q.target.x;
-  beacon.position.z = q.target.z;
-}
-function updateTracker() {
-  const q = QUESTS[state.questIndex];
-  if (!q) { hudEls.tProg.textContent = ''; return; }
-  if (state.questIndex === 2) hudEls.tProg.textContent = `やさい ${state.vegCount}/3`;
-  else if (state.questIndex === 3) hudEls.tProg.textContent = `ゆず ${state.yuzuCount}/3`;
-  else hudEls.tProg.textContent = '';
-}
-function advanceQuest() {
-  const q = QUESTS[state.questIndex];
-  if (q) addXP(q.xp);
-  if (state.questIndex >= QUESTS.length - 1) return;
-  setQuest(state.questIndex + 1);
-}
-function onLanded() {
-  hudEls.alt.classList.add('hidden');
-  showTelop('ナイス降下！🪂', 'プチヘルメースの村に とうちゃく！');
-  advanceQuest(); // Q0 → Q1
-}
-
-// ============================================================
-// 18 MAIN
-// ============================================================
-const dynamics = { doorOpen: 0 };
-
-function updateDynamics(dt) {
-  const t = state.time;
-  const p = player.position;
-  // コイン回転 + 接触回収
-  for (const c of coins) {
-    if (c.taken) continue;
-    c.mesh.rotation.y += dt * 2.4;
-    c.mesh.position.y = getGroundY(c.x, c.z) + 1.0 + Math.sin(t * 2 + c.x) * 0.1;
-    if ((state.phase === 'PLAY' || state.phase === 'GLIDE') &&
-        Math.hypot(c.x - p.x, c.z - p.z) < 1.15 && Math.abs(c.mesh.position.y - p.y - 0.8) < 1.6) {
-      c.taken = true;
-      c.mesh.visible = false;
-      state.coinsGot++;
-      addMoney(CFG.coinValue);
-      sfx.coin();
-    }
-  }
-  // 収集物の回転
-  for (const v of veggies) if (!v.taken) { v.mesh.rotation.y += dt * 1.6; v.mesh.position.y = 0.9 + Math.sin(t * 2.4 + v.x) * 0.08; }
-  for (const y of yuzus) if (!y.taken) { y.mesh.rotation.y += dt * 1.6; y.mesh.position.y = getGroundY(y.x, y.z) + 1.0 + Math.sin(t * 2.4 + y.x) * 0.08; }
-  // プチカンパーニュくん ぴょこぴょこ
-  petitkun.position.y = 0.55 + Math.abs(Math.sin(t * 3.2)) * 0.18;
-  const dxm = p.x - petitkun.position.x, dzm = p.z - petitkun.position.z;
-  if (Math.hypot(dxm, dzm) < 8) petitkun.rotation.y = dampAngle(petitkun.rotation.y, Math.atan2(dxm, dzm), 5, dt);
-  // NPCがプレイヤーの方を向く
-  for (const n of npcs) {
-    const dx = p.x - n.x, dz = p.z - n.z;
-    const near = Math.hypot(dx, dz) < 6;
-    n.group.rotation.y = dampAngle(n.group.rotation.y, near ? Math.atan2(dx, dz) : n.baseRy, 5, dt);
-  }
-  // パン屋のドア（近づくと開く）
-  const doorD = Math.hypot(8 - p.x, -75.15 - p.z);
-  dynamics.doorOpen = damp(dynamics.doorOpen, doorD < 2.8 ? 1 : 0, 8, dt);
-  bakeryDoor.rotation.y = -dynamics.doorOpen * 1.45;
-  // ビーコンのゆらぎ
-  beacon.visible = ['FREEFALL', 'GLIDE', 'PLAY'].includes(state.phase) && state.questIndex < 8;
-  beacon.material.opacity = (state.phase === 'PLAY' ? 0.13 : 0.25) + Math.sin(t * 2) * 0.04;
-  // 丸影
-  const gy = getGroundY(p.x, p.z);
-  blobShadow.position.set(p.x, gy + 0.03, p.z);
-  const h = p.y - gy;
-  const s = clamp(1.25 - h * 0.006, 0.3, 1.25);
-  blobShadow.scale.setScalar(s);
-  blobShadow.material.opacity = 0.28 * s;
-
-  // クエスト5: パン屋に入った判定
-  if (state.questIndex === 5 && p.x > 2 && p.x < 14.5 && p.z < -75.6 && p.z > -85) {
-    advanceQuest();
-    showTelop('🍞 ふわぁ…パンのいいにおい！', '元・教室がパン屋さんになってるよ');
-  }
-  // クエスト8: 着席後の演出 → エンドカード
-  if (state.phase === 'SIT' && state.sitT > 7) {
-    advanceQuest(); // Q8のXP
-    showEndcard();
-  }
-  // おなかペコペコ警告（一度だけ）
-  if (state.hunger < 25 && !state.hungerWarned) {
-    state.hungerWarned = true;
-    toast('おなかが すいた…パンが たべたい！', '');
-  }
-}
-
-// ---- タイトル → スタート ----
-$('startBtn').addEventListener('click', () => {
-  audioInit();
-  $('title').classList.add('hidden');
-  hudEls.hud.classList.remove('hidden');
-  hudEls.alt.classList.remove('hidden');
-  renderHotbar();
-  state.phase = 'FREEFALL';
-  setQuest(0);
-  showTelop('みんな降りろ！🪂', '目標：プチヘルメース（光の柱）');
-  if (!isTouch) canvas.requestPointerLock();
-});
-
-// ---- メインループ ----
-const fpsEl = $('fps');
-const debugMode = location.search.includes('debug');
-if (debugMode) fpsEl.classList.remove('hidden');
-let fpsAcc = 0, fpsN = 0, fpsT = 0;
-
-const clock = new THREE.Clock();
-function loop() {
-  requestAnimationFrame(loop);
-  const dt = Math.min(clock.getDelta(), 0.05);
-  state.time += dt;
-  if (interactCooldown > 0) interactCooldown -= dt;
-
-  if (state.phase !== 'TITLE') {
-    updatePlayer(dt);
-    updateDynamics(dt);
-    updateInteract();
-    if (input.useSlot) { useSlot(input.useSlot); }
-    if (input.emote && state.phase === 'PLAY') { state.emoteT = 1.6; }
-    updateCamera(dt);
-    if (state.phase !== 'END') updateHUD();
-    updateTracker();
-  } else {
-    // タイトル裏でゆっくり俯瞰カメラ
-    const a = state.time * 0.06;
-    camera.position.set(Math.sin(a) * 120, 60, Math.cos(a) * 120 - 20);
-    camera.lookAt(0, 0, -40);
-  }
-  input.act = false;
-  input.useSlot = 0;
-  input.emote = false;
-  input.jump = state.phase === 'TITLE' ? false : input.jump;
-
-  renderer.render(scene, camera);
-
-  if (debugMode) {
-    fpsAcc += dt; fpsN++;
-    if ((fpsT += dt) > 0.5) {
-      fpsEl.textContent = `${Math.round(fpsN / fpsAcc)}fps / calls:${renderer.info.render.calls} / tris:${renderer.info.render.triangles}`;
-      fpsAcc = fpsN = fpsT = 0;
-    }
-  }
-}
-loop();
-
-// デバッグ・自動テスト用フック（?debug 時のみ参照される想定）
-window.__game = { state, player, camera, setQuest, advanceQuest, QUESTS, openShop, showEndcard, interactables, renderer };
-</script>
+<script type="module" src="./src/game/main.js"></script>
 </body>
 </html>
