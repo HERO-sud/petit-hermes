@@ -5,7 +5,7 @@ import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { L } from '../config.js';
 
 export function createWater(G) {
-  const { scene, terrain, tex: T } = G;
+  const { scene, tex: T } = G;
   const group = new THREE.Group();
   scene.add(group);
 
@@ -32,7 +32,7 @@ export function createWater(G) {
     return geo;
   }
 
-  let river = null, riverIsReflective = false;
+  let river = null, riverIsReflective = false, paddyMatRef = null;
 
   function buildRiver(rtSize) {
     if (river) { group.remove(river); river.geometry.dispose(); river.material.dispose?.(); }
@@ -95,7 +95,7 @@ export function createWater(G) {
     const bundMesh = new THREE.Mesh(bundGeo, bundMat);
     bundMesh.receiveShadow = true;
     group.add(bundMesh);
-    G._paddyMat = paddyMat;
+    paddyMatRef = paddyMat;
   }
 
   return {
@@ -107,8 +107,8 @@ export function createWater(G) {
       } else if (river.material.normalMap) {
         river.material.normalMap.offset.y -= dt * 0.05;
       }
-      if (G._paddyMat?.normalMap) {
-        G._paddyMat.normalMap.offset.x += dt * 0.004;
+      if (paddyMatRef?.normalMap) {
+        paddyMatRef.normalMap.offset.x += dt * 0.004;
       }
     },
   };

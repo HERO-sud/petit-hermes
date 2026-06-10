@@ -2,7 +2,7 @@
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { L, TIERS } from '../config.js';
-import { rand, randR, seed, clamp } from '../gen/noise.js';
+import { rand, randR, seed } from '../gen/noise.js';
 
 const _m4 = new THREE.Matrix4();
 const _q = new THREE.Quaternion();

@@ -1,5 +1,5 @@
 // HUD: コンパス・ミニマップ・所持金・ホットバー・トースト・テロップ
-import { L, SHOP_ITEMS } from '../config.js';
+import { L } from '../config.js';
 
 export function createHUD(G) {
   const $ = (id) => document.getElementById(id);

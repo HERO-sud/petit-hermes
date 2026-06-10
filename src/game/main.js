@@ -394,10 +394,7 @@ function loop() {
   } else {
     G.player.update(dt);
     G.player.updateCamera(dt);
-    if (st.phase === 'PLAY') {
-      checkBakeryEntry();
-      if (st.phase === 'SIT') {} // sitへの遷移はinteractで
-    }
+    if (st.phase === 'PLAY') checkBakeryEntry();
     if (st.phase === 'SIT' && performance.now() - st.sitStart > 7000) showEndcard();
   }
 

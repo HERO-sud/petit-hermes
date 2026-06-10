@@ -27,5 +27,13 @@ export function createRenderer(tier) {
     renderer.setSize(innerWidth, innerHeight);
   });
 
+  // WebGLコンテキスト喪失時の案内（GPUリセット等。復帰イベントでリロード）
+  canvas.addEventListener('webglcontextlost', (e) => {
+    e.preventDefault();
+    const el = document.getElementById('ctxlost');
+    if (el) el.classList.remove('hidden');
+  });
+  canvas.addEventListener('webglcontextrestored', () => location.reload());
+
   return { renderer, scene, camera, canvas };
 }

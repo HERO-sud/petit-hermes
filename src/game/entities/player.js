@@ -2,7 +2,7 @@
 import * as THREE from 'three';
 import { CFG } from '../config.js';
 import { makeCharacter } from './character.js';
-import { clamp, damp, dampAngle } from '../gen/noise.js';
+import { clamp, dampAngle } from '../gen/noise.js';
 
 export function createPlayer(G) {
   const { scene, camera, colliders, canvas } = G;
@@ -186,7 +186,6 @@ export function createPlayer(G) {
       const hs = Math.hypot(vel.x, vel.z);
       if (hs > maxSpd) { vel.x *= maxSpd / hs; vel.z *= maxSpd / hs; }
 
-      const gy = colliders.getGroundY(player.position.x, player.position.z);
       if (onGround) coyote = 0.1; else coyote -= dt;
       if (input.jump && coyote > 0) {
         vel.y = CFG.jumpVel;

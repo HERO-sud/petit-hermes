@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { L } from '../config.js';
 import { textBoard } from '../gen/textures.js';
+import { createSharedMaterials } from '../gen/materials.js';
 
 export function createSchool(G) {
   const { scene, tex: T, colliders } = G;
@@ -14,24 +15,13 @@ export function createSchool(G) {
   const xL = S.x - S.w / 2, xR = S.x + S.w / 2;
   const H1 = 3.3, H = S.h;
 
-  const wallMat = new THREE.MeshStandardMaterial({
-    map: T.mortar.map, normalMap: T.mortar.normalMap, roughnessMap: T.mortar.roughnessMap,
-    roughness: 1, metalness: 0,
-  });
-  const concMat = new THREE.MeshStandardMaterial({
-    map: T.concrete.map, normalMap: T.concrete.normalMap, roughness: 0.9,
-  });
-  const woodMat = new THREE.MeshStandardMaterial({
-    map: T.wood.map, normalMap: T.wood.normalMap, roughnessMap: T.wood.roughnessMap, roughness: 1,
-  });
-  const glassMat = new THREE.MeshPhysicalMaterial({
-    color: 0x8fb0c0, roughness: 0.06, metalness: 0, transparent: true, opacity: 0.4,
-    envMapIntensity: 1.6,
-  });
-  const sashMat = new THREE.MeshStandardMaterial({ color: 0x3c4248, roughness: 0.45, metalness: 0.55 });
-  const breadMat = new THREE.MeshStandardMaterial({
-    map: T.bread.map, normalMap: T.bread.normalMap, roughnessMap: T.bread.roughnessMap, roughness: 1,
-  });
+  const M = createSharedMaterials(T);
+  const wallMat = M.mortar;
+  const concMat = M.concrete;
+  const woodMat = M.wood;
+  const glassMat = M.glass(0x8fb0c0, 0.4);
+  const sashMat = M.sash(0x3c4248);
+  const breadMat = M.bread;
 
   function wall(cx, cy, cz, sx, sy, sz, collide = true, mat = wallMat) {
     const m = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz), mat);
@@ -179,8 +169,7 @@ export function createSchool(G) {
   g.add(door);
 
   // パン屋内装
-  const counter = wall(8, 0.55, zF - 2.6, 4.6, 1.1, 0.9, true, woodMat);
-  counter.material = woodMat;
+  wall(8, 0.55, zF - 2.6, 4.6, 1.1, 0.9, true, woodMat);
   const counterTop = new THREE.Mesh(new THREE.BoxGeometry(4.9, 0.06, 1.1), woodMat);
   counterTop.position.set(8, 1.13, zF - 2.6);
   g.add(counterTop);
