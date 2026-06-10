@@ -11,7 +11,7 @@ export function createObjectives(G) {
   const beacon = new THREE.Mesh(
     new THREE.CylinderGeometry(1.4, 1.4, 120, 10, 1, true),
     new THREE.MeshBasicMaterial({
-      color: 0xffd98a, transparent: true, opacity: 0.04,
+      color: 0xffd98a, transparent: true, opacity: 0.07,
       blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide,
     }));
   beacon.position.y = 60;
@@ -30,6 +30,25 @@ export function createObjectives(G) {
     const s = state[d.id];
     objText.textContent = `${d.mk} ${d.name}`;
     objSub.textContent = d.count ? `${s.count}/${d.count}` : '';
+  }
+
+  // ミニマップ廃止にともなう迷子対策: 目標の方角と距離をヒントに表示
+  const DIRS8 = ['北', '北東', '東', '南東', '南', '南西', '西', '北西'];
+  let lastHintAt = 0;
+  function updateDirectionHint() {
+    const now = performance.now();
+    if (now - lastHintAt < 500) return; // 0.5秒ごとに更新すれば十分
+    lastHintAt = now;
+    const d = def(focusId), t = O.target();
+    if (!d || !t) return;
+    const p = G.player.pos;
+    const dx = t.x - p.x, dz = t.z - p.z;
+    const dist = Math.hypot(dx, dz);
+    const base = d.count ? `${state[d.id].count}/${d.count}　` : '';
+    if (dist < 12) { objSub.textContent = base + 'すぐちかく！'; return; }
+    const deg = (Math.atan2(dx, -dz) * 180 / Math.PI + 360) % 360;
+    const dir = DIRS8[Math.round(deg / 45) % 8];
+    objSub.textContent = `${base}${dir}へ およそ${Math.round(dist / 10) * 10}m`;
   }
 
   function pickNextFocus() {
@@ -87,6 +106,7 @@ export function createObjectives(G) {
       const t = O.target();
       beacon.visible = !!t && G.state.phase === 'PLAY';
       if (t) { beacon.position.x = t.x; beacon.position.z = t.z; }
+      updateDirectionHint();
     },
   };
   refreshHint();

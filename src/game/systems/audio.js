@@ -102,7 +102,6 @@ export function createAudio(G) {
     init,
     sfx: {
       step(onRoad) { noiseBurst(0.09, onRoad ? 900 : 420, 0.05); },
-      jump() { tone(290, 0.09, 'triangle', 0, 0.06); },
       pickup() { tone(523, 0.08, 'triangle'); tone(784, 0.13, 'triangle', 0.08); },
       doorbell() { tone(1318, 0.4, 'sine', 0, 0.1); tone(1046, 0.5, 'sine', 0.18, 0.1); },
       talk() { tone(640, 0.04, 'square', 0, 0.04); },

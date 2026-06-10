@@ -3,7 +3,7 @@
 // ============================================================
 
 export const CFG = {
-  walkSpeed: 3.4, sprintSpeed: 6.4, accel: 30, jumpVel: 4.6, gravity: -16,
+  walkSpeed: 3.4, sprintSpeed: 6.4, accel: 30, gravity: -16,
   playerR: 0.38, playerH: 1.62, eyeH: 1.55,
   camDist: 3.6, camDistIndoor: 2.4, camShoulder: 0.5, camHeight: 1.5,
   startMoney: 1000,
