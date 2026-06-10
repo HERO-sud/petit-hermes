@@ -153,21 +153,21 @@ export const TIERS = {
   min: {
     label: '最小', pixelRatio: 0.75, shadowSize: 512, anisotropy: 1,
     grass: 800, trees: 60, impostors: 200, rice: 600, bamboo: 12,
-    grassRadius: 18, fogDensity: 0.0028, post: 'none', waterRT: 0, msaa: false,
+    grassRadius: 18, fogDensity: 0.0028, rain: 0, post: 'none', waterRT: 0, msaa: false,
   },
   low: {
     label: '低', pixelRatio: 1.0, shadowSize: 1024, anisotropy: 2,
     grass: 10000, trees: 350, impostors: 1500, rice: 6000, bamboo: 40,
-    grassRadius: 38, fogDensity: 0.0024, post: 'none', waterRT: 0, msaa: true,
+    grassRadius: 38, fogDensity: 0.0024, rain: 900, post: 'none', waterRT: 0, msaa: true,
   },
   mid: {
     label: '中', pixelRatio: 1.5, shadowSize: 2048, anisotropy: 4,
     grass: 30000, trees: 700, impostors: 3500, rice: 14000, bamboo: 80,
-    grassRadius: 65, fogDensity: 0.0016, post: 'bloom', waterRT: 256, msaa: false,
+    grassRadius: 65, fogDensity: 0.0016, rain: 2600, post: 'bloom', waterRT: 256, msaa: false,
   },
   high: {
     label: '高', pixelRatio: 2.0, shadowSize: 4096, anisotropy: 8,
     grass: 60000, trees: 1200, impostors: 6000, rice: 24000, bamboo: 120,
-    grassRadius: 100, fogDensity: 0.0011, post: 'full', waterRT: 512, msaa: false,
+    grassRadius: 100, fogDensity: 0.0011, rain: 4500, post: 'full', waterRT: 512, msaa: false,
   },
 };
