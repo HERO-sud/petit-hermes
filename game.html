@@ -31,6 +31,9 @@ canvas#game{display:block;width:100%;height:100%}
 #hud{position:fixed;inset:0;pointer-events:none;z-index:10;
   transition:opacity .35s}
 #hud.photo{opacity:0}
+/* 没入モード: 無操作4秒でHUDクロームをフェードアウト */
+.chrome{transition:opacity .7s}
+#hud.idleHide .chrome{opacity:0}
 .glass{background:rgba(12,16,20,.45);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.08);
   border-radius:10px}
 
@@ -209,21 +212,21 @@ canvas#game{display:block;width:100%;height:100%}
 <canvas id="game"></canvas>
 
 <div id="hud" class="hidden">
-  <div id="compassWrap"><canvas id="compass"></canvas></div>
-  <div id="minimapWrap"><canvas id="minimap"></canvas></div>
-  <div id="objHint" class="glass">
+  <div id="compassWrap" class="chrome"><canvas id="compass"></canvas></div>
+  <div id="minimapWrap" class="chrome"><canvas id="minimap"></canvas></div>
+  <div id="objHint" class="glass chrome">
     <div class="oTitle">もくひょう（M でいちらん）</div>
     <div class="oText" id="objText"></div>
     <div class="oSub" id="objSub"></div>
   </div>
-  <div id="money" class="glass">🪙 1,000円</div>
-  <div id="hotbar"></div>
+  <div id="money" class="glass chrome">🪙 1,000円</div>
+  <div id="hotbar" class="chrome"></div>
   <div id="reticle"></div>
   <div id="prompt" class="hidden"><span class="key" id="promptKey">F</span><span id="promptLabel"></span></div>
   <div id="toastWrap"></div>
   <div id="telop"><span id="telopMain"></span><span id="telopSub"></span></div>
   <div id="locTitle"><div class="lMain" id="locMain"></div><div class="lSub" id="locSub"></div></div>
-  <div id="keyguide">V <b>視点</b> ・ P <b>フォト</b> ・ M <b>目標</b></div>
+  <div id="keyguide" class="chrome">V <b>視点</b> ・ P <b>フォト</b> ・ M <b>目標</b></div>
 </div>
 
 <div id="objPanel" class="hidden"><div id="objCard">
@@ -294,6 +297,10 @@ canvas#game{display:block;width:100%;height:100%}
 </div>
 
 <div id="fade"></div>
+<div id="ctxlost" class="hidden" style="position:fixed;inset:0;z-index:200;display:flex;align-items:center;
+  justify-content:center;background:rgba(8,10,12,.92);text-align:center;font-size:15px;line-height:2">
+  ⚠️ グラフィックの調子がわるくなったみたい…<br>ページを再読み込みしてね🙏
+</div>
 <div id="fps" class="hidden"></div>
 
 <script type="module" src="./src/game/main.js"></script>

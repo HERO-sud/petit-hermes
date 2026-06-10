@@ -1,5 +1,5 @@
 // HUD: コンパス・ミニマップ・所持金・ホットバー・トースト・テロップ
-import { L, SHOP_ITEMS } from '../config.js';
+import { L } from '../config.js';
 
 export function createHUD(G) {
   const $ = (id) => document.getElementById(id);
@@ -148,10 +148,21 @@ export function createHUD(G) {
     if (s) G.useSlot(+s.dataset.n);
   });
 
+  // ---- 没入オートフェード: 無操作4秒でHUDクロームを隠す ----
+  let lastActive = performance.now();
+  function wake() {
+    lastActive = performance.now();
+    els.hud.classList.remove('idleHide');
+  }
+  for (const ev of ['keydown', 'mousedown', 'touchstart', 'wheel']) {
+    addEventListener(ev, wake, { passive: true });
+  }
+
   let telopTimer = null;
   return {
     els,
-    show() { els.hud.classList.remove('hidden'); renderHotbar(); },
+    wake,
+    show() { els.hud.classList.remove('hidden'); renderHotbar(); wake(); },
     setPhoto(on) { els.hud.classList.toggle('photo', on); },
     renderHotbar,
     popSlot(n) {
@@ -159,6 +170,7 @@ export function createHUD(G) {
       if (el) { el.classList.add('pop'); setTimeout(() => el.classList.remove('pop'), 220); }
     },
     toast(text, cls = '') {
+      wake();
       const d = document.createElement('div');
       d.className = 'toast ' + cls;
       d.textContent = text;
@@ -179,7 +191,8 @@ export function createHUD(G) {
       setTimeout(() => els.locTitle.classList.remove('show'), 5200);
     },
     update() {
-      set('money', (v) => els.money.textContent = `🪙 ${v.toLocaleString()}円`, G.state.money);
+      set('money', (v) => { els.money.textContent = `🪙 ${v.toLocaleString()}円`; wake(); }, G.state.money);
+      if (performance.now() - lastActive > 4000) els.hud.classList.add('idleHide');
       drawCompass();
       drawMinimap();
     },

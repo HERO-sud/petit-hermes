@@ -15,6 +15,8 @@ import { createSchool } from './world/school.js';
 import { createVillage } from './world/village.js';
 import { createPlayer } from './entities/player.js';
 import { createNPCs } from './entities/npc.js';
+import { preloadCharacter } from './entities/character.js';
+import { loadTex } from './core/loaders.js';
 import { createInteract } from './systems/interact.js';
 import { createObjectives } from './systems/objectives.js';
 import { createAudio } from './systems/audio.js';
@@ -48,11 +50,31 @@ async function boot() {
   const { renderer, scene, camera, canvas } = createRenderer(G.quality.tier);
   Object.assign(G, { renderer, scene, camera, canvas });
 
-  loadNote('空と光を生成中…');
-  await tick();
-  G.sky = createSky(G);
+  loadNote('実写HDRIの空をよみこみ中…');
+  G.sky = await createSky(G);
   G.sky.setShadowSize(G.quality.tier.shadowSize);
   scene.fog.density = G.quality.tier.fogDensity;
+
+  loadNote('実写テクスチャをよみこみ中…');
+  // 実写素材でプロシージャルテクスチャを上書き（地形の草・水面・店内床）
+  try {
+    const [gd, wn, hd, hb, hr] = await Promise.all([
+      loadTex('assets/textures/grass_diff.jpg', { repeat: [0.5, 0.5], aniso: G.quality.tier.anisotropy }),
+      loadTex('assets/textures/waternormals.jpg', { srgb: false }),
+      loadTex('assets/textures/hardwood_diff.jpg', { repeat: [7, 2.5] }),
+      loadTex('assets/textures/hardwood_bump.jpg', { srgb: false, repeat: [7, 2.5] }),
+      loadTex('assets/textures/hardwood_rough.jpg', { srgb: false, repeat: [7, 2.5] }),
+    ]);
+    // 拡散は実写、法線はタイル可能なプロシージャルを維持（実写NMは法線が壊れるため）
+    G.tex.grass.map = gd;
+    G.tex.waterNormal = wn;
+    G.tex.hardwood = { map: hd, bumpMap: hb, roughnessMap: hr };
+  } catch (e) {
+    console.warn('実写テクスチャの読込に失敗。プロシージャルで続行:', e.message);
+  }
+
+  loadNote('キャラクターをよみこみ中…');
+  await preloadCharacter();
 
   loadNote('地形を生成中…');
   await tick();
@@ -321,6 +343,7 @@ $('startBtn').addEventListener('click', startIntro);
 // ---- デバッグ/E2Eフック ----
 function setupDebug() {
   window.__game = {
+    G, // デバッグ用にコンテキスト全体を公開
     state: G.state,
     player: { get position() { return G.player.pos; } },
     teleport: (x, z) => G.player.teleport(x, z),
@@ -371,10 +394,7 @@ function loop() {
   } else {
     G.player.update(dt);
     G.player.updateCamera(dt);
-    if (st.phase === 'PLAY') {
-      checkBakeryEntry();
-      if (st.phase === 'SIT') {} // sitへの遷移はinteractで
-    }
+    if (st.phase === 'PLAY') checkBakeryEntry();
     if (st.phase === 'SIT' && performance.now() - st.sitStart > 7000) showEndcard();
   }
 

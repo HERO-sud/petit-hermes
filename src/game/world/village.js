@@ -4,32 +4,21 @@ import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { L } from '../config.js';
 import { seed, rand, randR } from '../gen/noise.js';
 import { textBoard } from '../gen/textures.js';
+import { createSharedMaterials } from '../gen/materials.js';
 
 export function createVillage(G) {
   const { scene, terrain, tex: T, colliders } = G;
   const g = new THREE.Group();
   scene.add(g);
 
-  const plasterMat = new THREE.MeshStandardMaterial({
-    map: T.mortar.map, normalMap: T.mortar.normalMap, roughness: 0.9, color: 0xf2ede2,
-  });
-  const woodMat = new THREE.MeshStandardMaterial({
-    map: T.wood.map, normalMap: T.wood.normalMap, roughnessMap: T.wood.roughnessMap, roughness: 1,
-  });
-  const darkWoodMat = new THREE.MeshStandardMaterial({
-    map: T.wood.map, normalMap: T.wood.normalMap, roughness: 0.9, color: 0x6a584a,
-  });
-  const kawaraMat = new THREE.MeshStandardMaterial({
-    map: T.kawara.map, normalMap: T.kawara.normalMap, roughnessMap: T.kawara.roughnessMap,
-    roughness: 1, metalness: 0.08,
-  });
-  const corruMat = new THREE.MeshStandardMaterial({
-    map: T.corrugated.map, normalMap: T.corrugated.normalMap, roughness: 0.5, metalness: 0.4,
-  });
-  const glassMat = new THREE.MeshPhysicalMaterial({
-    color: 0x90a8b8, roughness: 0.08, transparent: true, opacity: 0.45, envMapIntensity: 1.4,
-  });
-  const sashMat = new THREE.MeshStandardMaterial({ color: 0x4a4540, roughness: 0.5, metalness: 0.4 });
+  const M = createSharedMaterials(T);
+  const plasterMat = M.plaster;
+  const woodMat = M.wood;
+  const darkWoodMat = M.darkWood;
+  const kawaraMat = M.kawara;
+  const corruMat = M.corrugated;
+  const glassMat = M.glass(0x90a8b8, 0.45);
+  const sashMat = M.sash(0x4a4540);
 
   // 切妻屋根（瓦・軒の出つき）
   function gableRoof(w, h, d) {

@@ -109,7 +109,7 @@ export function createTerrain(G) {
       Hg[j * S + i] = heightAt((i / S - 0.5) * W, (j / S - 0.5) * W);
     }
     const cell = W / S;
-    const img = new ImageData(S, S);
+    const img = new Uint8Array(S * S * 4);
     for (let j = 0; j < S; j++) for (let i = 0; i < S; i++) {
       const x = (i / S - 0.5) * W, z = (j / S - 0.5) * W;
       const dRoad = polyDist(x, z, L.roadPts);
@@ -137,18 +137,19 @@ export function createTerrain(G) {
       const grass = Math.max(0, 1 - dirt - rock - forest);
       const sum = grass + dirt + rock + forest || 1;
       const k = (j * S + i) * 4;
-      img.data[k] = grass / sum * 255;
-      img.data[k + 1] = dirt / sum * 255;
-      img.data[k + 2] = rock / sum * 255;
-      img.data[k + 3] = forest / sum * 255;
+      img[k] = grass / sum * 255;
+      img[k + 1] = dirt / sum * 255;
+      img[k + 2] = rock / sum * 255;
+      img[k + 3] = forest / sum * 255;
     }
-    const c = document.createElement('canvas');
-    c.width = c.height = S;
-    c.getContext('2d').putImageData(img, 0, 0);
-    const t = new THREE.CanvasTexture(c);
+    // canvas経由はα=0画素のRGBがプリマルチプライで消えるため、DataTextureで直接アップロード
+    const t = new THREE.DataTexture(img, S, S, THREE.RGBAFormat, THREE.UnsignedByteType);
     t.colorSpace = THREE.NoColorSpace;
     t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping;
-    t.flipY = false; // ImageData座標とuvを一致させる（cuv.y側で反転処理）
+    t.minFilter = t.magFilter = THREE.LinearFilter;
+    t.generateMipmaps = false;
+    t.flipY = false; // 行j ↔ z軸を直接対応させる
+    t.needsUpdate = true;
     return t;
   }
 
@@ -168,19 +169,26 @@ export function createTerrain(G) {
     shader.uniforms.uForest = { value: Tx.forest.map };
     shader.uniforms.uMacro = { value: Tx.macro };
     shader.uniforms.uWorldSize = { value: W };
+    // ワールド座標はvaryingで渡す（mapのrepeat設定に依存しない）
+    shader.vertexShader = shader.vertexShader
+      .replace('#include <common>', '#include <common>\nvarying vec3 vWPos;')
+      .replace('#include <begin_vertex>', `#include <begin_vertex>
+        vWPos = (modelMatrix * vec4(position, 1.0)).xyz;`);
     shader.fragmentShader = shader.fragmentShader
       .replace('#include <map_pars_fragment>', `#include <map_pars_fragment>
         uniform sampler2D uControl, uDirt, uRock, uForest, uMacro;
-        uniform float uWorldSize;`)
+        uniform float uWorldSize;
+        varying vec3 vWPos;`)
       .replace('#include <map_fragment>', `
-        vec2 wxz = vMapUv * 3.0;
+        vec2 wxz = vWPos.xz;
         vec2 cuv = clamp(wxz / uWorldSize + 0.5, 0.0, 1.0);
         vec4 ctrl = texture2D(uControl, cuv);
         float wsum = ctrl.r + ctrl.g + ctrl.b + ctrl.a + 1e-4;
+        vec2 duv = wxz / 3.0; // プロシージャル詳細は3mタイル
         vec3 alb = ( ctrl.r * texture2D(map, vMapUv).rgb
-                   + ctrl.g * texture2D(uDirt, vMapUv).rgb
-                   + ctrl.b * texture2D(uRock, vMapUv * 0.4).rgb
-                   + ctrl.a * texture2D(uForest, vMapUv).rgb ) / wsum;
+                   + ctrl.g * texture2D(uDirt, duv).rgb
+                   + ctrl.b * texture2D(uRock, duv * 0.4).rgb
+                   + ctrl.a * texture2D(uForest, duv).rgb ) / wsum;
         float macro = texture2D(uMacro, wxz / 80.0).r * 0.35 + 0.82;
         diffuseColor.rgb *= alb * macro;
       `);
