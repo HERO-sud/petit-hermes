@@ -65,6 +65,20 @@ try {
   await key(page, 'Digit3'); await sleep(1500);
   assert(await ev(() => window.__game.state.eatenCount) === 1, 'パンを食べた');
 
+  // 村人（バス停のおじいさん）: 遅延スポーンを待って会話
+  await page.waitForFunction(
+    () => window.__game.interact.list.some((i) => i.label.includes('おじいさん')),
+    { timeout: 60000 }).catch(() => {});
+  await tp(31.6, 42.4); await sleep(900);
+  let talked = false;
+  for (let i = 0; i < 8; i++) {
+    await key(page, 'KeyF'); await sleep(700);
+    if (await phase() === 'DIALOG') { talked = true; break; }
+  }
+  assert(talked, '村人（おじいさん）と会話開始');
+  for (let i = 0; i < 6 && await phase() === 'DIALOG'; i++) { await key(page, 'KeyF'); await sleep(600); }
+  assert(await phase() === 'PLAY', '村人会話を閉じて PLAY へ復帰');
+
   for (let i = 0; i < 6; i++) {
     await key(page, 'KeyP'); await sleep(700);
     if (await phase() === 'PHOTO') break;

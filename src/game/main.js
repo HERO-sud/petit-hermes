@@ -5,6 +5,7 @@ import { buildTextures } from './gen/textures.js';
 import { createQuality } from './core/quality.js';
 import { createRenderer } from './core/renderer.js';
 import { createSky } from './core/sky.js';
+import { createWeather } from './core/weather.js';
 import { createPostFX } from './core/postfx.js';
 import { createColliders } from './world/colliders.js';
 import { createTerrain } from './world/terrain.js';
@@ -13,9 +14,10 @@ import { createWater } from './world/water.js';
 import { createVegetation } from './world/vegetation.js';
 import { createSchool } from './world/school.js';
 import { createVillage } from './world/village.js';
+import { preloadProps } from './world/props.js';
 import { createPlayer } from './entities/player.js';
 import { createNPCs } from './entities/npc.js';
-import { preloadCharacter } from './entities/character.js';
+import { preloadCharacters } from './entities/character.js';
 import { loadTex } from './core/loaders.js';
 import { createInteract } from './systems/interact.js';
 import { createObjectives } from './systems/objectives.js';
@@ -74,7 +76,10 @@ async function boot() {
   }
 
   loadNote('キャラクターをよみこみ中…');
-  await preloadCharacter();
+  await Promise.all([
+    preloadCharacters(['Casual_Male', 'Casual_Female', 'Worker_Male']),
+    preloadProps(),
+  ]);
 
   loadNote('地形を生成中…');
   await tick();
@@ -103,12 +108,14 @@ async function boot() {
   G.dialog = createDialog(G);
   G.shop = createShop(G);
   G.photo = createPhotoMode(G);
+  G.weather = createWeather(G);
   G.postfx = createPostFX(G);
   G.postfx.build(G.quality.tier.post);
   G.quality.onChange((t) => G.postfx.build(t.post));
 
   setupGameplay();
   setupDebug();
+  G.npcs.spawnVillagers(); // 村人はモデル読込完了し次第あらわれる（起動をブロックしない）
 
   loadNote('');
   $('startBtn').disabled = false;
@@ -352,6 +359,7 @@ function setupDebug() {
     renderer: G.renderer,
     quality: { get name() { return G.quality.name; }, setTier: (n) => G.quality.setTier(n) },
     setTimeOfDay: (t) => { G.sky.timeOfDay = t; },
+    weather: { set: (s, instant = true) => G.weather.set(s, instant), get state() { return G.weather.state; }, resume: () => G.weather.resume() },
     objectives: G.objectives,
     interact: G.interact,
     openShop: () => G.shop.open(),
@@ -399,6 +407,7 @@ function loop() {
   }
 
   const heavy = G.sky.update(dt, st.phase === 'TITLE' ? null : G.player.pos);
+  G.weather.update(dt);
   G.quality.update(dt);
   if (!heavy) G.vegetation.update(dt, st.phase === 'TITLE' ? G.camera.position : G.player.pos);
   G.water.update(dt);

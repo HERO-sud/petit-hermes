@@ -72,8 +72,10 @@ export async function createSky(G) {
       const theta = THREE.MathUtils.degToRad(azim);
       sunDir.setFromSphericalCoords(1, phi, theta);
       sun.color.set(new THREE.Color(0xffe2b8).lerp(new THREE.Color(0xfff0dd), t));
-      sun.intensity = lerp(2.4, 2.8, t);
-      G.renderer.toneMappingExposure = lerp(1.05, 0.95, t);
+      // 天候による減光（曇天・雨で太陽光と露出を落とす）
+      const wf = G.weather?.sunF ?? 1;
+      sun.intensity = lerp(2.4, 2.8, t) * wf;
+      G.renderer.toneMappingExposure = lerp(1.05, 0.95, t) * (0.82 + 0.18 * wf);
 
       // プレイヤー追従シャドウ（テクセルスナップでシマー防止）
       if (playerPos) {

@@ -5,6 +5,7 @@ import { L } from '../config.js';
 import { seed, rand, randR } from '../gen/noise.js';
 import { textBoard } from '../gen/textures.js';
 import { createSharedMaterials } from '../gen/materials.js';
+import { placeProp, hasProp } from './props.js';
 
 export function createVillage(G) {
   const { scene, terrain, tex: T, colliders } = G;
@@ -79,10 +80,19 @@ export function createVillage(G) {
     const s = Math.max(w, d) * 1.12;
     colliders.addBox(x, z, s, s);
   }
-  for (const [x, z, ry, sd] of L.houses) farmhouse(x, z, ry, sd);
+  // 数軒は KayKit のトゥーン民家を混在させる（読込失敗時は全軒手組み農家）
+  const kaykitHouses = { 1: 'buildingB', 4: 'buildingD', 7: 'buildingF', 9: 'buildingB' };
+  L.houses.forEach(([x, z, ry, sd], i) => {
+    const key = kaykitHouses[i];
+    if (key && hasProp(key)) {
+      placeProp(G, key, { x, z, ry, targetW: 9.5, colliderBox: [10.5, 10.5] });
+    } else {
+      farmhouse(x, z, ry, sd);
+    }
+  });
 
-  // ---- 軽トラ ×2 ----
-  function keitruck(x, z, ry) {
+  // ---- 車（GLBプロップ。読込失敗時は手組み軽トラで代替）----
+  function keitruckFallback(x, z, ry) {
     const y = terrain.heightAt(x, z);
     const kg = new THREE.Group();
     const bodyMat = new THREE.MeshStandardMaterial({ color: 0xe8e8e4, roughness: 0.3, metalness: 0.5 });
@@ -106,8 +116,23 @@ export function createVillage(G) {
     g.add(kg);
     colliders.addBox(x, z, 2.2, 3.2);
   }
-  keitruck(L.houses[0][0] + 7, L.houses[0][1] + 4, 0.5);
-  keitruck(L.cones.x - 4, L.cones.z + 3.5, -1.45); // パン屋のお客さんの車
+  function vehicle(key, x, z, ry, targetL = 4.1) {
+    if (hasProp(key)) placeProp(G, key, { x, z, ry, targetL, colliderBox: [2.2, 3.4] });
+    else keitruckFallback(x, z, ry);
+  }
+  vehicle('truckFlat', L.houses[0][0] + 7, L.houses[0][1] + 4, 0.5, 3.4); // 農家の軽トラ
+  vehicle('carSedan', L.cones.x - 4, L.cones.z + 3.5, -1.45);            // パン屋のお客さんの車
+  vehicle('carHatchback', L.cones.x + 1.5, L.cones.z + 3.6, -1.65);      // もう一台のお客さん
+  // 県道ぞいの駐車車両
+  if (G.roads?.curve) {
+    for (const [t, key, side] of [[0.50, 'carTaxi', 1], [0.585, 'truckFlat', -1]]) {
+      const p = G.roads.curve.getPoint(t);
+      const tan = G.roads.curve.getTangent(t);
+      const nx = -tan.z * side, nz = tan.x * side;
+      const px = p.x + nx * 4.4, pz = p.z + nz * 4.4;
+      vehicle(key, px, pz, Math.atan2(tan.x, tan.z), key === 'truckFlat' ? 3.4 : 4.1);
+    }
+  }
 
   // ---- ビニールハウス ----
   for (const [x, z, ry] of L.greenhouses) {

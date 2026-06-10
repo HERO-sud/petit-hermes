@@ -32,7 +32,7 @@ export function createVegetation(G) {
           transformed.z += sway * 0.6 * hf;
         #endif
       `);
-      windShaders.push(shader);
+      windShaders.push({ shader, base: strength });
     };
     return mat;
   }
@@ -290,8 +290,11 @@ export function createVegetation(G) {
 
   return {
     counts: () => ({ grass: grass.count, trees: cedarT.count + pineT.count, rice: rice.count, impostors: impostors.count }),
+    setWind(f) {
+      for (const s of windShaders) s.shader.uniforms.uWind.value = s.base * f;
+    },
     update(dt, playerPos) {
-      for (const s of windShaders) s.uniforms.uTime.value += dt;
+      for (const s of windShaders) s.shader.uniforms.uTime.value += dt;
       updateGrass(playerPos);
     },
   };

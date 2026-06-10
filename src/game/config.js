@@ -3,7 +3,7 @@
 // ============================================================
 
 export const CFG = {
-  walkSpeed: 3.4, sprintSpeed: 6.4, accel: 30, jumpVel: 4.6, gravity: -16,
+  walkSpeed: 3.4, sprintSpeed: 6.4, accel: 30, gravity: -16,
   playerR: 0.38, playerH: 1.62, eyeH: 1.55,
   camDist: 3.6, camDistIndoor: 2.4, camShoulder: 0.5, camHeight: 1.5,
   startMoney: 1000,
@@ -53,6 +53,19 @@ export const L = {
     [-70, 220, 0.25, 9], [85, -180, -0.15, 10],
   ],
   greenhouses: [ [-70, 50, 0.2], [68, 95, -0.1] ],
+  // 村人NPC（wander: 徘徊ウェイポイント / dog: 犬連れ）
+  villagers: [
+    { id: 'vilBus', model: 'OldClassy_Male', x: 31.2, z: 41.4, ry: -1.3, targetH: 1.62,
+      dialog: 'vilBus', label: 'おじいさんと 話す' },
+    { id: 'vilField', model: 'Casual2_Male', x: -57, z: 15, ry: 0.5,
+      dialog: 'vilField', label: '村人と 話す', wander: [[-57, 15], [-44, 13], [-50, 9]] },
+    { id: 'vilKid', model: 'Casual_Bald', x: -10, z: -22, ry: 0, targetH: 1.18,
+      dialog: 'vilKid', label: '子どもと 話す', wander: [[-10, -22], [3, -15], [10, -27], [-4, -32]] },
+    { id: 'vilShrine', model: 'Kimono_Female', x: -77.6, z: -136.6, ry: 2.6, targetH: 1.55,
+      dialog: 'vilShrine', label: 'おばあさんと 話す' },
+    { id: 'vilDog', model: 'Casual3_Female', x: 28.5, z: 95, ry: Math.PI, dog: true,
+      dialog: 'vilDog', label: '犬のさんぽの人と 話す', wander: [[28.5, 95], [28.5, 58], [28, 25], [29, 112]] },
+  ],
 };
 
 // ---- ショップ（実商品をモチーフにしたゲーム内表記）----
@@ -110,6 +123,26 @@ export const DIALOGS = {
   ]},
   shrine: { name: 'ちいさな祠', lines: [ '村をみまもる ちいさな祠。そっと手をあわせた。' ]},
   busstop: { name: 'バス停「南方小学校前」', lines: [ '時刻表は 1日に4本。のんびりした谷の時間がながれている。' ]},
+  vilBus: { name: 'バスをまつ おじいさん', lines: [
+    'つぎのバスは ひるすぎじゃ。まあ、あわてんさんな。',
+    '学校のパン屋さんに いくんかい？ ええにおいが ここまで とどくんよ。',
+  ]},
+  vilField: { name: 'はたけの村人', lines: [
+    '田中さんとこの やさいは ほんまにうまいんじゃ。形は わるいけどな！',
+    'すてるはずのやさいが パンの酵母になるんと。おもしろいのう。',
+  ]},
+  vilKid: { name: 'グラウンドの子', lines: [
+    'むかし ここ、しょうがっこうだったんだって！',
+    'かけっこしよう！ よーい、どん！…あ、まけた！',
+  ]},
+  vilShrine: { name: '着物のおばあさん', lines: [
+    'この祠はね、むらのみんなを ずーっと みまもってきたんよ。',
+    'パン屋の大下さんも、ようけ おまいりに きんさるの。',
+  ]},
+  vilDog: { name: '犬のさんぽの人', lines: [
+    'うちのコロ、パン屋さんのにおいが だいすきでね。',
+    'さんぽコースが いっつも 学校のほうに ひっぱられるんよ🐕',
+  ]},
 };
 
 export const DISCLAIMER = '※架空のファンメイドデモです。実際の情報は公式Instagram @petit_hermes へ';
@@ -120,21 +153,21 @@ export const TIERS = {
   min: {
     label: '最小', pixelRatio: 0.75, shadowSize: 512, anisotropy: 1,
     grass: 800, trees: 60, impostors: 200, rice: 600, bamboo: 12,
-    grassRadius: 18, fogDensity: 0.0028, post: 'none', waterRT: 0, msaa: false,
+    grassRadius: 18, fogDensity: 0.0028, rain: 0, post: 'none', waterRT: 0, msaa: false,
   },
   low: {
     label: '低', pixelRatio: 1.0, shadowSize: 1024, anisotropy: 2,
     grass: 10000, trees: 350, impostors: 1500, rice: 6000, bamboo: 40,
-    grassRadius: 38, fogDensity: 0.0024, post: 'none', waterRT: 0, msaa: true,
+    grassRadius: 38, fogDensity: 0.0024, rain: 900, post: 'none', waterRT: 0, msaa: true,
   },
   mid: {
     label: '中', pixelRatio: 1.5, shadowSize: 2048, anisotropy: 4,
     grass: 30000, trees: 700, impostors: 3500, rice: 14000, bamboo: 80,
-    grassRadius: 65, fogDensity: 0.0016, post: 'bloom', waterRT: 256, msaa: false,
+    grassRadius: 65, fogDensity: 0.0016, rain: 2600, post: 'bloom', waterRT: 256, msaa: false,
   },
   high: {
     label: '高', pixelRatio: 2.0, shadowSize: 4096, anisotropy: 8,
     grass: 60000, trees: 1200, impostors: 6000, rice: 24000, bamboo: 120,
-    grassRadius: 100, fogDensity: 0.0011, post: 'full', waterRT: 512, msaa: false,
+    grassRadius: 100, fogDensity: 0.0011, rain: 4500, post: 'full', waterRT: 512, msaa: false,
   },
 };

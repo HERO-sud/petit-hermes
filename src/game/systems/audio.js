@@ -1,7 +1,7 @@
 // WebAudioプロシージャル: 環境音（風・鳥・川）+ SFX
 export function createAudio(G) {
   let AC = null;
-  let wind = null, riverGain = null;
+  let wind = null, riverGain = null, rainGain = null;
 
   function init() {
     if (AC) { if (AC.state === 'suspended') AC.resume(); return; }
@@ -41,6 +41,15 @@ export function createAudio(G) {
     riverGain = AC.createGain(); riverGain.gain.value = 0;
     wsrc.connect(bp).connect(riverGain).connect(AC.destination);
     wsrc.start();
+
+    // ---- 雨: ホワイトノイズ → ローパス、天候システムがゲインを制御 ----
+    const rsrc = AC.createBufferSource();
+    rsrc.buffer = wbuf; rsrc.loop = true;
+    const rlp = AC.createBiquadFilter();
+    rlp.type = 'lowpass'; rlp.frequency.value = 2300; rlp.Q.value = 0.5;
+    rainGain = AC.createGain(); rainGain.gain.value = 0;
+    rsrc.connect(rlp).connect(rainGain).connect(AC.destination);
+    rsrc.start();
 
     // ---- 鳥: ランダムチャープ ----
     function birdLoop() {
@@ -102,7 +111,6 @@ export function createAudio(G) {
     init,
     sfx: {
       step(onRoad) { noiseBurst(0.09, onRoad ? 900 : 420, 0.05); },
-      jump() { tone(290, 0.09, 'triangle', 0, 0.06); },
       pickup() { tone(523, 0.08, 'triangle'); tone(784, 0.13, 'triangle', 0.08); },
       doorbell() { tone(1318, 0.4, 'sine', 0, 0.1); tone(1046, 0.5, 'sine', 0.18, 0.1); },
       talk() { tone(640, 0.04, 'square', 0, 0.04); },
@@ -113,6 +121,9 @@ export function createAudio(G) {
       camera() { noiseBurst(0.05, 2400, 0.1); tone(1800, 0.05, 'square', 0.02, 0.05); },
       bus() { tone(140, 1.6, 'sawtooth', 0, 0.03); tone(96, 1.6, 'sawtooth', 0, 0.03); },
       end() { [523, 659, 784, 1047].forEach((f, i) => tone(f, 0.16, 'triangle', i * 0.1)); },
+    },
+    setRain(level) {
+      if (rainGain) rainGain.gain.value = Math.max(0, level) * 0.11;
     },
     update(playerPos) {
       if (!AC || !riverGain) return;

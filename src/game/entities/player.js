@@ -7,14 +7,14 @@ import { clamp, dampAngle } from '../gen/noise.js';
 export function createPlayer(G) {
   const { scene, camera, colliders, canvas } = G;
 
-  const char = makeCharacter(G, { tint: 0xcfd4d8, cap: 0x4E5D3E });
+  const char = makeCharacter(G, { model: 'Casual_Male' });
   const player = char.group;
   player.position.set(CFG.spawn.x, colliders.getGroundY(CFG.spawn.x, CFG.spawn.z), CFG.spawn.z);
   scene.add(player);
 
   // ---- 入力 ----
   const keys = {};
-  const input = { jump: false, act: false, useSlot: 0, photo: false, view: false, map: false };
+  const input = { act: false, useSlot: 0, photo: false, view: false, map: false };
   const joy = { x: 0, y: 0 };
   let pointerLocked = false;
   let camYaw = 0;             // 0 = 北向き（学校方面）
@@ -24,10 +24,7 @@ export function createPlayer(G) {
   addEventListener('keydown', (e) => {
     if (e.repeat) return;
     keys[e.code] = true;
-    if (e.code === 'Space') {
-      if (G.state.phase === 'PLAY') input.jump = true;
-      e.preventDefault();
-    }
+    if (e.code === 'Space') e.preventDefault(); // スクロール防止（Spaceはダッシュ/会話送り）
     if (e.code === 'KeyF' || e.code === 'KeyE') input.act = true;
     if (e.code === 'KeyV') input.view = true;
     if (e.code === 'KeyP') input.photo = true;
@@ -36,9 +33,11 @@ export function createPlayer(G) {
   });
   addEventListener('keyup', (e) => { keys[e.code] = false; });
 
+  // requestPointerLock のPromise拒否は無害（ロック要求中のフェーズ遷移等）なので握りつぶす
+  const tryLock = () => { try { canvas.requestPointerLock()?.catch?.(() => {}); } catch { /* noop */ } };
   canvas.addEventListener('click', () => {
     if (!G.quality.isTouch && !pointerLocked && ['PLAY', 'PHOTO'].includes(G.state.phase)) {
-      canvas.requestPointerLock();
+      tryLock();
     }
   });
   document.addEventListener('pointerlockchange', () => {
@@ -117,7 +116,6 @@ export function createPlayer(G) {
     canvas.addEventListener('touchend', endLook);
     canvas.addEventListener('touchcancel', endLook);
 
-    document.getElementById('btnJump').addEventListener('touchstart', (e) => { e.preventDefault(); input.jump = true; }, { passive: false });
     const btnDash = document.getElementById('btnDash');
     btnDash.addEventListener('touchstart', (e) => {
       e.preventDefault();
@@ -129,7 +127,7 @@ export function createPlayer(G) {
 
   // ---- 物理状態 ----
   const vel = new THREE.Vector3();
-  let onGround = true, coyote = 0, modelYaw = Math.PI;
+  let onGround = true, modelYaw = Math.PI;
   let stepAcc = 0;
   const _camTarget = new THREE.Vector3();
   const _camIdeal = new THREE.Vector3();
@@ -152,7 +150,7 @@ export function createPlayer(G) {
     get speed() { return Math.hypot(vel.x, vel.z); },
     pos: player.position,
     exitLock() { if (document.pointerLockElement) document.exitPointerLock(); },
-    requestLock() { if (!G.quality.isTouch) canvas.requestPointerLock(); },
+    requestLock() { if (!G.quality.isTouch) tryLock(); },
     teleport(x, z) {
       player.position.set(x, colliders.getGroundY(x, z), z);
       vel.set(0, 0, 0);
@@ -174,7 +172,7 @@ export function createPlayer(G) {
       const wishX = cos * ix + sin * iz;
       const wishZ = -sin * ix + cos * iz;
 
-      const sprinting = (keys['ShiftLeft'] || keys['ShiftRight'] || touchSprint) && (ix || iz);
+      const sprinting = (keys['ShiftLeft'] || keys['ShiftRight'] || keys['Space'] || touchSprint) && (ix || iz);
       const maxSpd = sprinting ? CFG.sprintSpeed : CFG.walkSpeed;
       if (ix || iz) {
         vel.x += wishX * CFG.accel * dt;
@@ -185,14 +183,6 @@ export function createPlayer(G) {
       }
       const hs = Math.hypot(vel.x, vel.z);
       if (hs > maxSpd) { vel.x *= maxSpd / hs; vel.z *= maxSpd / hs; }
-
-      if (onGround) coyote = 0.1; else coyote -= dt;
-      if (input.jump && coyote > 0) {
-        vel.y = CFG.jumpVel;
-        onGround = false; coyote = 0;
-        G.audio?.sfx.jump();
-      }
-      input.jump = false;
 
       vel.y += CFG.gravity * dt;
       player.position.addScaledVector(vel, dt);

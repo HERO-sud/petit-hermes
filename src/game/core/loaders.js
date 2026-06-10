@@ -1,9 +1,11 @@
 // アセットローダ（GLB / HDR / 画像テクスチャ）
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
 
-const gltfLoader = new GLTFLoader();
+const dracoLoader = new DRACOLoader().setDecoderPath('assets/draco/');
+const gltfLoader = new GLTFLoader().setDRACOLoader(dracoLoader);
 const rgbeLoader = new RGBELoader();
 const texLoader = new THREE.TextureLoader();
 

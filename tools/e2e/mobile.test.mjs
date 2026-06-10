@@ -13,6 +13,10 @@ try {
   await page.waitForFunction(() => !document.getElementById('startBtn').disabled, { timeout: 150000 });
   assert(await page.evaluate(() => !document.getElementById('touchUI').classList.contains('hidden')),
     'タッチUIが表示される');
+  assert(await page.evaluate(() => !document.getElementById('btnJump')),
+    'ジャンプボタンは存在しない');
+  assert(await page.evaluate(() => !!document.getElementById('btnDash')),
+    'ダッシュボタンがある');
   await page.tap('#startBtn');
   await sleep(400);
   await page.evaluate(() => window.__game.skipIntro());

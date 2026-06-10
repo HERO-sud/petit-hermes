@@ -12,6 +12,7 @@ const ev = (fn, ...a) => page.evaluate(fn, ...a);
 
 try {
   await bootGame(page, 'q=low');
+  await ev(() => window.__game.weather.set('clear')); // 天候を固定して輝度を安定させる
   const spots = [
     ['spawn', 30.2, 47, 0],
     ['school', 6, -42, 0],
