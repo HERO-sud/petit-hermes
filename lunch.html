@@ -26,6 +26,13 @@
   .pillrow i{font-family:'Lora',serif;font-style:italic;font-size:10px;opacity:.8;font-weight:400}
   #top{background:#161d2a url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");}
   .lnk:hover{background:rgba(201,164,78,.16)!important;border-color:rgba(201,164,78,.55)!important;color:#f1e8d4!important}
+  /* デスクトップ等の広い画面：480px列のままだと右側が空くので、横幅を活かして2列に */
+  @media(min-width:980px){
+    .wrap{max-width:1100px!important}
+    .shoplist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start}
+    .shoplist>div{margin-bottom:0!important}
+    .chap{grid-column:1/-1}
+  }
 </style>
 </head>
 <body>
@@ -187,7 +194,7 @@ function compute(){
 /* ===== テンプレート ===== */
 function shopCard(shop){
   const chapter = shop.chapterStart ? `
-    <div id="${shop.chapter.anchor}" style="scroll-margin-top:132px;margin:38px 0 20px;">
+    <div id="${shop.chapter.anchor}" class="chap" style="scroll-margin-top:132px;margin:38px 0 20px;">
       <div style="display:flex;align-items:center;gap:8px;">
         <span style="width:9px;height:9px;border-radius:50%;background:${shop.chapter.color};display:inline-block;"></span>
         <span style="font-family:'Lora',serif;font-style:italic;font-size:12px;color:#9aa0b3;">${esc(shop.chapter.romaji)}</span>
@@ -296,7 +303,7 @@ function view(){
   return `
   <div id="top" style="position:relative;min-height:100vh;font-family:'Zen Kaku Gothic New',sans-serif;color:#ece3cf;line-break:strict;">
     <div style="position:fixed;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,#d2503b,#c9a44e);transform:scaleX(0);transform-origin:0 50%;z-index:60;animation:emaki-progress auto linear;animation-timeline:scroll(root);"></div>
-    <div style="max-width:480px;margin:0 auto;position:relative;border-left:1px solid rgba(201,164,78,.07);border-right:1px solid rgba(201,164,78,.07);">
+    <div class="wrap" style="max-width:480px;margin:0 auto;position:relative;border-left:1px solid rgba(201,164,78,.07);border-right:1px solid rgba(201,164,78,.07);">
 
       <div style="position:relative;overflow:hidden;padding:42px 24px 86px;text-align:center;">
         <div style="position:absolute;top:36px;right:28px;width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 38% 38%,#e7cd8e,#c9a44e);box-shadow:0 0 22px 3px rgba(201,164,78,.22);"></div>
@@ -344,7 +351,7 @@ function view(){
 
       ${intro}
       ${empty}
-      <div style="padding:8px 18px 10px;">${list}</div>
+      <div class="shoplist" style="padding:8px 18px 10px;">${list}</div>
 
       <div style="padding:32px 22px 56px;text-align:center;border-top:1px solid rgba(201,164,78,.12);margin-top:20px;">
         <div style="font-family:'Yuji Syuku',serif;font-size:26px;color:#f1e8d4;letter-spacing:.1em;">畢</div>
