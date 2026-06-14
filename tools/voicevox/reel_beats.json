@@ -1,0 +1,20 @@
+[
+ {"id":"hook","who":"metan","focus":"hero","telop":"廃校の教室が、パン屋に。","say":"広島の、いちばん奥。はいこうの教室が、パンやさんになってるの、知ってる？"},
+ {"id":"where","who":"zunda","focus":"map","telop":"北広島町って、どこ？","say":"きたひろしまちょうって、どこなのだ？"},
+ {"id":"access","who":"metan","focus":"map","telop":"広島市から車で約1時間","say":"ひろしましから、車でやく一時間。でも実は、めいてんだらけなの！"},
+ {"id":"petit1","who":"metan","focus":"petit","telop":"① プチヘルメース｜パン","say":"まずは、はいこうで焼く、てんねんこうぼパン。プチヘルメース！"},
+ {"id":"petit2","who":"zunda","focus":"petit","telop":"規格外の野菜が、酵母に！","say":"きかくがいの野菜やくだものを、こうぼにしてるのだ！"},
+ {"id":"liand1","who":"metan","focus":"liand","telop":"② リアンドベーグル｜土曜だけ","say":"次は、土曜だけ開く、こみんかのベーグル。リアンドベーグル。"},
+ {"id":"liand2","who":"hau","focus":"liand","telop":"48時間発酵の、ごほうび","say":"よんじゅうはち時間かけて発酵させる、ごほうびみたいなベーグルです。"},
+ {"id":"south","who":"zunda","focus":"south","telop":"③ 廃校のスパイスカレー","say":"しかも同じはいこうに、スパイスカレーやさんもあるのだ！"},
+ {"id":"soba","who":"metan","focus":"kobori","telop":"豊平は西日本有数のそば処","say":"とよひらは、にしにほんでも指おりの、そばどころなんだよ。"},
+ {"id":"minka","who":"zunda","focus":"nonohana","telop":"地元野菜の、古民家ランチ","say":"こみんかカフェの、じもと野菜ランチも、さいこうなのだ！"},
+ {"id":"kogen","who":"hau","focus":"shoji","telop":"高原で、自家焙煎の一杯","say":"こうげんで、じかばいせんの一杯も、いいですよ。"},
+ {"id":"okonomi","who":"zunda","focus":"ajimiya","telop":"ざく切りキャベツのお好み焼き","say":"ざくぎりキャベツのお好みやきも、はずせないのだ！"},
+ {"id":"michi","who":"metan","focus":"hibiki","telop":"道の駅の野菜バイキングも","say":"みちのえきの、じもと野菜バイキングまで、あるんだから！"},
+ {"id":"site1","who":"metan","focus":"site","telop":"実在40軒を、1サイトに","say":"このじつざい、よんじゅっけん。ぜんぶ一つのサイトに、まとめたよ！"},
+ {"id":"site2","who":"zunda","focus":"site","telop":"エリア×ジャンルで探せる","say":"エリアと、ジャンルで、サッとさがせるのだ！"},
+ {"id":"cta1","who":"hau","focus":"footer","telop":"週末、どこ行く？","say":"しゅうまつ、どこ行く？ まよったら。"},
+ {"id":"cta2","who":"metan","focus":"footer","telop":"保存して、リンクへ","say":"このとうこうを、ほぞんして、プロフィールのリンクから、チェック！"},
+ {"id":"end","who":"hau","focus":"hero","telop":"北広島町で、待ってます。","say":"きたひろしまちょうで、まってます。"}
+]
