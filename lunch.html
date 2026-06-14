@@ -47,6 +47,12 @@ const WD_EN = { '月':'Mon','火':'Tue','水':'Wed','木':'Thu','金':'Fri','土
 const AREA_ORDER = ['千代田','豊平','芸北','大朝'];
 const GENRE_ORDER = ['パン','カフェ','定食','ラーメン','お好み焼き','そば','和食','イタリアン','ベーグル','その他'];
 
+/* 写真ソース：食べログ最優先（食の代表画像が安定）→公式→出典→地図。
+   閲覧者のブラウザで microlink 経由に og:image を読み込む（鍵不要・取得失敗時はプレースホルダ）。 */
+const TABELOG = {"south-in-north":"https://tabelog.com/hiroshima/A3408/A340801/34034607/","cafe-solamie":"https://tabelog.com/hiroshima/A3408/A340801/34030496/","casual-kitchen-hana":"https://tabelog.com/en/hiroshima/A3408/A340801/34030255/","corbusier":"https://tabelog.com/hiroshima/A3408/A340801/34030926/","berryhouse":"https://tabelog.com/en/hiroshima/A3408/A340801/34021873/","tatumori":"https://tabelog.com/en/hiroshima/A3408/A340801/34030671/","chiyoda-niban":"https://tabelog.com/hiroshima/A3408/A340801/34016311/","ajimiya":"https://tabelog.com/en/hiroshima/A3408/A340801/34027345/","okonomi-hiro":"https://tabelog.com/hiroshima/A3408/A340801/34027478/","hibiki":"https://tabelog.com/hiroshima/A3408/A340801/34019530/","kitahiro-shokudo":"https://tabelog.com/hiroshima/A3408/A340801/34022229/","liand-bagel":"https://tabelog.com/hiroshima/A3408/A340801/34029422/","isobe":"https://tabelog.com/hiroshima/A3408/A340801/34014205/","kitsutsuki":"https://tabelog.com/hiroshima/A3408/A340801/34017325/","nonohana":"https://tabelog.com/hiroshima/A3408/A340801/34014932/","yamagoya":"https://tabelog.com/hiroshima/A3408/A340801/34027633/","kario-chaya":"https://tabelog.com/hiroshima/A3408/A340801/34007742/","oudomari-chaya":"https://tabelog.com/hiroshima/A3408/A340801/34032483/","jokenji":"https://tabelog.com/en/hiroshima/A3408/A340801/34015662/","yuzuan":"https://tabelog.com/hiroshima/A3408/A340801/34021880/","wasaru-shokudo":"https://tabelog.com/hiroshima/A3408/A340801/34024886/","resthouse-oasa":"https://tabelog.com/hiroshima/A3408/A340801/34021463/","karashiro":"https://tabelog.com/hiroshima/A3408/A340801/34014120/","kaachan-gyoza":"https://tabelog.com/hiroshima/A3408/A340801/34021462/"};
+const unfurl = url => 'https://api.microlink.io/?url=' + encodeURIComponent(url) + '&embed=image.url';
+function photoSrc(s){ const u = TABELOG[s.id] || s.site || (s.src && s.src.url) || s.map; return u ? unfurl(u) : ''; }
+
 const esc = s => String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
 function parseHours(h){
@@ -150,7 +156,7 @@ function compute(){
       area:s.area, areaColor:m.color, recommended:!!s.recommended,
       catch:s.catch, catchEn:s.catch_en||'', point:s.point||'', hasPoint:!!(s.point&&s.point.length),
       hours:s.hours, address:s.address, badges:buildBadges(p),
-      photoLink:s.instagram||s.site||s.map||'#', links:buildLinks(s),
+      photoLink:s.instagram||s.site||s.map||'#', photoImg:photoSrc(s), links:buildLinks(s),
       chapterStart:isStart, chapter:{label:s.area,romaji:m.romaji,color:m.color,count:fAreaCount[s.area],mood:m.mood,moodEn:m.moodEn,anchor},
       shopAnchor:'shop-'+s.id,
     };
@@ -200,10 +206,13 @@ function shopCard(shop){
   const recBadge = shop.recommended ? `<span style="font-size:11px;color:#fff;background:#d2503b;border-radius:999px;padding:3px 11px;">★ いちおし</span>` : '';
   return chapter + `
     <div id="${shop.shopAnchor}" style="scroll-margin-top:132px;background:#212a3e;border:1px solid rgba(201,164,78,.14);border-left:3px solid ${shop.areaColor};border-radius:16px;overflow:hidden;margin-bottom:18px;box-shadow:0 14px 30px -22px rgba(0,0,0,.8);">
-      <a href="${shop.photoLink}" target="_blank" rel="noopener" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;height:140px;text-decoration:none;background-color:#1c2436;background-image:repeating-linear-gradient(45deg,rgba(201,164,78,.05),rgba(201,164,78,.05) 9px,rgba(0,0,0,0) 9px,rgba(0,0,0,0) 18px);border-bottom:1px solid rgba(201,164,78,.12);">
-        <span style="position:absolute;top:10px;right:12px;width:9px;height:9px;border-radius:50%;background:${shop.areaColor};"></span>
-        <span style="font-family:'Shippori Mincho B1',serif;font-size:15px;color:#d7cdb6;">写真をみる　→</span>
-        <span style="font-size:10.5px;letter-spacing:.05em;color:#7e879b;">公式 / 地図 / 食べログ へ · See photos</span>
+      <a href="${shop.photoLink}" target="_blank" rel="noopener" style="position:relative;display:block;height:150px;text-decoration:none;background-color:#1c2436;background-image:repeating-linear-gradient(45deg,rgba(201,164,78,.05),rgba(201,164,78,.05) 9px,rgba(0,0,0,0) 9px,rgba(0,0,0,0) 18px);border-bottom:1px solid rgba(201,164,78,.12);overflow:hidden;">
+        ${shop.photoImg?`<img src="${shop.photoImg}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.style.display='none'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />`:''}
+        <span style="position:absolute;top:10px;right:12px;width:9px;height:9px;border-radius:50%;background:${shop.areaColor};box-shadow:0 0 0 3px rgba(20,26,38,.55);"></span>
+        <div style="position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:20px 13px 9px;background:linear-gradient(transparent,rgba(14,19,29,.86));">
+          <span style="font-family:'Shippori Mincho B1',serif;font-size:13px;color:#ece3cf;text-shadow:0 1px 3px rgba(0,0,0,.6);">写真をみる　→</span>
+          <span style="font-size:10px;letter-spacing:.04em;color:#bcc3d2;text-shadow:0 1px 3px rgba(0,0,0,.6);">公式 / 地図 / 食べログ</span>
+        </div>
       </a>
       <div style="padding:17px 18px 19px;">
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
