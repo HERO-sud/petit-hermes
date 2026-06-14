@@ -42,7 +42,54 @@
 <body>
 <div id="root"></div>
 <script type="text/babel">
-const { useState, useMemo, useCallback } = React;
+const { useState, useMemo, useCallback, useEffect, useRef } = React;
+
+/* ===== Instagram公式埋め込み（鍵不要・正規・遅延読み込み） =====
+   他者写真の直リンク/転載はせず、公式の埋め込み機能で“本物・最新”の写真を表示。
+   IntersectionObserverで見えたカードだけ読み込むため30軒あっても初期表示が軽い。 */
+let __igScriptLoading = false;
+function ensureIGScript(){
+  if (window.instgrm && window.instgrm.Embeds) return Promise.resolve();
+  if (!__igScriptLoading){
+    __igScriptLoading = true;
+    const s = document.createElement("script");
+    s.async = true; s.src = "https://www.instagram.com/embed.js";
+    document.body.appendChild(s);
+  }
+  return new Promise(res=>{
+    const t = setInterval(()=>{ if(window.instgrm && window.instgrm.Embeds){ clearInterval(t); res(); } }, 250);
+    setTimeout(()=>{ clearInterval(t); res(); }, 6000);
+  });
+}
+
+function useInView(ref, rootMargin="240px"){
+  const [inView, setInView] = useState(false);
+  useEffect(()=>{
+    if (inView || !ref.current) return;
+    const io = new IntersectionObserver(([e])=>{
+      if (e.isIntersecting){ setInView(true); io.disconnect(); }
+    }, {rootMargin});
+    io.observe(ref.current);
+    return ()=>io.disconnect();
+  }, [inView]);
+  return inView;
+}
+
+function IGEmbed({permalink}){
+  const wrap = useRef(null);
+  const inView = useInView(wrap);
+  useEffect(()=>{ if(inView){ ensureIGScript().then(()=>{ if(window.instgrm && window.instgrm.Embeds) window.instgrm.Embeds.process(); }); } }, [inView]);
+  return (
+    <div ref={wrap} style={{minHeight: inView?undefined:1}}>
+      {inView && (
+        <blockquote className="instagram-media"
+          data-instgrm-permalink={permalink} data-instgrm-version="14"
+          style={{margin:0, width:"100%", minWidth:0, border:"none", boxShadow:"none"}}>
+        </blockquote>
+      )}
+    </div>
+  );
+}
 
 /* ===== 配色（プチヘルメース・ブランド準拠：里山の緑×素朴な土の色） ===== */
 const C = {
@@ -98,24 +145,6 @@ const STORES = [
       {label:"Instagram", url:"https://www.instagram.com/liand_bagel/", kind:"ig"},
       {label:"オンライン販売(BASE)", url:"https://liandbagel.official.ec/", kind:"site"},
       {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34029422/", kind:"src"},
-    ],
-  },
-  {
-    id:"casual-kitchen-hana",
-    name:"Casual Kitchen Hana", reading:"カジュアルキッチン ハナ",
-    genre:"定食・洋食", area:"千代田",
-    img: img("1546069901-ba9599a7e63c"),
-    catch:"レトロな店内で、気取らない多彩なランチを。",
-    points:[
-      "北広島町・有田にある、定食〜洋食まで楽しめるカジュアルな食堂",
-      "落ち着いたレトロな雰囲気で、平日ランチ使いにちょうどいい",
-    ],
-    hours:"月〜金 11:00〜14:30（要確認）",
-    price:"ランチ 〜",
-    place:"北広島町有田989-1",
-    links:[
-      {label:"Instagram", url:"https://www.instagram.com/casual_kitchen_hana/", kind:"ig"},
-      {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34030255/", kind:"src"},
     ],
   },
   {
@@ -286,6 +315,7 @@ function LinkBtn({l, store}){
 }
 
 function StoreCard({s, index}){
+  const [showIG, setShowIG] = useState(false);
   return (
     <article style={{
       background:C.bgW, borderRadius:18, overflow:"hidden",
@@ -293,7 +323,7 @@ function StoreCard({s, index}){
       display:"flex", flexDirection:"column",
     }}>
       <div style={{position:"relative", aspectRatio:"16/10", background:C.bgWarm}}>
-        <img src={s.img} alt={`${s.name}（${s.genre}）のイメージ`} loading="lazy" decoding="async"
+        <img src={s.officialImg || s.img} alt={`${s.name}（${s.genre}）の${s.officialImg?"写真":"イメージ"}`} loading="lazy" decoding="async"
           onError={e=>{ if(e.target.src!==FALLBACK_IMG){e.target.src=FALLBACK_IMG;} }}
           style={{width:"100%", height:"100%", objectFit:"cover", display:"block"}}/>
         {s.star && (
@@ -343,6 +373,22 @@ function StoreCard({s, index}){
             <span aria-hidden="true">📍</span>地図で開く
           </a>
         </div>
+
+        {s.igPost && (
+          <div style={{marginTop:4}}>
+            <button type="button" onClick={()=>setShowIG(v=>!v)} aria-expanded={showIG}
+              style={{cursor:"pointer", width:"100%", border:`1.5px solid ${C.border}`,
+                background:C.bgWarm, color:C.mainD, padding:"9px 12px", borderRadius:10,
+                fontSize:13, fontWeight:700}}>
+              📷 {showIG ? "公式の写真を閉じる" : "公式の写真を見る（Instagram）"}
+            </button>
+            {showIG && (
+              <div style={{marginTop:10}}>
+                <IGEmbed permalink={s.igPost}/>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </article>
   );
