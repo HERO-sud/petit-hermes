@@ -2,7 +2,7 @@
 import puppeteer from 'puppeteer';
 import { spawn } from 'node:child_process';
 
-export const PORT = 8910;
+export const PORT = Number(process.env.PORT) || 8910;
 export const BASE = `http://localhost:${PORT}`;
 
 export function startServer() {

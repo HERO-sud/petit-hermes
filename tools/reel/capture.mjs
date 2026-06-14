@@ -1,13 +1,13 @@
-// 尺駆動モーションキャプチャ（堅牢版）: 各「行(beat)」を尺ぶん30fpsで密連写。
-// レンダラ落ち(Target closed)に備え、ブラウザ自動再起動＋途中再開、数beatごとに予防的リサイクル。
-import { readFileSync, mkdirSync, rmSync, existsSync, readdirSync } from 'node:fs';
+// 並列キーフレーム撮影: q=min/720で各beatを12fps密度で実描画（軽量）。
+// 環境変数 BEATS="1,2,3" で担当beatを指定し、PORTを変えて複数プロセス並列実行する。
+// 後段(assemble)で minterpolate により30fpsへ補間して滑らかにする。
+import { readFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs';
 import { startServer, launch, sleep, BASE } from '../e2e/lib.mjs';
 
 const DIR = new URL('./', import.meta.url).pathname;
 const TL = JSON.parse(readFileSync(DIR + 'timeline.json', 'utf8'));
 const timing = existsSync(DIR + 'timing.json') ? JSON.parse(readFileSync(DIR + 'timing.json', 'utf8')) : null;
-const FPS = 30;            // 出力と一致＝補間ゼロで最も滑らか。時間優先より品質優先
-const RECYCLE_EVERY = 5;   // N beat ごとにブラウザを作り直してメモリを解放
+const CAP_FPS = 12;
 const ROOT = DIR + 'frames/';
 mkdirSync(ROOT, { recursive: true });
 
@@ -30,70 +30,61 @@ const durOf = (id) => {
 };
 const lerp = (a, b, t) => a + (b - a) * t;
 const smooth = (t) => t * t * (3 - 2 * t);
-const beatN = (id) => Math.max(2, Math.round(durOf(id) * FPS));
-const done = (id) => { const d = `${ROOT}b${String(id).padStart(2, '0')}`; return existsSync(d) && readdirSync(d).filter((f) => f.endsWith('.jpg')).length >= beatN(id); };
+const beatN = (id) => Math.max(2, Math.round(durOf(id) * CAP_FPS));
+const dirOf = (id) => `${ROOT}b${String(id).padStart(2, '0')}`;
+const isDone = (id) => existsSync(dirOf(id)) && readdirSync(dirOf(id)).filter((f) => f.endsWith('.jpg')).length >= beatN(id);
+
+// 担当beat（BEATS env、無ければ全部）
+const wanted = (process.env.BEATS || Object.keys(PATHS).join(',')).split(',').map(Number);
+const ids = TL.beats.map((b) => b.id).filter((id) => PATHS[id] && wanted.includes(id));
+const TAG = process.env.BEATS ? `[w${process.env.PORT || ''}]` : '';
 
 const server = await startServer();
 
 async function boot() {
-  const { browser, page, errors } = await launch({ viewport: { width: 1080, height: 1920 } });
-  await page.goto(`${BASE}/game.html?q=low`, { waitUntil: 'networkidle0', timeout: 120000 });
+  const { browser, page } = await launch({ viewport: { width: 720, height: 1280 } });
+  await page.goto(`${BASE}/game.html?q=min`, { waitUntil: 'networkidle0', timeout: 120000 });
   await page.waitForFunction(() => !document.getElementById('startBtn').disabled, { timeout: 150000 });
   await page.click('#startBtn');
   await sleep(400);
   await page.evaluate(() => window.__game.skipIntro());
-  await sleep(1000);
-  await page.evaluate(() => document.getElementById('hud').classList.add('hidden'));
+  await sleep(900);
+  await page.evaluate(() => {
+    document.getElementById('hud').classList.add('hidden');
+    window.__game.G.quality.tier.fogDensity = 0.0011; // 霧を薄く（min既定は濃いため）
+  });
   await page.waitForFunction(() => window.__game.G.npcs.npcs.length >= 7, { timeout: 60000 }).catch(() => {});
-  await sleep(700);
-  // 一人称に
   await page.evaluate(() => window.dispatchEvent(new KeyboardEvent('keydown', { code: 'KeyV' })));
-  await sleep(150);
-  return { browser, page, errors };
+  await sleep(200);
+  return { browser, page };
 }
 
 async function captureBeat(page, id) {
-  const path = PATHS[id]; const N = beatN(id);
-  const d = `${ROOT}b${String(id).padStart(2, '0')}`;
+  const path = PATHS[id], N = beatN(id), d = dirOf(id);
   mkdirSync(d, { recursive: true });
   await page.evaluate((w) => window.__game.weather.set(w || 'clear'), path.weather || 'clear');
   await page.evaluate((t) => window.__game.setTimeOfDay(t), path.tod);
   await page.evaluate(([x, z, y]) => { window.__game.teleport(x, z); window.__game.setYaw(y); }, [path.x0, path.z0, path.y0]);
-  await sleep(path.weather ? 1300 : 600);
+  await sleep(path.weather ? 1200 : 500);
   for (let k = 0; k < N; k++) {
     const t = smooth(N === 1 ? 0 : k / (N - 1));
     await page.evaluate(([x, z, y]) => { window.__game.teleport(x, z); window.__game.setYaw(y); },
       [lerp(path.x0, path.x1, t), lerp(path.z0, path.z1, t), lerp(path.y0, path.y1, t)]);
-    await sleep(40);
-    await page.screenshot({ path: `${d}/f${String(k).padStart(4, '0')}.jpg`, type: 'jpeg', quality: 95 });
+    await sleep(20);
+    await page.screenshot({ path: `${d}/f${String(k).padStart(4, '0')}.jpg`, type: 'jpeg', quality: 92 });
   }
 }
 
-const ids = TL.beats.map((b) => b.id).filter((id) => PATHS[id]);
 let ref = await boot();
-let total = 0, sinceRecycle = 0;
 try {
   for (const id of ids) {
-    if (done(id)) { console.log(`beat ${id}: skip(済)`); total += beatN(id); continue; }
-    for (let attempt = 1; attempt <= 3; attempt++) {
-      try {
-        await captureBeat(ref.page, id);
-        total += beatN(id); sinceRecycle++;
-        console.log(`beat ${String(id).padStart(2, '0')}: ${beatN(id)}f  [total ${total}]`);
-        break;
-      } catch (e) {
-        console.log(`beat ${id} 失敗(試行${attempt}): ${String(e).slice(0, 80)} → 再起動`);
-        try { await ref.browser.close(); } catch {}
-        ref = await boot(); sinceRecycle = 0;
-      }
-    }
-    if (sinceRecycle >= RECYCLE_EVERY) {
-      try { await ref.browser.close(); } catch {}
-      ref = await boot(); sinceRecycle = 0;
-      console.log('  (予防リサイクル)');
+    if (isDone(id)) { console.log(`${TAG} beat ${id}: skip`); continue; }
+    for (let a = 1; a <= 3; a++) {
+      try { await captureBeat(ref.page, id); console.log(`${TAG} beat ${String(id).padStart(2, '0')}: ${beatN(id)}f`); break; }
+      catch (e) { console.log(`${TAG} beat ${id} 失敗(${a}): ${String(e).slice(0, 60)}→再起動`); try { await ref.browser.close(); } catch {} ref = await boot(); }
     }
   }
-  console.log(`=== 合計 ${total} 枚 ===`);
+  console.log(`${TAG} 完了`);
 } finally {
   try { await ref.browser.close(); } catch {}
   server.kill();
