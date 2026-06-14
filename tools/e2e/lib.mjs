@@ -17,7 +17,7 @@ export function startServer() {
 export async function launch(opts = {}) {
   const browser = await puppeteer.launch({
     headless: true,
-    args: ['--no-sandbox', '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'],
+    args: ['--no-sandbox', '--disable-dev-shm-usage', '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'],
     defaultViewport: { width: 960, height: 540, ...opts.viewport },
   });
   const page = await browser.newPage();
