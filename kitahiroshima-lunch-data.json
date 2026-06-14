@@ -1,0 +1,975 @@
+{
+  "title": "広島県北広島町 おすすめランチ・カフェ データセット",
+  "note": "2026年6月時点の公開情報に基づく調査。実在は各sourcesで確認済み。営業時間・定休日は変動するため公式で要確認。北海道北広島市ではなく広島県山県郡北広島町。",
+  "areas": [
+    "千代田",
+    "大朝",
+    "豊平",
+    "芸北"
+  ],
+  "count": 40,
+  "stores": [
+    {
+      "no": 1,
+      "id": "petit-hermes",
+      "recommended": true,
+      "name": "プチヘルメース",
+      "reading": "Petit Hermès",
+      "genre": "パン",
+      "area": "千代田",
+      "address": "北広島町南方1920（旧南方小学校）",
+      "hours": "水・土のみ営業（時間は公式で要確認）",
+      "catch": "廃校の教室で焼く、天然酵母パン。",
+      "points": [
+        "2013年閉校の旧南方小学校1階。規格外の野菜・果物を酵母に活かす、町の象徴的な一軒"
+      ],
+      "instagram": "https://www.instagram.com/petit_hermes/",
+      "official_site": "https://petit-hermes.square.site/",
+      "sources": [
+        {
+          "label": "中国新聞の記事（出典）",
+          "url": "https://www.chugoku-np.co.jp/articles/-/588149"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E3%83%97%E3%83%81%E3%83%98%E3%83%AB%E3%83%A1%E3%83%BC%E3%82%B9%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E5%8D%97%E6%96%B91920%EF%BC%88%E6%97%A7%E5%8D%97%E6%96%B9%E5%B0%8F%E5%AD%A6%E6%A0%A1%EF%BC%89"
+    },
+    {
+      "no": 2,
+      "id": "south-in-north",
+      "recommended": false,
+      "name": "South in North",
+      "reading": "サウスインノース",
+      "genre": "カフェ",
+      "area": "千代田",
+      "address": "北広島町南方1920（旧南方小学校）",
+      "hours": "11:00〜15:00(L.O.14:00)・月休（要確認）",
+      "catch": "廃校の教室で食べる、本格スパイスカレー。",
+      "points": [
+        "プチヘルメースと同じ旧南方小学校の校舎に。北広島町産コシヒカリと地元野菜を使ったスパイスカレーが看板",
+        "6種スパイスのSOUTH CURRY（チキン）と、りんご＆蜂蜜のNORTH CURRY（欧風ビーフ）の2本柱"
+      ],
+      "instagram": "https://www.instagram.com/south_in_north__kitahiro/",
+      "official_site": "https://okomenowawawa.jp/shops/southinnorth/",
+      "sources": [
+        {
+          "label": "食べログ",
+          "url": "https://tabelog.com/hiroshima/A3408/A340801/34034607/"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=South%20in%20North%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E5%8D%97%E6%96%B91920%EF%BC%88%E6%97%A7%E5%8D%97%E6%96%B9%E5%B0%8F%E5%AD%A6%E6%A0%A1%EF%BC%89"
+    },
+    {
+      "no": 3,
+      "id": "cafe-solamie",
+      "recommended": false,
+      "name": "cafe solaMie",
+      "reading": "カフェ ソラミー",
+      "genre": "カフェ",
+      "area": "千代田",
+      "address": "北広島町蔵迫2819",
+      "hours": "11:00〜17:00(L.O.16:30)／月・木ほか休（要確認）",
+      "catch": "田舎道に突如あらわれる、丸窓のカフェ。",
+      "points": [
+        "千代田ICから北へ約10分。鯉の泳ぐ池を眺めながら、生姜焼き定食やチーズケーキを"
+      ],
+      "instagram": null,
+      "official_site": "https://mrs.living.jp/hiroshima/town_gourmet/reporter/5326673",
+      "sources": [
+        {
+          "label": "食べログ",
+          "url": "https://tabelog.com/hiroshima/A3408/A340801/34030496/"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=cafe%20solaMie%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E8%94%B5%E8%BF%AB2819"
+    },
+    {
+      "no": 4,
+      "id": "casual-kitchen-hana",
+      "recommended": false,
+      "name": "Casual Kitchen Hana",
+      "reading": "カジュアルキッチン ハナ",
+      "genre": "定食",
+      "area": "千代田",
+      "address": "北広島町有田989-1",
+      "hours": "11:00〜14:30(L.O.14:00)・土日休（要確認）",
+      "catch": "レトロな店内で、気取らない多彩なランチ。",
+      "points": [
+        "唐揚げや生姜焼きなど多彩なランチ。ライス・スープおかわり自由でお腹いっぱい",
+        "平日ランチ使いにちょうどいい、落ち着いたレトロな食堂"
+      ],
+      "instagram": "https://www.instagram.com/casual_kitchen_hana/",
+      "official_site": "https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/hana.html",
+      "sources": [
+        {
+          "label": "食べログ",
+          "url": "https://tabelog.com/en/hiroshima/A3408/A340801/34030255/"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=Casual%20Kitchen%20Hana%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E6%9C%89%E7%94%B0989-1"
+    },
+    {
+      "no": 5,
+      "id": "corbusier",
+      "recommended": false,
+      "name": "昭和レトロと珈琲の店 コルビジェ",
+      "reading": "こるびじぇ",
+      "genre": "カフェ",
+      "area": "千代田",
+      "address": "北広島町今田3885-3",
+      "hours": "13:00〜17:00／日・祝休（要確認）",
+      "catch": "昭和レトロと、サイフォン珈琲。",
+      "points": [
+        "昭和レトロ雑貨に囲まれ、サイフォンで淹れる本格珈琲と手作り菓子が楽しめる喫茶"
+      ],
+      "instagram": null,
+      "official_site": "https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/korubizye.html",
+      "sources": [
+        {
+          "label": "食べログ",
+          "url": "https://tabelog.com/hiroshima/A3408/A340801/34030926/"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E6%98%AD%E5%92%8C%E3%83%AC%E3%83%88%E3%83%AD%E3%81%A8%E7%8F%88%E7%90%B2%E3%81%AE%E5%BA%97%20%E3%82%B3%E3%83%AB%E3%83%93%E3%82%B8%E3%82%A7%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E4%BB%8A%E7%94%B03885-3"
+    },
+    {
+      "no": 6,
+      "id": "saboners",
+      "recommended": false,
+      "name": "サボナーズカフェ（温活部）",
+      "reading": "さぼなーずかふぇ",
+      "genre": "カフェ",
+      "area": "千代田",
+      "address": "北広島町有田459-1",
+      "hours": "要予約（営業時間は要確認）",
+      "catch": "自家焙煎珈琲と、よもぎ蒸し。",
+      "points": [
+        "地元素材の自家焙煎コーヒーが自慢。気軽に「よもぎ蒸し」もできる温活カフェ"
+      ],
+      "instagram": null,
+      "official_site": "https://sabonerscafe.raku-uru.jp/",
+      "sources": [
+        {
+          "label": "観光ガイドKITABITO",
+          "url": "https://kitabi-to.jp/spot_post/1053/"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E3%82%B5%E3%83%9C%E3%83%8A%E3%83%BC%E3%82%BA%E3%82%AB%E3%83%95%E3%82%A7%EF%BC%88%E6%B8%A9%E6%B4%BB%E9%83%A8%EF%BC%89%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E6%9C%89%E7%94%B0459-1"
+    },
+    {
+      "no": 7,
+      "id": "appreciate",
+      "recommended": false,
+      "name": "appreciate ＋cafe",
+      "reading": "あぷりしえいと",
+      "genre": "カフェ",
+      "area": "千代田",
+      "address": "北広島町本地361-1",
+      "hours": "カフェ11:00〜16:30／水・木・第2第4日休（要確認）",
+      "catch": "美容室併設の、くつろぎカフェ。",
+      "points": [
+        "ヘアサロン併設。施術の前後やドライブの休憩に立ち寄れる地元の憩いの場"
+      ],
+      "instagram": "https://www.instagram.com/appreciate_cafe/",
+      "official_site": null,
+      "sources": [
+        {
+          "label": "北広島町観光協会",
+          "url": "https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/appreciate.html"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=appreciate%20%EF%BC%8Bcafe%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E6%9C%AC%E5%9C%B0361-1"
+    },
+    {
+      "no": 8,
+      "id": "berryhouse",
+      "recommended": false,
+      "name": "ベリーハウス",
+      "reading": "べりーはうす",
+      "genre": "カフェ",
+      "area": "千代田",
+      "address": "北広島町南方1102-1",
+      "hours": "11:00〜16:00（限定日・要予約）／1・8月休",
+      "catch": "ハーブガーデンの、隠れ家カフェ。",
+      "points": [
+        "ハーブの庭に包まれた予約制カフェ。ハンドメイド作品も並ぶ、知る人ぞ知る一軒"
+      ],
+      "instagram": null,
+      "official_site": "https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/berry.html",
+      "sources": [
+        {
+          "label": "食べログ",
+          "url": "https://tabelog.com/en/hiroshima/A3408/A340801/34021873/"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E3%83%99%E3%83%AA%E3%83%BC%E3%83%8F%E3%82%A6%E3%82%B9%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E5%8D%97%E6%96%B91102-1"
+    },
+    {
+      "no": 9,
+      "id": "tatumori",
+      "recommended": false,
+      "name": "さんまらーめん 立盛",
+      "reading": "たつもり",
+      "genre": "ラーメン",
+      "area": "千代田",
+      "address": "北広島町春木251",
+      "hours": "11:00〜14:00／17:00〜21:00頃・月休（要確認）",
+      "catch": "町の、新たならーめん処。",
+      "points": [
+        "らーめんはもちろん、だしの効いたうどんや冬のおでんも。気まぐれの肴で一杯も"
+      ],
+      "instagram": null,
+      "official_site": "https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/tatumori.html",
+      "sources": [
+        {
+          "label": "食べログ",
+          "url": "https://tabelog.com/en/hiroshima/A3408/A340801/34030671/"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E3%81%95%E3%82%93%E3%81%BE%E3%82%89%E3%83%BC%E3%82%81%E3%82%93%20%E7%AB%8B%E7%9B%9B%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E6%98%A5%E6%9C%A8251"
+    },
+    {
+      "no": 10,
+      "id": "chiyoda-niban",
+      "recommended": false,
+      "name": "中華そば ちよだ二番",
+      "reading": "ちよだにばん",
+      "genre": "ラーメン",
+      "area": "千代田",
+      "address": "北広島町壬生10",
+      "hours": "主に日祝のランチ営業（要確認）",
+      "catch": "カウンターだけの、醤油中華そば。",
+      "points": [
+        "小さな店であっさり醤油の中華そば。コスパよく地元で愛される一杯"
+      ],
+      "instagram": null,
+      "official_site": null,
+      "sources": [
+        {
+          "label": "食べログ",
+          "url": "https://tabelog.com/hiroshima/A3408/A340801/34016311/"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E4%B8%AD%E8%8F%AF%E3%81%9D%E3%81%B0%20%E3%81%A1%E3%82%88%E3%81%A0%E4%BA%8C%E7%95%AA%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E5%A3%AC%E7%94%9F10"
+    },
+    {
+      "no": 11,
+      "id": "ajimiya",
+      "recommended": false,
+      "name": "味みや",
+      "reading": "あじみや",
+      "genre": "お好み焼き",
+      "area": "千代田",
+      "address": "北広島町有田480-4",
+      "hours": "11:00〜13:30／17:00〜21:30・月休（要確認）",
+      "catch": "ざく切りキャベツの、お好み焼き。",
+      "points": [
+        "千代田ICから約5分。ざく切りキャベツで野菜の甘みと香りを楽しむ広島流"
+      ],
+      "instagram": null,
+      "official_site": "https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/ajimiya.html",
+      "sources": [
+        {
+          "label": "食べログ",
+          "url": "https://tabelog.com/en/hiroshima/A3408/A340801/34027345/"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E5%91%B3%E3%81%BF%E3%82%84%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E6%9C%89%E7%94%B0480-4"
+    },
+    {
+      "no": 12,
+      "id": "okonomi-hiro",
+      "recommended": false,
+      "name": "お好みハウス ひろ",
+      "reading": "おこのみはうす ひろ",
+      "genre": "お好み焼き",
+      "area": "千代田",
+      "address": "北広島町春木167",
+      "hours": "10:30〜19:00・月休（要確認）",
+      "catch": "通し営業の、昔ながらお好み焼き。",
+      "points": [
+        "地元・春木の昔ながらのお好み焼き店。通し営業で立ち寄りやすい"
+      ],
+      "instagram": null,
+      "official_site": "https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/hiro.html",
+      "sources": [
+        {
+          "label": "食べログ",
+          "url": "https://tabelog.com/hiroshima/A3408/A340801/34027478/"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E3%81%8A%E5%A5%BD%E3%81%BF%E3%83%8F%E3%82%A6%E3%82%B9%20%E3%81%B2%E3%82%8D%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E6%98%A5%E6%9C%A8167"
+    },
+    {
+      "no": 13,
+      "id": "okonomi-an",
+      "recommended": false,
+      "name": "お好み焼き あん",
+      "reading": "おこのみやき あん",
+      "genre": "お好み焼き",
+      "area": "千代田",
+      "address": "北広島町本地25-18",
+      "hours": "11:00〜14:00／17:00〜20:00・月休（要確認）",
+      "catch": "甘いキャベツと、無料の味噌汁。",
+      "points": [
+        "芸北の甘いキャベツを使用。無料の味噌汁も隠れた人気。夜は鉄板焼で一杯"
+      ],
+      "instagram": null,
+      "official_site": "https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/an.html",
+      "sources": [
+        {
+          "label": "ぐるなび",
+          "url": "https://r.gnavi.co.jp/18y3x0a10000/"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E3%81%8A%E5%A5%BD%E3%81%BF%E7%84%BC%E3%81%8D%20%E3%81%82%E3%82%93%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E6%9C%AC%E5%9C%B025-18"
+    },
+    {
+      "no": 14,
+      "id": "kitahiro-0banchi",
+      "recommended": false,
+      "name": "リサイクル きたひろ0番地",
+      "reading": "きたひろぜろばんち",
+      "genre": "その他",
+      "area": "千代田",
+      "address": "北広島町有田3388",
+      "hours": "9:00〜18:00・木休（要確認）",
+      "catch": "こだわりだしの、移動たこ焼き。",
+      "points": [
+        "外はカリッ中はトロッ。こだわりのだし汁とタコのたこ焼きを移動販売"
+      ],
+      "instagram": null,
+      "official_site": null,
+      "sources": [
+        {
+          "label": "北広島町観光協会",
+          "url": "https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/0banchi.html"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E3%83%AA%E3%82%B5%E3%82%A4%E3%82%AF%E3%83%AB%20%E3%81%8D%E3%81%9F%E3%81%B2%E3%82%8D0%E7%95%AA%E5%9C%B0%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E6%9C%89%E7%94%B03388"
+    },
+    {
+      "no": 15,
+      "id": "hibiki",
+      "recommended": false,
+      "name": "レストラン 響",
+      "reading": "ひびき",
+      "genre": "定食",
+      "area": "千代田",
+      "address": "北広島町有田1122（道の駅 舞ロードIC千代田）",
+      "hours": "11:00〜15:00(L.O.14:00)・水休（要確認）",
+      "catch": "地元野菜の、減塩バイキング。",
+      "points": [
+        "道の駅 舞ロードIC千代田内。石窯炊きご飯・天ぷら・ピザ・中華など60種超のビュッフェ"
+      ],
+      "instagram": null,
+      "official_site": "https://kitahiro-ichiba.com/restaurant_hiviki.html",
+      "sources": [
+        {
+          "label": "食べログ",
+          "url": "https://tabelog.com/hiroshima/A3408/A340801/34019530/"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E3%83%AC%E3%82%B9%E3%83%88%E3%83%A9%E3%83%B3%20%E9%9F%BF%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E6%9C%89%E7%94%B01122%EF%BC%88%E9%81%93%E3%81%AE%E9%A7%85%20%E8%88%9E%E3%83%AD%E3%83%BC%E3%83%89IC%E5%8D%83%E4%BB%A3%E7%94%B0%EF%BC%89"
+    },
+    {
+      "no": 16,
+      "id": "kitahiro-shokudo",
+      "recommended": false,
+      "name": "きたひろ食堂",
+      "reading": "きたひろしょくどう",
+      "genre": "定食",
+      "area": "千代田",
+      "address": "北広島町有田1122（道の駅 舞ロードIC千代田）",
+      "hours": "10:00〜17:00（軽食15:00まで・要確認）",
+      "catch": "舞ロー丼と、きたひろラーメン。",
+      "points": [
+        "道の駅 舞ロードIC千代田内の軽食処。きたひろラーメン・舞ロー丼・カレーが手軽"
+      ],
+      "instagram": null,
+      "official_site": "https://kitahiro-ichiba.com/",
+      "sources": [
+        {
+          "label": "食べログ",
+          "url": "https://tabelog.com/hiroshima/A3408/A340801/34022229/"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E3%81%8D%E3%81%9F%E3%81%B2%E3%82%8D%E9%A3%9F%E5%A0%82%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E6%9C%89%E7%94%B01122%EF%BC%88%E9%81%93%E3%81%AE%E9%A7%85%20%E8%88%9E%E3%83%AD%E3%83%BC%E3%83%89IC%E5%8D%83%E4%BB%A3%E7%94%B0%EF%BC%89"
+    },
+    {
+      "no": 17,
+      "id": "michizure",
+      "recommended": false,
+      "name": "酔膳亭 みちづれ",
+      "reading": "すいぜんてい みちづれ",
+      "genre": "和食",
+      "area": "千代田",
+      "address": "北広島町有田1556-1",
+      "hours": "11:00〜14:00 ほか・水休（要確認）",
+      "catch": "両海の魚介と寿司を、ランチで。",
+      "points": [
+        "日本海・瀬戸内の新鮮魚介と寿司をリーズナブルに。個室・座敷もありランチ可"
+      ],
+      "instagram": null,
+      "official_site": "https://www.yamagata-suizentei-michizure.com/",
+      "sources": [
+        {
+          "label": "北広島町観光協会",
+          "url": "https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/michidure.html"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E9%85%94%E8%86%B3%E4%BA%AD%20%E3%81%BF%E3%81%A1%E3%81%A5%E3%82%8C%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E6%9C%89%E7%94%B01556-1"
+    },
+    {
+      "no": 18,
+      "id": "liand-bagel",
+      "recommended": true,
+      "name": "Liand bagel",
+      "reading": "リアンドベーグル",
+      "genre": "ベーグル",
+      "area": "豊平",
+      "address": "北広島町都志見1828",
+      "hours": "土曜のみ営業（公式SNS・ECで要確認）",
+      "catch": "土曜だけ開く、古民家のベーグル工房。",
+      "points": [
+        "アート/デザインに携わる池田夫妻が営む週イチ営業。人参・りんご等の自家製ボタニカル酵母で48時間低温発酵"
+      ],
+      "instagram": "https://www.instagram.com/liand_bagel/",
+      "official_site": "https://liandbagel.official.ec/",
+      "sources": [
+        {
+          "label": "食べログ",
+          "url": "https://tabelog.com/hiroshima/A3408/A340801/34029422/"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=Liand%20bagel%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E9%83%BD%E5%BF%97%E8%A6%8B1828"
+    },
+    {
+      "no": 19,
+      "id": "kobori",
+      "recommended": false,
+      "name": "豊平手打ちそば こぼり",
+      "reading": "こぼり",
+      "genre": "そば",
+      "area": "豊平",
+      "address": "北広島町阿坂3425-7",
+      "hours": "土日祝11:00〜15:00（売切れ終了）／平日休",
+      "catch": "ミシュラン掲載の、手打ちそば。",
+      "points": [
+        "豊平手打ちそば保存会出身の主人が打つ、地元産「とよむすめ」のコシある手打ちそば"
+      ],
+      "instagram": null,
+      "official_site": "https://y783100.gorp.jp/",
+      "sources": [
+        {
+          "label": "北広島町観光協会",
+          "url": "https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/kobori.html"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E8%B1%8A%E5%B9%B3%E6%89%8B%E6%89%93%E3%81%A1%E3%81%9D%E3%81%B0%20%E3%81%93%E3%81%BC%E3%82%8A%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E9%98%BF%E5%9D%823425-7"
+    },
+    {
+      "no": 20,
+      "id": "isobe",
+      "recommended": false,
+      "name": "そば お味処 いそべ",
+      "reading": "いそべ",
+      "genre": "そば",
+      "area": "豊平",
+      "address": "北広島町阿坂12621-7",
+      "hours": "11:00〜15:00・予約制・不定休",
+      "catch": "骨董の店で味わう、かもざる。",
+      "points": [
+        "住宅街の一軒家。骨董・雑貨が並ぶ店内で、焦がしネギ香る「かもざる」が名物（予約制）"
+      ],
+      "instagram": null,
+      "official_site": "https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/isobe.html",
+      "sources": [
+        {
+          "label": "食べログ",
+          "url": "https://tabelog.com/hiroshima/A3408/A340801/34014205/"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E3%81%9D%E3%81%B0%20%E3%81%8A%E5%91%B3%E5%87%A6%20%E3%81%84%E3%81%9D%E3%81%B9%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E9%98%BF%E5%9D%8212621-7"
+    },
+    {
+      "no": 21,
+      "id": "ryuzunosato",
+      "recommended": false,
+      "name": "お食事処 龍頭の里",
+      "reading": "りゅうずのさと",
+      "genre": "そば",
+      "area": "豊平",
+      "address": "北広島町都志見12609（豊平どんぐり村）",
+      "hours": "平日11:00〜15:00／土日祝〜19:00・第3火休（要確認）",
+      "catch": "龍頭山を望む座敷で、そば会席。",
+      "points": [
+        "道の駅 豊平どんぐり村内。手打ちそばや地元食材の創作料理・会席（要予約）を座敷やテラスで"
+      ],
+      "instagram": null,
+      "official_site": "https://www.dongurimura.co.jp/?cn=100012",
+      "sources": [
+        {
+          "label": "北広島町観光協会",
+          "url": "https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/ryuzunosato.html"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E3%81%8A%E9%A3%9F%E4%BA%8B%E5%87%A6%20%E9%BE%8D%E9%A0%AD%E3%81%AE%E9%87%8C%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E9%83%BD%E5%BF%97%E8%A6%8B12609%EF%BC%88%E8%B1%8A%E5%B9%B3%E3%81%A9%E3%82%93%E3%81%90%E3%82%8A%E6%9D%91%EF%BC%89"
+    },
+    {
+      "no": 22,
+      "id": "donguri-an",
+      "recommended": false,
+      "name": "そば処 どんぐり庵",
+      "reading": "どんぐりあん",
+      "genre": "そば",
+      "area": "豊平",
+      "address": "北広島町都志見12609（道の駅 豊平どんぐり村）",
+      "hours": "11:00〜14:00・第3火休",
+      "catch": "挽きたて打ちたて、豊平そば。",
+      "points": [
+        "道の駅 豊平どんぐり村内。名人直伝のダシで味わう自信の手打ちそば。となりでそば打ち体験も"
+      ],
+      "instagram": null,
+      "official_site": "https://www.dongurimura.co.jp/?cn=100027",
+      "sources": [
+        {
+          "label": "北広島町観光協会",
+          "url": "https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/dongurian.html"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E3%81%9D%E3%81%B0%E5%87%A6%20%E3%81%A9%E3%82%93%E3%81%90%E3%82%8A%E5%BA%B5%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E9%83%BD%E5%BF%97%E8%A6%8B12609%EF%BC%88%E9%81%93%E3%81%AE%E9%A7%85%20%E8%B1%8A%E5%B9%B3%E3%81%A9%E3%82%93%E3%81%90%E3%82%8A%E6%9D%91%EF%BC%89"
+    },
+    {
+      "no": 23,
+      "id": "dude",
+      "recommended": false,
+      "name": "森のカフェ＆レストラン Dude",
+      "reading": "でゅーど",
+      "genre": "イタリアン",
+      "area": "豊平",
+      "address": "北広島町西宗13962-280",
+      "hours": "平日11:00〜16:00／土日〜20:00・月休（冬期休）",
+      "catch": "森の中の、自家菜園イタリアン。",
+      "points": [
+        "絵本のような一軒家。料理歴35年のシェフが自家菜園の有機野菜で作る本格パスタ・ピザ"
+      ],
+      "instagram": null,
+      "official_site": "https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/dude.html",
+      "sources": [
+        {
+          "label": "Retty",
+          "url": "https://retty.me/area/PRE34/ARE284/SUB56902/100000609004/"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E6%A3%AE%E3%81%AE%E3%82%AB%E3%83%95%E3%82%A7%EF%BC%86%E3%83%AC%E3%82%B9%E3%83%88%E3%83%A9%E3%83%B3%20Dude%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E8%A5%BF%E5%AE%9713962-280"
+    },
+    {
+      "no": 24,
+      "id": "cafe-watanabe",
+      "recommended": false,
+      "name": "cafe house Watanabe",
+      "reading": "かふぇはうす わたなべ",
+      "genre": "カフェ",
+      "area": "豊平",
+      "address": "北広島町都志見3706",
+      "hours": "11:00〜17:00（要確認）",
+      "catch": "スープカレーと、シフォン専門。",
+      "points": [
+        "どんぐり村のすぐ下。地元卵・国産小麦のシフォンケーキとスープカレーセットが看板"
+      ],
+      "instagram": null,
+      "official_site": "https://cafe-house-watanabe.jimdofree.com/",
+      "sources": [
+        {
+          "label": "北広島町観光協会",
+          "url": "https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/watanabe.html"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=cafe%20house%20Watanabe%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E9%83%BD%E5%BF%97%E8%A6%8B3706"
+    },
+    {
+      "no": 25,
+      "id": "kitsutsuki",
+      "recommended": false,
+      "name": "ガレットとクレープのお店 啄木鳥",
+      "reading": "きつつき",
+      "genre": "カフェ",
+      "area": "豊平",
+      "address": "北広島町阿坂10421-1",
+      "hours": "11:00〜17:00・火/第1水休",
+      "catch": "豊平そば粉の、香ばしいガレット。",
+      "points": [
+        "どんぐり村奥の隠れ家。地物（豊平）そば粉のガレットと季節のクレープが楽しめる"
+      ],
+      "instagram": null,
+      "official_site": "https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/kitsutsuki.html",
+      "sources": [
+        {
+          "label": "食べログ",
+          "url": "https://tabelog.com/hiroshima/A3408/A340801/34017325/"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E3%82%AC%E3%83%AC%E3%83%83%E3%83%88%E3%81%A8%E3%82%AF%E3%83%AC%E3%83%BC%E3%83%97%E3%81%AE%E3%81%8A%E5%BA%97%20%E5%95%84%E6%9C%A8%E9%B3%A5%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E9%98%BF%E5%9D%8210421-1"
+    },
+    {
+      "no": 26,
+      "id": "nonohana",
+      "recommended": false,
+      "name": "野の花かふぇ",
+      "reading": "ののはな かふぇ",
+      "genre": "カフェ",
+      "area": "豊平",
+      "address": "北広島町都志見10733-99",
+      "hours": "金・土 11:00〜16:00・冬期休（要確認）",
+      "catch": "地元野菜ランチと、ふわふわシフォン。",
+      "points": [
+        "龍頭山ふもとの古民家カフェ。金・土だけ、地元野菜たっぷりのランチと自家製スイーツを"
+      ],
+      "instagram": null,
+      "official_site": "https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/nonohana.html",
+      "sources": [
+        {
+          "label": "食べログ",
+          "url": "https://tabelog.com/hiroshima/A3408/A340801/34014932/"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E9%87%8E%E3%81%AE%E8%8A%B1%E3%81%8B%E3%81%B5%E3%81%87%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E9%83%BD%E5%BF%97%E8%A6%8B10733-99"
+    },
+    {
+      "no": 27,
+      "id": "yamagoya",
+      "recommended": false,
+      "name": "自家焙煎 山小屋cafe",
+      "reading": "やまごや かふぇ",
+      "genre": "カフェ",
+      "area": "豊平",
+      "address": "北広島町今吉田1545-1",
+      "hours": "10:00〜17:00（10〜3月は〜15:00）・火水休",
+      "catch": "自家焙煎珈琲と、絶品カレー。",
+      "points": [
+        "2019年開業の小さなカフェ。自家焙煎の新鮮コーヒーと絶品カレーが看板"
+      ],
+      "instagram": null,
+      "official_site": "https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/yamagoyacafe.html",
+      "sources": [
+        {
+          "label": "食べログ",
+          "url": "https://tabelog.com/hiroshima/A3408/A340801/34027633/"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E8%87%AA%E5%AE%B6%E7%84%99%E7%85%8E%20%E5%B1%B1%E5%B0%8F%E5%B1%8Bcafe%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E4%BB%8A%E5%90%89%E7%94%B01545-1"
+    },
+    {
+      "no": 28,
+      "id": "kario-chaya",
+      "recommended": false,
+      "name": "かりお茶屋",
+      "reading": "かりおちゃや",
+      "genre": "そば",
+      "area": "芸北",
+      "address": "北広島町東八幡原10119-1（高原の自然館）",
+      "hours": "10:00〜16:00・火休・冬期休（要確認）",
+      "catch": "八幡高原名物の、赤そば。",
+      "points": [
+        "高原の自然館に併設。八幡高原で育つ名物「赤そば」を、赤そば畑のそばで味わえる"
+      ],
+      "instagram": null,
+      "official_site": "http://kitahiro.jp/eat-buy/eatsingle/geihokusingle/kario.html",
+      "sources": [
+        {
+          "label": "食べログ",
+          "url": "https://tabelog.com/hiroshima/A3408/A340801/34007742/"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E3%81%8B%E3%82%8A%E3%81%8A%E8%8C%B6%E5%B1%8B%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E6%9D%B1%E5%85%AB%E5%B9%A1%E5%8E%9F10119-1%EF%BC%88%E9%AB%98%E5%8E%9F%E3%81%AE%E8%87%AA%E7%84%B6%E9%A4%A8%EF%BC%89"
+    },
+    {
+      "no": 29,
+      "id": "oudomari-chaya",
+      "recommended": false,
+      "name": "王泊茶屋",
+      "reading": "おうどまりちゃや",
+      "genre": "そば",
+      "area": "芸北",
+      "address": "北広島町細見361-94（芸北王泊ダム湖畔）",
+      "hours": "そば11:00〜14:30／カフェ〜16:30・火水休（季節変更）",
+      "catch": "湖畔の、石臼挽きそば＆カフェ。",
+      "points": [
+        "2024年開業。国産石臼挽きそば粉のこだわり蕎麦と、王泊ダム湖畔の眺めの併設カフェ"
+      ],
+      "instagram": null,
+      "official_site": "https://kitahiro.jp/eat-buy/eatsingle/geihokusingle/pg7834.html",
+      "sources": [
+        {
+          "label": "食べログ",
+          "url": "https://tabelog.com/hiroshima/A3408/A340801/34032483/"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E7%8E%8B%E6%B3%8A%E8%8C%B6%E5%B1%8B%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E7%B4%B0%E8%A6%8B361-94%EF%BC%88%E8%8A%B8%E5%8C%97%E7%8E%8B%E6%B3%8A%E3%83%80%E3%83%A0%E6%B9%96%E7%95%94%EF%BC%89"
+    },
+    {
+      "no": 30,
+      "id": "shojikimura",
+      "recommended": false,
+      "name": "コーヒーハウス 正直村",
+      "reading": "しょうじきむら",
+      "genre": "カフェ",
+      "area": "芸北",
+      "address": "北広島町西八幡原10770-1（聖湖畔）",
+      "hours": "10:30〜16:00・冬期(12〜3月)休",
+      "catch": "聖湖を望む、ログハウス喫茶。",
+      "points": [
+        "聖湖畔のログハウス風カフェ。テラスから臥竜山を望み、コーヒーや軽食でくつろげる秘境カフェ"
+      ],
+      "instagram": null,
+      "official_site": null,
+      "sources": [
+        {
+          "label": "北広島町観光協会",
+          "url": "https://kitahiro.jp/eat-buy/eatsingle/geihokusingle/shojikimura.html"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E3%82%B3%E3%83%BC%E3%83%92%E3%83%BC%E3%83%8F%E3%82%A6%E3%82%B9%20%E6%AD%A3%E7%9B%B4%E6%9D%91%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E8%A5%BF%E5%85%AB%E5%B9%A1%E5%8E%9F10770-1%EF%BC%88%E8%81%96%E6%B9%96%E7%95%94%EF%BC%89"
+    },
+    {
+      "no": 31,
+      "id": "daisen",
+      "recommended": false,
+      "name": "山奥の料理屋 大仙",
+      "reading": "だいせん",
+      "genre": "和食",
+      "area": "芸北",
+      "address": "北広島町川小田10076",
+      "hours": "11:30〜13:30／17:00〜22:00・不定休（要確認）",
+      "catch": "日本海の幸と、山の幸の料理屋。",
+      "points": [
+        "親子2代で営む料理屋。日本海の新鮮な魚介と芸北の山の幸を生かした地産地消のまごころ料理"
+      ],
+      "instagram": null,
+      "official_site": "https://geihoku-daisen.com/",
+      "sources": [
+        {
+          "label": "北広島町観光協会",
+          "url": "http://kitahiro.jp/eat-buy/eatsingle/geihokusingle/daisen.html"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E5%B1%B1%E5%A5%A5%E3%81%AE%E6%96%99%E7%90%86%E5%B1%8B%20%E5%A4%A7%E4%BB%99%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E5%B7%9D%E5%B0%8F%E7%94%B010076"
+    },
+    {
+      "no": 32,
+      "id": "alpenya",
+      "recommended": false,
+      "name": "あるぺん屋（八幡高原酒造）",
+      "reading": "あるぺんや",
+      "genre": "和食",
+      "area": "芸北",
+      "address": "北広島町西八幡原10405-3",
+      "hours": "11:00〜14:00・月火休・要予約",
+      "catch": "名水仕込みの、どぶろく鍋。",
+      "points": [
+        "八幡高原の名水で仕込むどぶろくの蔵。名物「どぶろく鍋」や自家製麹の腸活メニュー（要予約）"
+      ],
+      "instagram": null,
+      "official_site": "https://www.alpenya2.com/",
+      "sources": [
+        {
+          "label": "北広島町観光協会",
+          "url": "https://kitahiro.jp/eat-buy/eatsingle/geihokusingle/alpine.html"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E3%81%82%E3%82%8B%E3%81%BA%E3%82%93%E5%B1%8B%EF%BC%88%E5%85%AB%E5%B9%A1%E9%AB%98%E5%8E%9F%E9%85%92%E9%80%A0%EF%BC%89%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E8%A5%BF%E5%85%AB%E5%B9%A1%E5%8E%9F10405-3"
+    },
+    {
+      "no": 33,
+      "id": "jokenji",
+      "recommended": false,
+      "name": "イタリアン精進料理 淨謙寺",
+      "reading": "じょうけんじ",
+      "genre": "和食",
+      "area": "芸北",
+      "address": "北広島町奥原161",
+      "hours": "完全予約制・主に金土日・5〜12月",
+      "catch": "寺で味わう、彩りの精進料理。",
+      "points": [
+        "浄土真宗の寺で味わう完全予約制ランチ。30種超の地元食材を朱漆器に盛る彩り豊かな精進料理"
+      ],
+      "instagram": null,
+      "official_site": "https://kitahiro.jp/eat-buy/eatsingle/geihokusingle/jokenji.html",
+      "sources": [
+        {
+          "label": "食べログ",
+          "url": "https://tabelog.com/en/hiroshima/A3408/A340801/34015662/"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E3%82%A4%E3%82%BF%E3%83%AA%E3%82%A2%E3%83%B3%E7%B2%BE%E9%80%B2%E6%96%99%E7%90%86%20%E6%B7%A8%E8%AC%99%E5%AF%BA%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E5%A5%A5%E5%8E%9F161"
+    },
+    {
+      "no": 34,
+      "id": "zousan-cafe",
+      "recommended": false,
+      "name": "芸北ぞうさんカフェ",
+      "reading": "げいほくぞうさんかふぇ",
+      "genre": "カフェ",
+      "area": "芸北",
+      "address": "北広島町荒神原201（国道186号沿い）",
+      "hours": "11:00〜18:00・水木休",
+      "catch": "薪窯の手作りピザと、ハーブティ。",
+      "points": [
+        "スキー場施設を改装した開放的なカフェ。間伐材の薪窯で焼く手作りピザとハーブティーが名物"
+      ],
+      "instagram": null,
+      "official_site": "https://www.zousancafe.com/",
+      "sources": [
+        {
+          "label": "北広島町観光協会",
+          "url": "https://kitahiro.jp/eat-buy/eatsingle/geihokusingle/zousancafe.html"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E8%8A%B8%E5%8C%97%E3%81%9E%E3%81%86%E3%81%95%E3%82%93%E3%82%AB%E3%83%95%E3%82%A7%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E8%8D%92%E7%A5%9E%E5%8E%9F201%EF%BC%88%E5%9B%BD%E9%81%93186%E5%8F%B7%E6%B2%BF%E3%81%84%EF%BC%89"
+    },
+    {
+      "no": 35,
+      "id": "yuzuan",
+      "recommended": false,
+      "name": "囲炉裏の店 ゆず庵",
+      "reading": "ゆずあん",
+      "genre": "和食",
+      "area": "大朝",
+      "address": "北広島町大朝633-3",
+      "hours": "昼11:30〜13:30（平日）ほか・水/第2火休（要確認）",
+      "catch": "囲炉裏で、両海の幸を小料理で。",
+      "points": [
+        "浜田の海の幸・石見ポーク・瀬戸内の牡蠣などを囲炉裏で。昼は定食ランチも（要確認）"
+      ],
+      "instagram": null,
+      "official_site": "https://kitahiro.jp/eat-buy/eatsingle/oasasingle/yuzuan.html",
+      "sources": [
+        {
+          "label": "食べログ",
+          "url": "https://tabelog.com/hiroshima/A3408/A340801/34021880/"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E5%9B%B2%E7%82%89%E8%A3%8F%E3%81%AE%E5%BA%97%20%E3%82%86%E3%81%9A%E5%BA%B5%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E5%A4%A7%E6%9C%9D633-3"
+    },
+    {
+      "no": 36,
+      "id": "wasaru-shokudo",
+      "recommended": false,
+      "name": "こちら大朝わさ～る内食堂",
+      "reading": "わさ～るないしょくどう",
+      "genre": "ラーメン",
+      "area": "大朝",
+      "address": "北広島町大朝2513-1（わさ～る内）",
+      "hours": "9:00〜15:00・第3水休",
+      "catch": "産直施設の、汁なし担担麺。",
+      "points": [
+        "産直施設「わさ～る」内の食堂。汁なし担担麺などの麺類を手軽に味わえる"
+      ],
+      "instagram": null,
+      "official_site": null,
+      "sources": [
+        {
+          "label": "食べログ",
+          "url": "https://tabelog.com/hiroshima/A3408/A340801/34024886/"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E3%81%93%E3%81%A1%E3%82%89%E5%A4%A7%E6%9C%9D%E3%82%8F%E3%81%95%EF%BD%9E%E3%82%8B%E5%86%85%E9%A3%9F%E5%A0%82%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E5%A4%A7%E6%9C%9D2513-1%EF%BC%88%E3%82%8F%E3%81%95%EF%BD%9E%E3%82%8B%E5%86%85%EF%BC%89"
+    },
+    {
+      "no": 37,
+      "id": "resthouse-oasa",
+      "recommended": false,
+      "name": "レストハウス大朝",
+      "reading": "れすとはうすおおあさ",
+      "genre": "定食",
+      "area": "大朝",
+      "address": "北広島町田原106（中国平和記念墓地公園内）",
+      "hours": "10:00〜17:00・火休・冬期(12〜2月)休",
+      "catch": "公園内の食堂、ぶっかけそば。",
+      "points": [
+        "中国平和記念墓地公園内。冷やしぶっかけそばや牡蠣フライ定食などを提供"
+      ],
+      "instagram": null,
+      "official_site": "https://hitosara.com/0031506777/",
+      "sources": [
+        {
+          "label": "食べログ",
+          "url": "https://tabelog.com/hiroshima/A3408/A340801/34021463/"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E3%83%AC%E3%82%B9%E3%83%88%E3%83%8F%E3%82%A6%E3%82%B9%E5%A4%A7%E6%9C%9D%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E7%94%B0%E5%8E%9F106%EF%BC%88%E4%B8%AD%E5%9B%BD%E5%B9%B3%E5%92%8C%E8%A8%98%E5%BF%B5%E5%A2%93%E5%9C%B0%E5%85%AC%E5%9C%92%E5%86%85%EF%BC%89"
+    },
+    {
+      "no": 38,
+      "id": "ainosato",
+      "recommended": false,
+      "name": "天意の里 ハーブガーデン",
+      "reading": "あいのさと はーぶがーでん",
+      "genre": "カフェ",
+      "area": "大朝",
+      "address": "北広島町大朝11654-1",
+      "hours": "10:00〜（季節変動）・木休・冬期休（要確認）",
+      "catch": "ハーブ園の、農家レストラン。",
+      "points": [
+        "約4万㎡・100種超のハーブ園。無農薬野菜と国産肉のハーブランチが名物（5〜6月のカモミール摘みも人気）"
+      ],
+      "instagram": null,
+      "official_site": "http://www.oasa.jp/ainosato/",
+      "sources": [
+        {
+          "label": "北広島町観光協会",
+          "url": "https://kitahiro.jp/eat-buy/eatsingle/oasasingle/ainosato.html"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E5%A4%A9%E6%84%8F%E3%81%AE%E9%87%8C%20%E3%83%8F%E3%83%BC%E3%83%96%E3%82%AC%E3%83%BC%E3%83%87%E3%83%B3%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E5%A4%A7%E6%9C%9D11654-1"
+    },
+    {
+      "no": 39,
+      "id": "karashiro",
+      "recommended": false,
+      "name": "からしろ館／からしろ茶屋",
+      "reading": "からしろかん",
+      "genre": "カフェ",
+      "area": "大朝",
+      "address": "北広島町宮迫386-12",
+      "hours": "ランチ11:00〜14:00・火休",
+      "catch": "県境の産直＋100円珈琲の茶屋。",
+      "points": [
+        "島根県境の産直施設。地元野菜の販売に加え、併設茶屋でランチや100円コーヒーが気軽に"
+      ],
+      "instagram": null,
+      "official_site": null,
+      "sources": [
+        {
+          "label": "食べログ",
+          "url": "https://tabelog.com/hiroshima/A3408/A340801/34014120/"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E3%81%8B%E3%82%89%E3%81%97%E3%82%8D%E9%A4%A8%EF%BC%8F%E3%81%8B%E3%82%89%E3%81%97%E3%82%8D%E8%8C%B6%E5%B1%8B%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E5%AE%AE%E8%BF%AB386-12"
+    },
+    {
+      "no": 40,
+      "id": "kaachan-gyoza",
+      "recommended": false,
+      "name": "むらかみふぁ～む かあちゃん餃子",
+      "reading": "かあちゃんぎょうざ",
+      "genre": "その他",
+      "area": "大朝",
+      "address": "北広島町大朝2486-3",
+      "hours": "11:00〜14:30 ほか・土日祝休（要確認）",
+      "catch": "自社農場の、かあちゃん餃子。",
+      "points": [
+        "自社農場の手作り「かあちゃん餃子」と日替わり弁当。焼きたて餃子が人気（テイクアウト主体）"
+      ],
+      "instagram": null,
+      "official_site": "https://kitahiro.jp/eat-buy/eatsingle/oasasingle/gyoza.html",
+      "sources": [
+        {
+          "label": "食べログ",
+          "url": "https://tabelog.com/hiroshima/A3408/A340801/34021462/"
+        }
+      ],
+      "google_maps": "https://www.google.com/maps/search/?api=1&query=%E3%82%80%E3%82%89%E3%81%8B%E3%81%BF%E3%81%B5%E3%81%81%EF%BD%9E%E3%82%80%20%E3%81%8B%E3%81%82%E3%81%A1%E3%82%83%E3%82%93%E9%A4%83%E5%AD%90%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E5%A4%A7%E6%9C%9D2486-3"
+    }
+  ]
+}
