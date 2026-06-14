@@ -1,795 +1,385 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>北広島町のランチ、ぜんぶここに。｜広島・北広島町おすすめランチガイド</title>
-<meta name="description" content="広島県山県郡・北広島町（千代田・大朝・豊平・芸北）の実在するおすすめランチ＆カフェを、エリア・ジャンルで絞り込めるガイドに。廃校のパン屋『プチヘルメース』、土曜だけのベーグル『リアンドベーグル』、西日本有数の豊平そば、古民家カフェまで。町外の人にこそ知ってほしい一皿。">
-<meta property="og:title" content="北広島町のランチ、ぜんぶここに。">
-<meta property="og:description" content="広島・北広島町の実在おすすめランチを多数掲載。エリア×ジャンルで絞り込み、各店の公式SNS/地図へすぐ飛べる。">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>味めぐり絵巻 ｜ 北広島町 たべあるき四十軒</title>
+<meta name="description" content="広島県・北広島町（千代田・豊平・芸北・大朝）の実在ランチ＆カフェ40軒を、エリア・ジャンル・曜日で探せる『味めぐり絵巻』。廃校のパン屋、土曜だけのベーグル、豊平そば、高原カフェまで。">
+<meta property="og:title" content="味めぐり絵巻 ｜ 北広島町 たべあるき四十軒">
+<meta property="og:description" content="北広島町の実在ランチ40軒を、エリア・ジャンル・曜日で探せる絵巻スタイルのガイド。">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍙</text></svg>">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.26.5/babel.min.js"></script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='84'>🍶</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Yuji+Syuku&family=Zen+Antique&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
 <style>
-  html,body,#root{margin:0;padding:0;min-height:100vh}
-  body{
-    -webkit-font-smoothing:antialiased;
-    font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Noto Sans JP",system-ui,sans-serif;
-    color:#4A4036;
-    background-color:#FBF4E6;
-    background-image:radial-gradient(#F0E4CC 1.3px, transparent 1.3px),radial-gradient(#F0E4CC 1.3px, transparent 1.3px);
-    background-size:30px 30px; background-position:0 0,15px 15px;
-  }
-  h1,h2,h3,.pbtitle{font-family:"Yomogi","Zen Maru Gothic","Hiragino Maru Gothic ProN",cursive;letter-spacing:.02em}
   *{box-sizing:border-box}
-  @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
-  ::selection{background:#F2C879;color:#4A4036}
-  .pbcard{transition:transform .2s cubic-bezier(.2,.8,.3,1), box-shadow .2s}
-  .pbcard:hover{transform:translateY(-5px) rotate(-.6deg); box-shadow:0 16px 30px rgba(120,100,70,.16)!important}
-  .pbcard:nth-child(even):hover{transform:translateY(-5px) rotate(.6deg)}
-  .pbchip{transition:transform .12s ease, background .15s, color .15s, border-color .15s}
-  .pbchip:hover{transform:translateY(-2px)}
-  @keyframes pbfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
-  .pbsun{animation:pbfloat 6s ease-in-out infinite}
-  .pbcloud{animation:pbfloat 9s ease-in-out infinite}
+  html{scroll-behavior:smooth}
+  html,body{margin:0;padding:0;background:#161d2a}
+  ::selection{background:#d2503b;color:#fff}
+  @keyframes emaki-progress{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  a{ -webkit-tap-highlight-color:transparent; }
+  input::placeholder{color:#7e879b}
+  .emaki-scroll::-webkit-scrollbar{height:0;width:0;display:none}
+  .emaki-scroll{scrollbar-width:none}
+  .pillrow i{font-family:'Lora',serif;font-style:italic;font-size:10px;opacity:.8;font-weight:400}
+  #top{background:#161d2a url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");}
+  .lnk:hover{background:rgba(201,164,78,.16)!important;border-color:rgba(201,164,78,.55)!important;color:#f1e8d4!important}
 </style>
-
 </head>
 <body>
-<div id="root"></div>
-<script type="text/babel">
-const { useState, useMemo, useCallback, useEffect, useRef } = React;
+<div id="app"></div>
 
-/* ===== 配色（絵本トーン：やわらかい里山の緑×はちみつ色×クリーム） ===== */
-const C = {
-  fg:"#4A4036", fgL:"#7A6E5E", fgXL:"#A89A85",
-  bg:"#FBF4E6", bgW:"#FFFDF7", bgWarm:"#FBEFD8", bgDark:"#5B4A3A",
-  main:"#7BA05B", mainD:"#5E8443", mainL:"#A7C58A",
-  warm:"#E0A05A", warmL:"#F2C879", warmXL:"#FBE3B8",
-  border:"#EAD9B8", accent:"#E08A5A",
+<script>
+"use strict";
+const SHOPS = [{"no":1,"id":"petit-hermes","recommended":true,"name":"プチヘルメース","reading":"Petit Hermès","genre":"パン","area":"千代田","address":"北広島町南方1920（旧南方小学校）","hours":"水・土のみ営業（時間は公式で要確認）","catch":"廃校の教室で焼く、天然酵母パン。","point":"2013年閉校の旧南方小学校1階。規格外の野菜・果物を酵母に活かす、町の象徴的な一軒","instagram":"https://www.instagram.com/petit_hermes/","site":"https://petit-hermes.square.site/","src":{"label":"中国新聞の記事（出典）","url":"https://www.chugoku-np.co.jp/articles/-/588149"},"map":"https://www.google.com/maps/search/?api=1&query=%E3%83%97%E3%83%81%E3%83%98%E3%83%AB%E3%83%A1%E3%83%BC%E3%82%B9%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E5%8D%97%E6%96%B91920%EF%BC%88%E6%97%A7%E5%8D%97%E6%96%B9%E5%B0%8F%E5%AD%A6%E6%A0%A1%EF%BC%89","catch_en":"Naturally-leavened bread, baked in a former schoolroom."},{"no":2,"id":"south-in-north","recommended":false,"name":"South in North","reading":"サウスインノース","genre":"カフェ","area":"千代田","address":"北広島町南方1920（旧南方小学校）","hours":"11:00〜15:00(L.O.14:00)・月休（要確認）","catch":"廃校の教室で食べる、本格スパイスカレー。","point":"プチヘルメースと同じ旧南方小学校の校舎に。北広島町産コシヒカリと地元野菜を使ったスパイスカレーが看板","instagram":"https://www.instagram.com/south_in_north__kitahiro/","site":"https://okomenowawawa.jp/shops/southinnorth/","src":{"label":"食べログ","url":"https://tabelog.com/hiroshima/A3408/A340801/34034607/"},"map":"https://www.google.com/maps/search/?api=1&query=South%20in%20North%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E5%8D%97%E6%96%B91920%EF%BC%88%E6%97%A7%E5%8D%97%E6%96%B9%E5%B0%8F%E5%AD%A6%E6%A0%A1%EF%BC%89","catch_en":"Authentic spice curry inside a closed school classroom."},{"no":3,"id":"cafe-solamie","recommended":false,"name":"cafe solaMie","reading":"カフェ ソラミー","genre":"カフェ","area":"千代田","address":"北広島町蔵迫2819","hours":"11:00〜17:00(L.O.16:30)／月・木ほか休（要確認）","catch":"田舎道に突如あらわれる、丸窓のカフェ。","point":"千代田ICから北へ約10分。鯉の泳ぐ池を眺めながら、生姜焼き定食やチーズケーキを","instagram":null,"site":"https://mrs.living.jp/hiroshima/town_gourmet/reporter/5326673","src":{"label":"食べログ","url":"https://tabelog.com/hiroshima/A3408/A340801/34030496/"},"map":"https://www.google.com/maps/search/?api=1&query=cafe%20solaMie%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E8%94%B5%E8%BF%AB2819","catch_en":"A round-windowed café that appears out of the countryside."},{"no":4,"id":"casual-kitchen-hana","recommended":false,"name":"Casual Kitchen Hana","reading":"カジュアルキッチン ハナ","genre":"定食","area":"千代田","address":"北広島町有田989-1","hours":"11:00〜14:30(L.O.14:00)・土日休（要確認）","catch":"レトロな店内で、気取らない多彩なランチ。","point":"唐揚げや生姜焼きなど多彩なランチ。ライス・スープおかわり自由でお腹いっぱい","instagram":"https://www.instagram.com/casual_kitchen_hana/","site":"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/hana.html","src":{"label":"食べログ","url":"https://tabelog.com/en/hiroshima/A3408/A340801/34030255/"},"map":"https://www.google.com/maps/search/?api=1&query=Casual%20Kitchen%20Hana%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E6%9C%89%E7%94%B0989-1","catch_en":"Easygoing, varied lunches in a retro dining room."},{"no":5,"id":"corbusier","recommended":false,"name":"昭和レトロと珈琲の店 コルビジェ","reading":"こるびじぇ","genre":"カフェ","area":"千代田","address":"北広島町今田3885-3","hours":"13:00〜17:00／日・祝休（要確認）","catch":"昭和レトロと、サイフォン珈琲。","point":"昭和レトロ雑貨に囲まれ、サイフォンで淹れる本格珈琲と手作り菓子が楽しめる喫茶","instagram":null,"site":"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/korubizye.html","src":{"label":"食べログ","url":"https://tabelog.com/hiroshima/A3408/A340801/34030926/"},"map":"https://www.google.com/maps/search/?api=1&query=%E6%98%AD%E5%92%8C%E3%83%AC%E3%83%88%E3%83%AD%E3%81%A8%E7%8F%88%E7%90%B2%E3%81%AE%E5%BA%97%20%E3%82%B3%E3%83%AB%E3%83%93%E3%82%B8%E3%82%A7%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E4%BB%8A%E7%94%B03885-3","catch_en":"Shōwa-retro charm and siphon-brewed coffee."},{"no":6,"id":"saboners","recommended":false,"name":"サボナーズカフェ（温活部）","reading":"さぼなーずかふぇ","genre":"カフェ","area":"千代田","address":"北広島町有田459-1","hours":"要予約（営業時間は要確認）","catch":"自家焙煎珈琲と、よもぎ蒸し。","point":"地元素材の自家焙煎コーヒーが自慢。気軽に「よもぎ蒸し」もできる温活カフェ","instagram":null,"site":"https://sabonerscafe.raku-uru.jp/","src":{"label":"観光ガイドKITABITO","url":"https://kitabi-to.jp/spot_post/1053/"},"map":"https://www.google.com/maps/search/?api=1&query=%E3%82%B5%E3%83%9C%E3%83%8A%E3%83%BC%E3%82%BA%E3%82%AB%E3%83%95%E3%82%A7%EF%BC%88%E6%B8%A9%E6%B4%BB%E9%83%A8%EF%BC%89%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E6%9C%89%E7%94%B0459-1","catch_en":"House-roasted coffee and a mugwort steam bath."},{"no":7,"id":"appreciate","recommended":false,"name":"appreciate ＋cafe","reading":"あぷりしえいと","genre":"カフェ","area":"千代田","address":"北広島町本地361-1","hours":"カフェ11:00〜16:30／水・木・第2第4日休（要確認）","catch":"美容室併設の、くつろぎカフェ。","point":"ヘアサロン併設。施術の前後やドライブの休憩に立ち寄れる地元の憩いの場","instagram":"https://www.instagram.com/appreciate_cafe/","site":null,"src":{"label":"北広島町観光協会","url":"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/appreciate.html"},"map":"https://www.google.com/maps/search/?api=1&query=appreciate%20%EF%BC%8Bcafe%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E6%9C%AC%E5%9C%B0361-1","catch_en":"A relaxed café attached to a hair salon."},{"no":8,"id":"berryhouse","recommended":false,"name":"ベリーハウス","reading":"べりーはうす","genre":"カフェ","area":"千代田","address":"北広島町南方1102-1","hours":"11:00〜16:00（限定日・要予約）／1・8月休","catch":"ハーブガーデンの、隠れ家カフェ。","point":"ハーブの庭に包まれた予約制カフェ。ハンドメイド作品も並ぶ、知る人ぞ知る一軒","instagram":null,"site":"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/berry.html","src":{"label":"食べログ","url":"https://tabelog.com/en/hiroshima/A3408/A340801/34021873/"},"map":"https://www.google.com/maps/search/?api=1&query=%E3%83%99%E3%83%AA%E3%83%BC%E3%83%8F%E3%82%A6%E3%82%B9%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E5%8D%97%E6%96%B91102-1","catch_en":"A hideaway café within a herb garden."},{"no":9,"id":"tatumori","recommended":false,"name":"さんまらーめん 立盛","reading":"たつもり","genre":"ラーメン","area":"千代田","address":"北広島町春木251","hours":"11:00〜14:00／17:00〜21:00頃・月休（要確認）","catch":"町の、新たならーめん処。","point":"らーめんはもちろん、だしの効いたうどんや冬のおでんも。気まぐれの肴で一杯も","instagram":null,"site":"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/tatumori.html","src":{"label":"食べログ","url":"https://tabelog.com/en/hiroshima/A3408/A340801/34030671/"},"map":"https://www.google.com/maps/search/?api=1&query=%E3%81%95%E3%82%93%E3%81%BE%E3%82%89%E3%83%BC%E3%82%81%E3%82%93%20%E7%AB%8B%E7%9B%9B%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E6%98%A5%E6%9C%A8251","catch_en":"The town's new ramen spot."},{"no":10,"id":"chiyoda-niban","recommended":false,"name":"中華そば ちよだ二番","reading":"ちよだにばん","genre":"ラーメン","area":"千代田","address":"北広島町壬生10","hours":"主に日祝のランチ営業（要確認）","catch":"カウンターだけの、醤油中華そば。","point":"小さな店であっさり醤油の中華そば。コスパよく地元で愛される一杯","instagram":null,"site":null,"src":{"label":"食べログ","url":"https://tabelog.com/hiroshima/A3408/A340801/34016311/"},"map":"https://www.google.com/maps/search/?api=1&query=%E4%B8%AD%E8%8F%AF%E3%81%9D%E3%81%B0%20%E3%81%A1%E3%82%88%E3%81%A0%E4%BA%8C%E7%95%AA%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E5%A3%AC%E7%94%9F10","catch_en":"Counter-only soy-sauce Chinese noodles."},{"no":11,"id":"ajimiya","recommended":false,"name":"味みや","reading":"あじみや","genre":"お好み焼き","area":"千代田","address":"北広島町有田480-4","hours":"11:00〜13:30／17:00〜21:30・月休（要確認）","catch":"ざく切りキャベツの、お好み焼き。","point":"千代田ICから約5分。ざく切りキャベツで野菜の甘みと香りを楽しむ広島流","instagram":null,"site":"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/ajimiya.html","src":{"label":"食べログ","url":"https://tabelog.com/en/hiroshima/A3408/A340801/34027345/"},"map":"https://www.google.com/maps/search/?api=1&query=%E5%91%B3%E3%81%BF%E3%82%84%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E6%9C%89%E7%94%B0480-4","catch_en":"Hiroshima okonomiyaki with roughly-cut cabbage."},{"no":12,"id":"okonomi-hiro","recommended":false,"name":"お好みハウス ひろ","reading":"おこのみはうす ひろ","genre":"お好み焼き","area":"千代田","address":"北広島町春木167","hours":"10:30〜19:00・月休（要確認）","catch":"通し営業の、昔ながらお好み焼き。","point":"地元・春木の昔ながらのお好み焼き店。通し営業で立ち寄りやすい","instagram":null,"site":"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/hiro.html","src":{"label":"食べログ","url":"https://tabelog.com/hiroshima/A3408/A340801/34027478/"},"map":"https://www.google.com/maps/search/?api=1&query=%E3%81%8A%E5%A5%BD%E3%81%BF%E3%83%8F%E3%82%A6%E3%82%B9%20%E3%81%B2%E3%82%8D%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E6%98%A5%E6%9C%A8167","catch_en":"Old-style okonomiyaki, open all day."},{"no":13,"id":"okonomi-an","recommended":false,"name":"お好み焼き あん","reading":"おこのみやき あん","genre":"お好み焼き","area":"千代田","address":"北広島町本地25-18","hours":"11:00〜14:00／17:00〜20:00・月休（要確認）","catch":"甘いキャベツと、無料の味噌汁。","point":"芸北の甘いキャベツを使用。無料の味噌汁も隠れた人気。夜は鉄板焼で一杯","instagram":null,"site":"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/an.html","src":{"label":"ぐるなび","url":"https://r.gnavi.co.jp/18y3x0a10000/"},"map":"https://www.google.com/maps/search/?api=1&query=%E3%81%8A%E5%A5%BD%E3%81%BF%E7%84%BC%E3%81%8D%20%E3%81%82%E3%82%93%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E6%9C%AC%E5%9C%B025-18","catch_en":"Sweet cabbage, with free miso soup."},{"no":14,"id":"kitahiro-0banchi","recommended":false,"name":"リサイクル きたひろ0番地","reading":"きたひろぜろばんち","genre":"その他","area":"千代田","address":"北広島町有田3388","hours":"9:00〜18:00・木休（要確認）","catch":"こだわりだしの、移動たこ焼き。","point":"外はカリッ中はトロッ。こだわりのだし汁とタコのたこ焼きを移動販売","instagram":null,"site":null,"src":{"label":"北広島町観光協会","url":"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/0banchi.html"},"map":"https://www.google.com/maps/search/?api=1&query=%E3%83%AA%E3%82%B5%E3%82%A4%E3%82%AF%E3%83%AB%20%E3%81%8D%E3%81%9F%E3%81%B2%E3%82%8D0%E7%95%AA%E5%9C%B0%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E6%9C%89%E7%94%B03388","catch_en":"Mobile takoyaki with a carefully-made broth."},{"no":15,"id":"hibiki","recommended":false,"name":"レストラン 響","reading":"ひびき","genre":"定食","area":"千代田","address":"北広島町有田1122（道の駅 舞ロードIC千代田）","hours":"11:00〜15:00(L.O.14:00)・水休（要確認）","catch":"地元野菜の、減塩バイキング。","point":"道の駅 舞ロードIC千代田内。石窯炊きご飯・天ぷら・ピザ・中華など60種超のビュッフェ","instagram":null,"site":"https://kitahiro-ichiba.com/restaurant_hiviki.html","src":{"label":"食べログ","url":"https://tabelog.com/hiroshima/A3408/A340801/34019530/"},"map":"https://www.google.com/maps/search/?api=1&query=%E3%83%AC%E3%82%B9%E3%83%88%E3%83%A9%E3%83%B3%20%E9%9F%BF%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E6%9C%89%E7%94%B01122%EF%BC%88%E9%81%93%E3%81%AE%E9%A7%85%20%E8%88%9E%E3%83%AD%E3%83%BC%E3%83%89IC%E5%8D%83%E4%BB%A3%E7%94%B0%EF%BC%89","catch_en":"A low-salt buffet of local vegetables."},{"no":16,"id":"kitahiro-shokudo","recommended":false,"name":"きたひろ食堂","reading":"きたひろしょくどう","genre":"定食","area":"千代田","address":"北広島町有田1122（道の駅 舞ロードIC千代田）","hours":"10:00〜17:00（軽食15:00まで・要確認）","catch":"舞ロー丼と、きたひろラーメン。","point":"道の駅 舞ロードIC千代田内の軽食処。きたひろラーメン・舞ロー丼・カレーが手軽","instagram":null,"site":"https://kitahiro-ichiba.com/","src":{"label":"食べログ","url":"https://tabelog.com/hiroshima/A3408/A340801/34022229/"},"map":"https://www.google.com/maps/search/?api=1&query=%E3%81%8D%E3%81%9F%E3%81%B2%E3%82%8D%E9%A3%9F%E5%A0%82%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E6%9C%89%E7%94%B01122%EF%BC%88%E9%81%93%E3%81%AE%E9%A7%85%20%E8%88%9E%E3%83%AD%E3%83%BC%E3%83%89IC%E5%8D%83%E4%BB%A3%E7%94%B0%EF%BC%89","catch_en":"Mai-rō rice bowls and Kitahiro ramen."},{"no":17,"id":"michizure","recommended":false,"name":"酔膳亭 みちづれ","reading":"すいぜんてい みちづれ","genre":"和食","area":"千代田","address":"北広島町有田1556-1","hours":"11:00〜14:00 ほか・水休（要確認）","catch":"両海の魚介と寿司を、ランチで。","point":"日本海・瀬戸内の新鮮魚介と寿司をリーズナブルに。個室・座敷もありランチ可","instagram":null,"site":"https://www.yamagata-suizentei-michizure.com/","src":{"label":"北広島町観光協会","url":"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/michidure.html"},"map":"https://www.google.com/maps/search/?api=1&query=%E9%85%94%E8%86%B3%E4%BA%AD%20%E3%81%BF%E3%81%A1%E3%81%A5%E3%82%8C%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E6%9C%89%E7%94%B01556-1","catch_en":"Two-sea seafood and sushi, at lunch."},{"no":18,"id":"liand-bagel","recommended":true,"name":"Liand bagel","reading":"リアンドベーグル","genre":"ベーグル","area":"豊平","address":"北広島町都志見1828","hours":"土曜のみ営業（公式SNS・ECで要確認）","catch":"土曜だけ開く、古民家のベーグル工房。","point":"アート/デザインに携わる池田夫妻が営む週イチ営業。人参・りんご等の自家製ボタニカル酵母で48時間低温発酵","instagram":"https://www.instagram.com/liand_bagel/","site":"https://liandbagel.official.ec/","src":{"label":"食べログ","url":"https://tabelog.com/hiroshima/A3408/A340801/34029422/"},"map":"https://www.google.com/maps/search/?api=1&query=Liand%20bagel%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E9%83%BD%E5%BF%97%E8%A6%8B1828","catch_en":"A folk-house bagel studio, open only on Saturdays."},{"no":19,"id":"kobori","recommended":false,"name":"豊平手打ちそば こぼり","reading":"こぼり","genre":"そば","area":"豊平","address":"北広島町阿坂3425-7","hours":"土日祝11:00〜15:00（売切れ終了）／平日休","catch":"ミシュラン掲載の、手打ちそば。","point":"豊平手打ちそば保存会出身の主人が打つ、地元産「とよむすめ」のコシある手打ちそば","instagram":null,"site":"https://y783100.gorp.jp/","src":{"label":"北広島町観光協会","url":"https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/kobori.html"},"map":"https://www.google.com/maps/search/?api=1&query=%E8%B1%8A%E5%B9%B3%E6%89%8B%E6%89%93%E3%81%A1%E3%81%9D%E3%81%B0%20%E3%81%93%E3%81%BC%E3%82%8A%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E9%98%BF%E5%9D%823425-7","catch_en":"Michelin-listed, hand-cut soba."},{"no":20,"id":"isobe","recommended":false,"name":"そば お味処 いそべ","reading":"いそべ","genre":"そば","area":"豊平","address":"北広島町阿坂12621-7","hours":"11:00〜15:00・予約制・不定休","catch":"骨董の店で味わう、かもざる。","point":"住宅街の一軒家。骨董・雑貨が並ぶ店内で、焦がしネギ香る「かもざる」が名物（予約制）","instagram":null,"site":"https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/isobe.html","src":{"label":"食べログ","url":"https://tabelog.com/hiroshima/A3408/A340801/34014205/"},"map":"https://www.google.com/maps/search/?api=1&query=%E3%81%9D%E3%81%B0%20%E3%81%8A%E5%91%B3%E5%87%A6%20%E3%81%84%E3%81%9D%E3%81%B9%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E9%98%BF%E5%9D%8212621-7","catch_en":"Duck-broth zaru soba, among antiques."},{"no":21,"id":"ryuzunosato","recommended":false,"name":"お食事処 龍頭の里","reading":"りゅうずのさと","genre":"そば","area":"豊平","address":"北広島町都志見12609（豊平どんぐり村）","hours":"平日11:00〜15:00／土日祝〜19:00・第3火休（要確認）","catch":"龍頭山を望む座敷で、そば会席。","point":"道の駅 豊平どんぐり村内。手打ちそばや地元食材の創作料理・会席（要予約）を座敷やテラスで","instagram":null,"site":"https://www.dongurimura.co.jp/?cn=100012","src":{"label":"北広島町観光協会","url":"https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/ryuzunosato.html"},"map":"https://www.google.com/maps/search/?api=1&query=%E3%81%8A%E9%A3%9F%E4%BA%8B%E5%87%A6%20%E9%BE%8D%E9%A0%AD%E3%81%AE%E9%87%8C%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E9%83%BD%E5%BF%97%E8%A6%8B12609%EF%BC%88%E8%B1%8A%E5%B9%B3%E3%81%A9%E3%82%93%E3%81%90%E3%82%8A%E6%9D%91%EF%BC%89","catch_en":"A soba kaiseki with views of Mt. Ryūzu."},{"no":22,"id":"donguri-an","recommended":false,"name":"そば処 どんぐり庵","reading":"どんぐりあん","genre":"そば","area":"豊平","address":"北広島町都志見12609（道の駅 豊平どんぐり村）","hours":"11:00〜14:00・第3火休","catch":"挽きたて打ちたて、豊平そば。","point":"道の駅 豊平どんぐり村内。名人直伝のダシで味わう自信の手打ちそば。となりでそば打ち体験も","instagram":null,"site":"https://www.dongurimura.co.jp/?cn=100027","src":{"label":"北広島町観光協会","url":"https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/dongurian.html"},"map":"https://www.google.com/maps/search/?api=1&query=%E3%81%9D%E3%81%B0%E5%87%A6%20%E3%81%A9%E3%82%93%E3%81%90%E3%82%8A%E5%BA%B5%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E9%83%BD%E5%BF%97%E8%A6%8B12609%EF%BC%88%E9%81%93%E3%81%AE%E9%A7%85%20%E8%B1%8A%E5%B9%B3%E3%81%A9%E3%82%93%E3%81%90%E3%82%8A%E6%9D%91%EF%BC%89","catch_en":"Freshly-milled, freshly-cut Toyohira soba."},{"no":23,"id":"dude","recommended":false,"name":"森のカフェ＆レストラン Dude","reading":"でゅーど","genre":"イタリアン","area":"豊平","address":"北広島町西宗13962-280","hours":"平日11:00〜16:00／土日〜20:00・月休（冬期休）","catch":"森の中の、自家菜園イタリアン。","point":"絵本のような一軒家。料理歴35年のシェフが自家菜園の有機野菜で作る本格パスタ・ピザ","instagram":null,"site":"https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/dude.html","src":{"label":"Retty","url":"https://retty.me/area/PRE34/ARE284/SUB56902/100000609004/"},"map":"https://www.google.com/maps/search/?api=1&query=%E6%A3%AE%E3%81%AE%E3%82%AB%E3%83%95%E3%82%A7%EF%BC%86%E3%83%AC%E3%82%B9%E3%83%88%E3%83%A9%E3%83%B3%20Dude%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E8%A5%BF%E5%AE%9713962-280","catch_en":"Forest Italian, from the chef's own garden."},{"no":24,"id":"cafe-watanabe","recommended":false,"name":"cafe house Watanabe","reading":"かふぇはうす わたなべ","genre":"カフェ","area":"豊平","address":"北広島町都志見3706","hours":"11:00〜17:00（要確認）","catch":"スープカレーと、シフォン専門。","point":"どんぐり村のすぐ下。地元卵・国産小麦のシフォンケーキとスープカレーセットが看板","instagram":null,"site":"https://cafe-house-watanabe.jimdofree.com/","src":{"label":"北広島町観光協会","url":"https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/watanabe.html"},"map":"https://www.google.com/maps/search/?api=1&query=cafe%20house%20Watanabe%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E9%83%BD%E5%BF%97%E8%A6%8B3706","catch_en":"Soup-curry and chiffon-cake specialists."},{"no":25,"id":"kitsutsuki","recommended":false,"name":"ガレットとクレープのお店 啄木鳥","reading":"きつつき","genre":"カフェ","area":"豊平","address":"北広島町阿坂10421-1","hours":"11:00〜17:00・火/第1水休","catch":"豊平そば粉の、香ばしいガレット。","point":"どんぐり村奥の隠れ家。地物（豊平）そば粉のガレットと季節のクレープが楽しめる","instagram":null,"site":"https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/kitsutsuki.html","src":{"label":"食べログ","url":"https://tabelog.com/hiroshima/A3408/A340801/34017325/"},"map":"https://www.google.com/maps/search/?api=1&query=%E3%82%AC%E3%83%AC%E3%83%83%E3%83%88%E3%81%A8%E3%82%AF%E3%83%AC%E3%83%BC%E3%83%97%E3%81%AE%E3%81%8A%E5%BA%97%20%E5%95%84%E6%9C%A8%E9%B3%A5%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E9%98%BF%E5%9D%8210421-1","catch_en":"Fragrant galettes of Toyohira buckwheat."},{"no":26,"id":"nonohana","recommended":false,"name":"野の花かふぇ","reading":"ののはな かふぇ","genre":"カフェ","area":"豊平","address":"北広島町都志見10733-99","hours":"金・土 11:00〜16:00・冬期休（要確認）","catch":"地元野菜ランチと、ふわふわシフォン。","point":"龍頭山ふもとの古民家カフェ。金・土だけ、地元野菜たっぷりのランチと自家製スイーツを","instagram":null,"site":"https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/nonohana.html","src":{"label":"食べログ","url":"https://tabelog.com/hiroshima/A3408/A340801/34014932/"},"map":"https://www.google.com/maps/search/?api=1&query=%E9%87%8E%E3%81%AE%E8%8A%B1%E3%81%8B%E3%81%B5%E3%81%87%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E9%83%BD%E5%BF%97%E8%A6%8B10733-99","catch_en":"A local-vegetable lunch and fluffy chiffon cake."},{"no":27,"id":"yamagoya","recommended":false,"name":"自家焙煎 山小屋cafe","reading":"やまごや かふぇ","genre":"カフェ","area":"豊平","address":"北広島町今吉田1545-1","hours":"10:00〜17:00（10〜3月は〜15:00）・火水休","catch":"自家焙煎珈琲と、絶品カレー。","point":"2019年開業の小さなカフェ。自家焙煎の新鮮コーヒーと絶品カレーが看板","instagram":null,"site":"https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/yamagoyacafe.html","src":{"label":"食べログ","url":"https://tabelog.com/hiroshima/A3408/A340801/34027633/"},"map":"https://www.google.com/maps/search/?api=1&query=%E8%87%AA%E5%AE%B6%E7%84%99%E7%85%8E%20%E5%B1%B1%E5%B0%8F%E5%B1%8Bcafe%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E4%BB%8A%E5%90%89%E7%94%B01545-1","catch_en":"House-roasted coffee and a standout curry."},{"no":28,"id":"kario-chaya","recommended":false,"name":"かりお茶屋","reading":"かりおちゃや","genre":"そば","area":"芸北","address":"北広島町東八幡原10119-1（高原の自然館）","hours":"10:00〜16:00・火休・冬期休（要確認）","catch":"八幡高原名物の、赤そば。","point":"高原の自然館に併設。八幡高原で育つ名物「赤そば」を、赤そば畑のそばで味わえる","instagram":null,"site":"http://kitahiro.jp/eat-buy/eatsingle/geihokusingle/kario.html","src":{"label":"食べログ","url":"https://tabelog.com/hiroshima/A3408/A340801/34007742/"},"map":"https://www.google.com/maps/search/?api=1&query=%E3%81%8B%E3%82%8A%E3%81%8A%E8%8C%B6%E5%B1%8B%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E6%9D%B1%E5%85%AB%E5%B9%A1%E5%8E%9F10119-1%EF%BC%88%E9%AB%98%E5%8E%9F%E3%81%AE%E8%87%AA%E7%84%B6%E9%A4%A8%EF%BC%89","catch_en":"The Yawata Highlands' famous red soba."},{"no":29,"id":"oudomari-chaya","recommended":false,"name":"王泊茶屋","reading":"おうどまりちゃや","genre":"そば","area":"芸北","address":"北広島町細見361-94（芸北王泊ダム湖畔）","hours":"そば11:00〜14:30／カフェ〜16:30・火水休（季節変更）","catch":"湖畔の、石臼挽きそば＆カフェ。","point":"2024年開業。国産石臼挽きそば粉のこだわり蕎麦と、王泊ダム湖畔の眺めの併設カフェ","instagram":null,"site":"https://kitahiro.jp/eat-buy/eatsingle/geihokusingle/pg7834.html","src":{"label":"食べログ","url":"https://tabelog.com/hiroshima/A3408/A340801/34032483/"},"map":"https://www.google.com/maps/search/?api=1&query=%E7%8E%8B%E6%B3%8A%E8%8C%B6%E5%B1%8B%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E7%B4%B0%E8%A6%8B361-94%EF%BC%88%E8%8A%B8%E5%8C%97%E7%8E%8B%E6%B3%8A%E3%83%80%E3%83%A0%E6%B9%96%E7%95%94%EF%BC%89","catch_en":"Stone-milled soba and a café, by the lake."},{"no":30,"id":"shojikimura","recommended":false,"name":"コーヒーハウス 正直村","reading":"しょうじきむら","genre":"カフェ","area":"芸北","address":"北広島町西八幡原10770-1（聖湖畔）","hours":"10:30〜16:00・冬期(12〜3月)休","catch":"聖湖を望む、ログハウス喫茶。","point":"聖湖畔のログハウス風カフェ。テラスから臥竜山を望み、コーヒーや軽食でくつろげる秘境カフェ","instagram":null,"site":null,"src":{"label":"北広島町観光協会","url":"https://kitahiro.jp/eat-buy/eatsingle/geihokusingle/shojikimura.html"},"map":"https://www.google.com/maps/search/?api=1&query=%E3%82%B3%E3%83%BC%E3%83%92%E3%83%BC%E3%83%8F%E3%82%A6%E3%82%B9%20%E6%AD%A3%E7%9B%B4%E6%9D%91%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E8%A5%BF%E5%85%AB%E5%B9%A1%E5%8E%9F10770-1%EF%BC%88%E8%81%96%E6%B9%96%E7%95%94%EF%BC%89","catch_en":"A log-house tearoom overlooking Lake Hijiri."},{"no":31,"id":"daisen","recommended":false,"name":"山奥の料理屋 大仙","reading":"だいせん","genre":"和食","area":"芸北","address":"北広島町川小田10076","hours":"11:30〜13:30／17:00〜22:00・不定休（要確認）","catch":"日本海の幸と、山の幸の料理屋。","point":"親子2代で営む料理屋。日本海の新鮮な魚介と芸北の山の幸を生かした地産地消のまごころ料理","instagram":null,"site":"https://geihoku-daisen.com/","src":{"label":"北広島町観光協会","url":"http://kitahiro.jp/eat-buy/eatsingle/geihokusingle/daisen.html"},"map":"https://www.google.com/maps/search/?api=1&query=%E5%B1%B1%E5%A5%A5%E3%81%AE%E6%96%99%E7%90%86%E5%B1%8B%20%E5%A4%A7%E4%BB%99%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E5%B7%9D%E5%B0%8F%E7%94%B010076","catch_en":"A kitchen of sea-of-Japan and mountain bounty."},{"no":32,"id":"alpenya","recommended":false,"name":"あるぺん屋（八幡高原酒造）","reading":"あるぺんや","genre":"和食","area":"芸北","address":"北広島町西八幡原10405-3","hours":"11:00〜14:00・月火休・要予約","catch":"名水仕込みの、どぶろく鍋。","point":"八幡高原の名水で仕込むどぶろくの蔵。名物「どぶろく鍋」や自家製麹の腸活メニュー（要予約）","instagram":null,"site":"https://www.alpenya2.com/","src":{"label":"北広島町観光協会","url":"https://kitahiro.jp/eat-buy/eatsingle/geihokusingle/alpine.html"},"map":"https://www.google.com/maps/search/?api=1&query=%E3%81%82%E3%82%8B%E3%81%BA%E3%82%93%E5%B1%8B%EF%BC%88%E5%85%AB%E5%B9%A1%E9%AB%98%E5%8E%9F%E9%85%92%E9%80%A0%EF%BC%89%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E8%A5%BF%E5%85%AB%E5%B9%A1%E5%8E%9F10405-3","catch_en":"Doburoku hot-pot, brewed with mountain spring water."},{"no":33,"id":"jokenji","recommended":false,"name":"イタリアン精進料理 淨謙寺","reading":"じょうけんじ","genre":"和食","area":"芸北","address":"北広島町奥原161","hours":"完全予約制・主に金土日・5〜12月","catch":"寺で味わう、彩りの精進料理。","point":"浄土真宗の寺で味わう完全予約制ランチ。30種超の地元食材を朱漆器に盛る彩り豊かな精進料理","instagram":null,"site":"https://kitahiro.jp/eat-buy/eatsingle/geihokusingle/jokenji.html","src":{"label":"食べログ","url":"https://tabelog.com/en/hiroshima/A3408/A340801/34015662/"},"map":"https://www.google.com/maps/search/?api=1&query=%E3%82%A4%E3%82%BF%E3%83%AA%E3%82%A2%E3%83%B3%E7%B2%BE%E9%80%B2%E6%96%99%E7%90%86%20%E6%B7%A8%E8%AC%99%E5%AF%BA%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E5%A5%A5%E5%8E%9F161","catch_en":"Colorful shōjin (Buddhist) cuisine, served at a temple."},{"no":34,"id":"zousan-cafe","recommended":false,"name":"芸北ぞうさんカフェ","reading":"げいほくぞうさんかふぇ","genre":"カフェ","area":"芸北","address":"北広島町荒神原201（国道186号沿い）","hours":"11:00〜18:00・水木休","catch":"薪窯の手作りピザと、ハーブティ。","point":"スキー場施設を改装した開放的なカフェ。間伐材の薪窯で焼く手作りピザとハーブティーが名物","instagram":null,"site":"https://www.zousancafe.com/","src":{"label":"北広島町観光協会","url":"https://kitahiro.jp/eat-buy/eatsingle/geihokusingle/zousancafe.html"},"map":"https://www.google.com/maps/search/?api=1&query=%E8%8A%B8%E5%8C%97%E3%81%9E%E3%81%86%E3%81%95%E3%82%93%E3%82%AB%E3%83%95%E3%82%A7%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E8%8D%92%E7%A5%9E%E5%8E%9F201%EF%BC%88%E5%9B%BD%E9%81%93186%E5%8F%B7%E6%B2%BF%E3%81%84%EF%BC%89","catch_en":"Wood-fired handmade pizza and herbal tea."},{"no":35,"id":"yuzuan","recommended":false,"name":"囲炉裏の店 ゆず庵","reading":"ゆずあん","genre":"和食","area":"大朝","address":"北広島町大朝633-3","hours":"昼11:30〜13:30（平日）ほか・水/第2火休（要確認）","catch":"囲炉裏で、両海の幸を小料理で。","point":"浜田の海の幸・石見ポーク・瀬戸内の牡蠣などを囲炉裏で。昼は定食ランチも（要確認）","instagram":null,"site":"https://kitahiro.jp/eat-buy/eatsingle/oasasingle/yuzuan.html","src":{"label":"食べログ","url":"https://tabelog.com/hiroshima/A3408/A340801/34021880/"},"map":"https://www.google.com/maps/search/?api=1&query=%E5%9B%B2%E7%82%89%E8%A3%8F%E3%81%AE%E5%BA%97%20%E3%82%86%E3%81%9A%E5%BA%B5%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E5%A4%A7%E6%9C%9D633-3","catch_en":"Two-sea delicacies, cooked by the hearth."},{"no":36,"id":"wasaru-shokudo","recommended":false,"name":"こちら大朝わさ～る内食堂","reading":"わさ～るないしょくどう","genre":"ラーメン","area":"大朝","address":"北広島町大朝2513-1（わさ～る内）","hours":"9:00〜15:00・第3水休","catch":"産直施設の、汁なし担担麺。","point":"産直施設「わさ～る」内の食堂。汁なし担担麺などの麺類を手軽に味わえる","instagram":null,"site":null,"src":{"label":"食べログ","url":"https://tabelog.com/hiroshima/A3408/A340801/34024886/"},"map":"https://www.google.com/maps/search/?api=1&query=%E3%81%93%E3%81%A1%E3%82%89%E5%A4%A7%E6%9C%9D%E3%82%8F%E3%81%95%EF%BD%9E%E3%82%8B%E5%86%85%E9%A3%9F%E5%A0%82%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E5%A4%A7%E6%9C%9D2513-1%EF%BC%88%E3%82%8F%E3%81%95%EF%BD%9E%E3%82%8B%E5%86%85%EF%BC%89","catch_en":"Soup-less dandan noodles at a farm market."},{"no":37,"id":"resthouse-oasa","recommended":false,"name":"レストハウス大朝","reading":"れすとはうすおおあさ","genre":"定食","area":"大朝","address":"北広島町田原106（中国平和記念墓地公園内）","hours":"10:00〜17:00・火休・冬期(12〜2月)休","catch":"公園内の食堂、ぶっかけそば。","point":"中国平和記念墓地公園内。冷やしぶっかけそばや牡蠣フライ定食などを提供","instagram":null,"site":"https://hitosara.com/0031506777/","src":{"label":"食べログ","url":"https://tabelog.com/hiroshima/A3408/A340801/34021463/"},"map":"https://www.google.com/maps/search/?api=1&query=%E3%83%AC%E3%82%B9%E3%83%88%E3%83%8F%E3%82%A6%E3%82%B9%E5%A4%A7%E6%9C%9D%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E7%94%B0%E5%8E%9F106%EF%BC%88%E4%B8%AD%E5%9B%BD%E5%B9%B3%E5%92%8C%E8%A8%98%E5%BF%B5%E5%A2%93%E5%9C%B0%E5%85%AC%E5%9C%92%E5%86%85%EF%BC%89","catch_en":"A park diner's chilled bukkake soba."},{"no":38,"id":"ainosato","recommended":false,"name":"天意の里 ハーブガーデン","reading":"あいのさと はーぶがーでん","genre":"カフェ","area":"大朝","address":"北広島町大朝11654-1","hours":"10:00〜（季節変動）・木休・冬期休（要確認）","catch":"ハーブ園の、農家レストラン。","point":"約4万㎡・100種超のハーブ園。無農薬野菜と国産肉のハーブランチが名物（5〜6月のカモミール摘みも人気）","instagram":null,"site":"http://www.oasa.jp/ainosato/","src":{"label":"北広島町観光協会","url":"https://kitahiro.jp/eat-buy/eatsingle/oasasingle/ainosato.html"},"map":"https://www.google.com/maps/search/?api=1&query=%E5%A4%A9%E6%84%8F%E3%81%AE%E9%87%8C%20%E3%83%8F%E3%83%BC%E3%83%96%E3%82%AC%E3%83%BC%E3%83%87%E3%83%B3%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E5%A4%A7%E6%9C%9D11654-1","catch_en":"A farmhouse restaurant in a herb garden."},{"no":39,"id":"karashiro","recommended":false,"name":"からしろ館／からしろ茶屋","reading":"からしろかん","genre":"カフェ","area":"大朝","address":"北広島町宮迫386-12","hours":"ランチ11:00〜14:00・火休","catch":"県境の産直＋100円珈琲の茶屋。","point":"島根県境の産直施設。地元野菜の販売に加え、併設茶屋でランチや100円コーヒーが気軽に","instagram":null,"site":null,"src":{"label":"食べログ","url":"https://tabelog.com/hiroshima/A3408/A340801/34014120/"},"map":"https://www.google.com/maps/search/?api=1&query=%E3%81%8B%E3%82%89%E3%81%97%E3%82%8D%E9%A4%A8%EF%BC%8F%E3%81%8B%E3%82%89%E3%81%97%E3%82%8D%E8%8C%B6%E5%B1%8B%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E5%AE%AE%E8%BF%AB386-12","catch_en":"A border farm-stand with ¥100 coffee."},{"no":40,"id":"kaachan-gyoza","recommended":false,"name":"むらかみふぁ～む かあちゃん餃子","reading":"かあちゃんぎょうざ","genre":"その他","area":"大朝","address":"北広島町大朝2486-3","hours":"11:00〜14:30 ほか・土日祝休（要確認）","catch":"自社農場の、かあちゃん餃子。","point":"自社農場の手作り「かあちゃん餃子」と日替わり弁当。焼きたて餃子が人気（テイクアウト主体）","instagram":null,"site":"https://kitahiro.jp/eat-buy/eatsingle/oasasingle/gyoza.html","src":{"label":"食べログ","url":"https://tabelog.com/hiroshima/A3408/A340801/34021462/"},"map":"https://www.google.com/maps/search/?api=1&query=%E3%82%80%E3%82%89%E3%81%8B%E3%81%BF%E3%81%B5%E3%81%81%EF%BD%9E%E3%82%80%20%E3%81%8B%E3%81%82%E3%81%A1%E3%82%83%E3%82%93%E9%A4%83%E5%AD%90%20%E5%8C%97%E5%BA%83%E5%B3%B6%E7%94%BA%E5%A4%A7%E6%9C%9D2486-3","catch_en":"'Mom's dumplings' from the family farm."}];
+
+/* ===== メタ情報（デザイン準拠） ===== */
+const META = {
+  '千代田': { romaji:'Chiyoda', color:'#d2503b', textOn:'#fff', mood:'町の玄関口。廃校カフェから老舗お好み焼きまで。', moodEn:"The town's gateway — school-turned cafés to old-time okonomiyaki." },
+  '豊平':   { romaji:'Toyohira', color:'#5b8aa0', textOn:'#fff', mood:'そばと森のカフェ。道の駅どんぐり村のある里。', moodEn:'Soba and forest cafés, near the Donguri-mura roadside station.' },
+  '芸北':   { romaji:'Geihoku', color:'#7d9b6e', textOn:'#16210f', mood:'高原と湖。赤そば・どぶろく・聖湖のほとり。', moodEn:'Highlands and lakes — red soba, doburoku, Lake Hijiri.' },
+  '大朝':   { romaji:'Oasa', color:'#c9a44e', textOn:'#1a2230', mood:'島根との県境。囲炉裏とハーブ、産直の里。', moodEn:'On the Shimane border — hearths, herbs and farm stands.' },
 };
+const GENRE_EN = { 'パン':'Bakery','カフェ':'Café','定食':'Set Meal','ラーメン':'Ramen','お好み焼き':'Okonomiyaki','そば':'Soba','和食':'Japanese','イタリアン':'Italian','ベーグル':'Bagel','その他':'Other' };
+const WD_EN = { '月':'Mon','火':'Tue','水':'Wed','木':'Thu','金':'Fri','土':'Sat','日':'Sun','祝':'Hol' };
+const AREA_ORDER = ['千代田','豊平','芸北','大朝'];
+const GENRE_ORDER = ['パン','カフェ','定食','ラーメン','お好み焼き','そば','和食','イタリアン','ベーグル','その他'];
 
-/* 画像が404でも崩れないよう、確実に存在する食の画像へフォールバック */
-const FALLBACK_IMG = "https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=900&q=80";
-const img = id => `https://images.unsplash.com/photo-${id}?w=900&q=80`;
+const esc = s => String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
-/* ジャンル別の代表（イメージ）画像。本物の写真は各カードの公式リンク先で。 */
-const GENRE_IMG = {
-  "パン":      img("1509440159596-0249088772ff"),
-  "ベーグル":  img("1554433607-66b5efe9d304"),
-  "そば":      img("1612929633738-8fe44f7ec841"),
-  "ラーメン":  img("1569718212165-3a8278d5f624"),
-  "お好み焼き": img("1626700051175-6818013e1d4f"),
-  "カフェ":    img("1495474472287-4d71bcdd2085"),
-  "定食":      img("1546069901-ba9599a7e63c"),
-  "和食":      img("1580822184713-fc5400e7fe10"),
-  "イタリアン": img("1565299624946-b28f40a0ae38"),
-  "その他":    img("1574071318508-1cdbab80d002"),
-};
-
-/* ===== 多角的な写真取得（鍵不要・クライアント側） =====
-   各店の食べログ/公式/観光協会ページの代表画像(og:image)を、無料のリンクプレビューAPI
-   (microlink)経由で取得して表示。取得失敗・未掲載の店はジャンルのイラストへ自動フォールバック。 */
-const unfurl = url => `https://api.microlink.io/?url=${encodeURIComponent(url)}&embed=image.url`;
-function photoSourceUrl(s){
-  const l = s.links || [];
-  const pick = l.find(x=>/tabelog\.com/.test(x.url)) || l.find(x=>x.kind==="site") || l.find(x=>x.kind==="src") || l[0];
-  return pick && pick.url;
-}
-
-/* ===== Instagram公式埋め込み（鍵不要・正規・遅延読み込み） =====
-   他者写真の直リンク/転載はせず、公式の埋め込み機能で“本物・最新”の写真を表示。
-   IntersectionObserverで見えたカードだけ読み込むため初期表示が軽い。 */
-let __igScriptLoading = false;
-function ensureIGScript(){
-  if (window.instgrm && window.instgrm.Embeds) return Promise.resolve();
-  if (!__igScriptLoading){
-    __igScriptLoading = true;
-    const s = document.createElement("script");
-    s.async = true; s.src = "https://www.instagram.com/embed.js";
-    document.body.appendChild(s);
+function parseHours(h){
+  h = h || '';
+  const WD = '月火水木金土日';
+  const needReserve = /要予約|予約制|完全予約/.test(h);
+  const fullReserve = /完全予約/.test(h);
+  const winter = /冬期|冬季/.test(h);
+  const irregular = /不定休/.test(h);
+  const starts = [...h.matchAll(/(\d{1,2}):\d{2}\s*[〜~～]/g)].map(m=>parseInt(m[1],10));
+  const lunchOK = starts.length ? starts.some(x=>x<15) : true;
+  const openOnly = [];
+  const pushUniq = (set,c)=>{ if((WD+'祝').includes(c) && !set.includes(c)) set.push(c); };
+  let mm;
+  if((mm=h.match(/([月火水木金土日祝曜・]+)のみ/))) for(const c of mm[1]) pushUniq(openOnly,c);
+  if((mm=h.match(/主に([月火水木金土日祝曜・]+)/))) for(const c of mm[1]) pushUniq(openOnly,c);
+  if((mm=h.match(/^([月火水木金土日祝曜・]{2,})\s*\d{1,2}:/))) for(const c of mm[1]) pushUniq(openOnly,c);
+  const closed = [];
+  if(/平日休/.test(h)){ for(const c of '月火水木金') pushUniq(closed,c); }
+  else {
+    const noNth = h.replace(/第[0-9０-９]+(?:第[0-9０-９]+)*[週]?[月火水木金土日]/g,'·');
+    const cm = noNth.match(/([月火水木金土日祝曜・\/]*[月火水木金土日祝])休/);
+    if(cm) for(const c of cm[1]) pushUniq(closed,c);
   }
-  return new Promise(res=>{
-    const t = setInterval(()=>{ if(window.instgrm && window.instgrm.Embeds){ clearInterval(t); res(); } }, 250);
-    setTimeout(()=>{ clearInterval(t); res(); }, 6000);
+  let dayLabel='', dayLabelEn='';
+  if(openOnly.length){ dayLabel = openOnly.join('・')+'のみ'; dayLabelEn = openOnly.map(c=>WD_EN[c]).join('·')+' only'; }
+  else if(closed.length){ dayLabel = closed.join('・')+'休'; dayLabelEn = 'Closed '+closed.map(c=>WD_EN[c]).join('·'); }
+  else if(irregular){ dayLabel='不定休'; dayLabelEn='Irregular'; }
+  return { lunchOK, openOnly, closed, needReserve, fullReserve, winter, irregular, dayLabel, dayLabelEn };
+}
+function badgeStyle(k){
+  const base='display:inline-flex;align-items:baseline;gap:4px;font-size:11px;border-radius:999px;padding:3px 10px;';
+  if(k==='lunch') return base+'color:#cdb36a;background:rgba(201,164,78,.1);border:1px solid rgba(201,164,78,.28);';
+  if(k==='warn') return base+'color:#f0b3a6;background:rgba(210,80,59,.16);border:1px solid rgba(210,80,59,.42);';
+  if(k==='winter') return base+'color:#9aa3b6;background:rgba(255,255,255,.03);border:1px solid rgba(201,164,78,.16);';
+  return base+'color:#c4ccd9;background:rgba(255,255,255,.04);border:1px solid rgba(201,164,78,.22);';
+}
+function buildBadges(p){
+  const out=[];
+  if(p.lunchOK) out.push({t:'ランチ営業',e:'Lunch',style:badgeStyle('lunch')});
+  if(p.dayLabel) out.push({t:p.dayLabel,e:p.dayLabelEn,style:badgeStyle(p.openOnly.length?'warn':'day')});
+  if(p.needReserve) out.push({t:p.fullReserve?'完全予約制':'要予約',e:p.fullReserve?'By appt':'Booking',style:badgeStyle('warn')});
+  if(p.winter) out.push({t:'冬期休あり',e:'Winter break',style:badgeStyle('winter')});
+  return out;
+}
+function buildLinks(s){
+  const out=[];
+  if(s.site) out.push({label:'公式サイト',url:s.site});
+  if(s.map) out.push({label:'地図 Map',url:s.map});
+  if(s.instagram) out.push({label:'Instagram',url:s.instagram});
+  if(s.src && s.src.url){ const l=(s.src.label||'出典').replace('（出典）',''); out.push({label:l,url:s.src.url}); }
+  return out;
+}
+function chipStyle(active,accent,textOn){
+  const base='display:flex;flex-direction:column;align-items:center;gap:1px;white-space:nowrap;cursor:pointer;border-radius:10px;padding:7px 13px;font-family:inherit;flex:0 0 auto;line-height:1.25;';
+  return base+(active?'background:'+accent+';color:'+textOn+';border:1px solid transparent;':'background:rgba(255,255,255,.04);color:#cdd3df;border:1px solid rgba(201,164,78,.22);');
+}
+function pill(active,accent,textOn){
+  const base='display:inline-flex;align-items:center;gap:5px;white-space:nowrap;cursor:pointer;border-radius:999px;padding:8px 13px;font-family:inherit;font-size:13px;line-height:1.1;flex:0 0 auto;';
+  return base+(active?'background:'+accent+';color:'+textOn+';border:1px solid transparent;':'background:rgba(255,255,255,.04);color:#cdd3df;border:1px solid rgba(201,164,78,.22);');
+}
+
+/* ===== 状態 ===== */
+const state = { q:'', area:'all', genre:'all', recOnly:false, lunchOnly:false, skipLimited:false, dayFilter:null, sortMode:'area', filterOpen:false };
+
+function compute(){
+  const order = AREA_ORDER;
+  const st = state;
+  const all = SHOPS.slice().sort((a,b)=>(order.indexOf(a.area)-order.indexOf(b.area))||(a.no-b.no));
+  const areaCount={}, genreCount={};
+  all.forEach(s=>{ areaCount[s.area]=(areaCount[s.area]||0)+1; genreCount[s.genre]=(genreCount[s.genre]||0)+1; });
+  const parsed = all.map(s=>({s,p:parseHours(s.hours)}));
+  const q=(st.q||'').trim().toLowerCase();
+  const hasQuery=q.length>0;
+  const day=st.dayFilter;
+  const hasActive = hasQuery || st.area!=='all' || st.genre!=='all' || st.recOnly || st.lunchOnly || st.skipLimited || !!day;
+  const activeCount = (hasQuery?1:0)+(st.area!=='all'?1:0)+(st.genre!=='all'?1:0)+(st.recOnly?1:0)+(st.lunchOnly?1:0)+(st.skipLimited?1:0)+(day?1:0);
+  let fp = parsed.filter(({s,p})=>{
+    if(st.area!=='all' && s.area!==st.area) return false;
+    if(st.genre!=='all' && s.genre!==st.genre) return false;
+    if(st.recOnly && !s.recommended) return false;
+    if(st.lunchOnly && !p.lunchOK) return false;
+    if(st.skipLimited && (p.needReserve||p.openOnly.length)) return false;
+    if(day){ if(p.closed.includes(day)) return false; if(p.openOnly.length && !p.openOnly.includes(day)) return false; }
+    if(hasQuery){
+      const hay=[s.name,s.reading,s.catch,s.catch_en,s.genre,GENRE_EN[s.genre],s.area,(META[s.area]||{}).romaji,s.point,s.address].join(' ').toLowerCase();
+      if(!hay.includes(q)) return false;
+    }
+    return true;
   });
-}
-function useInView(ref, rootMargin="240px"){
-  const [inView, setInView] = useState(false);
-  useEffect(()=>{
-    if (inView || !ref.current) return;
-    const io = new IntersectionObserver(([e])=>{ if(e.isIntersecting){ setInView(true); io.disconnect(); } }, {rootMargin});
-    io.observe(ref.current);
-    return ()=>io.disconnect();
-  }, [inView]);
-  return inView;
-}
-function IGEmbed({permalink}){
-  const wrap = useRef(null);
-  const inView = useInView(wrap);
-  useEffect(()=>{ if(inView){ ensureIGScript().then(()=>{ if(window.instgrm && window.instgrm.Embeds) window.instgrm.Embeds.process(); }); } }, [inView]);
-  return (
-    <div ref={wrap} style={{minHeight: inView?undefined:1}}>
-      {inView && (
-        <blockquote className="instagram-media"
-          data-instgrm-permalink={permalink} data-instgrm-version="14"
-          style={{margin:0, width:"100%", minWidth:0, border:"none", boxShadow:"none"}}>
-        </blockquote>
-      )}
-    </div>
-  );
-}
-
-/* ===== Googleマップの店舗写真（要APIキー・クライアント側・遅延取得） =====
-   ▼下の GMAPS_KEY に Google Maps Platform のAPIキーを入れると、全店に「お店の実写」を自動表示します。
-   ・Google Cloud で「Places API (New)」＋「Maps JavaScript API」を有効化／請求先を設定（無料枠あり）
-   ・キーは必ず［アプリの制限：ウェブサイト(HTTPリファラ)］で  https://hero-sud.github.io/*  に限定すること
-   ・各写真にはGoogleの帰属表示（撮影者名）を重ねて表示します
-   ・表示が見えたカードだけ取得（遅延）＆セッション内キャッシュで呼び出しを最小化 */
-const GMAPS_KEY = ""; // ← ここにAPIキーを貼る（空ならジャンル代表画像のまま動作）
-const KITAHIRO_CENTER = { lat: 34.6789, lng: 132.5417 };
-
-let __gmaps = null;
-function loadGoogle(){
-  if (!GMAPS_KEY) return Promise.reject(new Error("no key"));
-  if (__gmaps) return __gmaps;
-  // Google公式の動的ライブラリ・ブートストラップローダ
-  ((g)=>{var h,a,k,p="maps",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{a=m.createElement("script");e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src="https://maps."+c+"apis.com/maps/api/js?"+e;d[q]=f;a.onerror=()=>h=n(Error("Google Maps could not load."));m.head.append(a);}));d[l]?0:d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n));})({ key: GMAPS_KEY, v: "weekly" });
-  __gmaps = google.maps.importLibrary("places");
-  return __gmaps;
+  const grouped = st.sortMode==='area';
+  if(!grouped) fp = fp.slice().sort((a,b)=>((a.s.recommended?0:1)-(b.s.recommended?0:1))||(order.indexOf(a.s.area)-order.indexOf(b.s.area))||(a.s.no-b.s.no));
+  const fAreaCount={}; fp.forEach(({s})=>{ fAreaCount[s.area]=(fAreaCount[s.area]||0)+1; });
+  let lastArea=null;
+  const items = fp.map(({s,p})=>{
+    const m = META[s.area]||{romaji:'',color:'#c9a44e',mood:'',moodEn:''};
+    const isStart = grouped && s.area!==lastArea; lastArea=s.area;
+    const anchor='area-'+(m.romaji||s.area).toLowerCase();
+    return {
+      numLabel:String(s.no).padStart(2,'0'), name:s.name, reading:s.reading||'', genre:s.genre, genreEn:GENRE_EN[s.genre]||'',
+      area:s.area, areaColor:m.color, recommended:!!s.recommended,
+      catch:s.catch, catchEn:s.catch_en||'', point:s.point||'', hasPoint:!!(s.point&&s.point.length),
+      hours:s.hours, address:s.address, badges:buildBadges(p),
+      photoLink:s.instagram||s.site||s.map||'#', links:buildLinks(s),
+      chapterStart:isStart, chapter:{label:s.area,romaji:m.romaji,color:m.color,count:fAreaCount[s.area],mood:m.mood,moodEn:m.moodEn,anchor},
+      shopAnchor:'shop-'+s.id,
+    };
+  });
+  const todayJP=['日','月','火','水','木','金','土'][new Date().getDay()];
+  const areaChips=[{label:'すべて',en:'All',value:'all',count:all.length,accent:'#c9a44e',textOn:'#1a2230'}]
+    .concat(order.filter(a=>areaCount[a]).map(a=>({label:a,en:META[a].romaji,value:a,count:areaCount[a],accent:META[a].color,textOn:META[a].textOn})))
+    .map(c=>({label:c.label,en:c.en,count:c.count,value:c.value,style:chipStyle(st.area===c.value,c.accent,c.textOn)}));
+  const genreChips=[{label:'すべて',en:'All',value:'all',count:all.length}]
+    .concat(GENRE_ORDER.filter(g=>genreCount[g]).map(g=>({label:g,en:GENRE_EN[g],value:g,count:genreCount[g]})))
+    .map(c=>({label:c.label,en:c.en,count:c.count,value:c.value,style:chipStyle(st.genre===c.value,'#c9a44e','#1a2230')}));
+  const days=['月','火','水','木','金','土','日'];
+  const dayChips=days.map(d=>({label:d,value:d,style:pill(st.dayFilter===d,'#c9a44e','#1a2230')}));
+  return {
+    items, count:all.length, resultCount:fp.length, q:st.q, hasQuery, hasActive, activeCount,
+    filterOpen:st.filterOpen, caret:st.filterOpen?'▲':'▼', showIntro:!hasActive, emptyState:fp.length===0,
+    areaChips, genreChips, dayChips, todayJP, areaCount,
+    filterBtnBg: st.filterOpen?'rgba(201,164,78,.16)':'rgba(255,255,255,.05)',
+    todayStyle: pill(!!st.dayFilter && st.dayFilter===todayJP,'#d2503b','#fff'),
+    lunchBtnStyle: pill(st.lunchOnly,'#c9a44e','#1a2230'),
+    skipBtnStyle: pill(st.skipLimited,'#c9a44e','#1a2230'),
+    recBtnStyle: pill(st.recOnly,'#d2503b','#fff'),
+    sortAreaStyle: pill(st.sortMode==='area','#c9a44e','#1a2230'),
+    sortPickStyle: pill(st.sortMode==='pick','#c9a44e','#1a2230'),
+  };
 }
 
-const __photoCache = {};
-function useStorePhoto(store){
-  const ref = useRef(null);
-  const inView = useInView(ref, "300px");
-  const [photo, setPhoto] = useState(()=>__photoCache[store.id] || null);
-  useEffect(()=>{
-    if (!GMAPS_KEY || !inView || photo) return;
-    let alive = true;
-    (async ()=>{
-      try{
-        const { Place } = await loadGoogle();
-        const { places } = await Place.searchByText({
-          textQuery: `${store.name} ${store.place}`,
-          fields: ["photos"],
-          maxResultCount: 1, language: "ja", region: "jp",
-          locationBias: { center: KITAHIRO_CENTER, radius: 25000 },
-        });
-        const ph = places && places[0] && places[0].photos && places[0].photos[0];
-        if (ph && alive){
-          const attr = (ph.authorAttributions && ph.authorAttributions[0]) || null;
-          const data = { url: ph.getURI({ maxWidth: 900 }), attrName: attr && attr.displayName };
-          __photoCache[store.id] = data; setPhoto(data);
-        }
-      }catch(e){ /* キー未設定/取得失敗時はジャンル代表画像のまま */ }
-    })();
-    return ()=>{ alive = false; };
-  }, [inView, photo]);
-  return { ref, photo };
-}
-
-/* ===== ファクトチェック済み・実在店舗データ（2026年6月時点の公開情報に基づく調査） =====
-   出典: 北広島町観光協会(kitahiro.jp) / 食べログ / 中国新聞 / 各店公式 / Retty / ヒトサラ 等。
-   営業時間・定休日は変動・冬期休業も多いため、各カードの公式リンクで要確認。 */
-const STORES = [
-  // ---- 千代田エリア ----
-  { id:"petit-hermes", star:true, name:"プチヘルメース", reading:"Petit Hermès", genre:"パン", area:"千代田",
-    catch:"廃校の教室で焼く、天然酵母パン。",
-    points:["2013年閉校の旧南方小学校1階。規格外の野菜・果物を酵母に活かす、町の象徴的な一軒"],
-    hours:"水・土のみ営業（時間は公式で要確認）", place:"北広島町南方1920（旧南方小学校）",
-    links:[ {label:"Instagram", url:"https://www.instagram.com/petit_hermes/", kind:"ig"},
-            {label:"公式ショップ", url:"https://petit-hermes.square.site/", kind:"site"},
-            {label:"中国新聞の記事（出典）", url:"https://www.chugoku-np.co.jp/articles/-/588149", kind:"src"} ] },
-
-  { id:"south-in-north", name:"South in North", reading:"サウスインノース", genre:"カフェ", area:"千代田",
-    catch:"廃校の教室で食べる、本格スパイスカレー。",
-    points:["プチヘルメースと同じ旧南方小学校の校舎に。北広島町産コシヒカリと地元野菜を使ったスパイスカレーが看板",
-            "6種スパイスのSOUTH CURRY（チキン）と、りんご＆蜂蜜のNORTH CURRY（欧風ビーフ）の2本柱"],
-    hours:"11:00〜15:00(L.O.14:00)・月休（要確認）", place:"北広島町南方1920（旧南方小学校）",
-    links:[ {label:"Instagram", url:"https://www.instagram.com/south_in_north__kitahiro/", kind:"ig"},
-            {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34034607/", kind:"src"},
-            {label:"おこめのわわわ", url:"https://okomenowawawa.jp/shops/southinnorth/", kind:"site"} ] },
-
-  { id:"cafe-solamie", name:"cafe solaMie", reading:"カフェ ソラミー", genre:"カフェ", area:"千代田",
-    catch:"田舎道に突如あらわれる、丸窓のカフェ。",
-    points:["千代田ICから北へ約10分。鯉の泳ぐ池を眺めながら、生姜焼き定食やチーズケーキを"],
-    hours:"11:00〜17:00(L.O.16:30)／月・木ほか休（要確認）", place:"北広島町蔵迫2819",
-    links:[ {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34030496/", kind:"src"},
-            {label:"紹介記事(リビング広島)", url:"https://mrs.living.jp/hiroshima/town_gourmet/reporter/5326673", kind:"site"} ] },
-
-  { id:"casual-kitchen-hana", name:"Casual Kitchen Hana", reading:"カジュアルキッチン ハナ", genre:"定食", area:"千代田",
-    catch:"レトロな店内で、気取らない多彩なランチ。",
-    points:["唐揚げや生姜焼きなど多彩なランチ。ライス・スープおかわり自由でお腹いっぱい",
-            "平日ランチ使いにちょうどいい、落ち着いたレトロな食堂"],
-    hours:"11:00〜14:30(L.O.14:00)・土日休（要確認）", place:"北広島町有田989-1",
-    links:[ {label:"Instagram", url:"https://www.instagram.com/casual_kitchen_hana/", kind:"ig"},
-            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/hana.html", kind:"site"},
-            {label:"食べログ", url:"https://tabelog.com/en/hiroshima/A3408/A340801/34030255/", kind:"src"} ] },
-
-  { id:"corbusier", name:"昭和レトロと珈琲の店 コルビジェ", reading:"こるびじぇ", genre:"カフェ", area:"千代田",
-    catch:"昭和レトロと、サイフォン珈琲。",
-    points:["昭和レトロ雑貨に囲まれ、サイフォンで淹れる本格珈琲と手作り菓子が楽しめる喫茶"],
-    hours:"13:00〜17:00／日・祝休（要確認）", place:"北広島町今田3885-3",
-    links:[ {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34030926/", kind:"src"},
-            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/korubizye.html", kind:"site"} ] },
-
-  { id:"saboners", name:"サボナーズカフェ（温活部）", reading:"さぼなーずかふぇ", genre:"カフェ", area:"千代田",
-    catch:"自家焙煎珈琲と、よもぎ蒸し。",
-    points:["地元素材の自家焙煎コーヒーが自慢。気軽に「よもぎ蒸し」もできる温活カフェ"],
-    hours:"要予約（営業時間は要確認）", place:"北広島町有田459-1",
-    links:[ {label:"公式(オンライン)", url:"https://sabonerscafe.raku-uru.jp/", kind:"site"},
-            {label:"観光ガイドKITABITO", url:"https://kitabi-to.jp/spot_post/1053/", kind:"src"} ] },
-
-  { id:"appreciate", name:"appreciate ＋cafe", reading:"あぷりしえいと", genre:"カフェ", area:"千代田",
-    catch:"美容室併設の、くつろぎカフェ。",
-    points:["ヘアサロン併設。施術の前後やドライブの休憩に立ち寄れる地元の憩いの場"],
-    hours:"カフェ11:00〜16:30／水・木・第2第4日休（要確認）", place:"北広島町本地361-1",
-    links:[ {label:"Instagram", url:"https://www.instagram.com/appreciate_cafe/", kind:"ig"},
-            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/appreciate.html", kind:"src"} ] },
-
-  { id:"berryhouse", name:"ベリーハウス", reading:"べりーはうす", genre:"カフェ", area:"千代田",
-    catch:"ハーブガーデンの、隠れ家カフェ。",
-    points:["ハーブの庭に包まれた予約制カフェ。ハンドメイド作品も並ぶ、知る人ぞ知る一軒"],
-    hours:"11:00〜16:00（限定日・要予約）／1・8月休", place:"北広島町南方1102-1",
-    links:[ {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/berry.html", kind:"site"},
-            {label:"食べログ", url:"https://tabelog.com/en/hiroshima/A3408/A340801/34021873/", kind:"src"} ] },
-
-  { id:"tatumori", name:"さんまらーめん 立盛", reading:"たつもり", genre:"ラーメン", area:"千代田",
-    catch:"町の、新たならーめん処。",
-    points:["らーめんはもちろん、だしの効いたうどんや冬のおでんも。気まぐれの肴で一杯も"],
-    hours:"11:00〜14:00／17:00〜21:00頃・月休（要確認）", place:"北広島町春木251",
-    links:[ {label:"食べログ", url:"https://tabelog.com/en/hiroshima/A3408/A340801/34030671/", kind:"src"},
-            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/tatumori.html", kind:"site"} ] },
-
-  { id:"chiyoda-niban", name:"中華そば ちよだ二番", reading:"ちよだにばん", genre:"ラーメン", area:"千代田",
-    catch:"カウンターだけの、醤油中華そば。",
-    points:["小さな店であっさり醤油の中華そば。コスパよく地元で愛される一杯"],
-    hours:"主に日祝のランチ営業（要確認）", place:"北広島町壬生10",
-    links:[ {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34016311/", kind:"src"} ] },
-
-  { id:"ajimiya", name:"味みや", reading:"あじみや", genre:"お好み焼き", area:"千代田",
-    catch:"ざく切りキャベツの、お好み焼き。",
-    points:["千代田ICから約5分。ざく切りキャベツで野菜の甘みと香りを楽しむ広島流"],
-    hours:"11:00〜13:30／17:00〜21:30・月休（要確認）", place:"北広島町有田480-4",
-    links:[ {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/ajimiya.html", kind:"site"},
-            {label:"食べログ", url:"https://tabelog.com/en/hiroshima/A3408/A340801/34027345/", kind:"src"} ] },
-
-  { id:"okonomi-hiro", name:"お好みハウス ひろ", reading:"おこのみはうす ひろ", genre:"お好み焼き", area:"千代田",
-    catch:"通し営業の、昔ながらお好み焼き。",
-    points:["地元・春木の昔ながらのお好み焼き店。通し営業で立ち寄りやすい"],
-    hours:"10:30〜19:00・月休（要確認）", place:"北広島町春木167",
-    links:[ {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34027478/", kind:"src"},
-            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/hiro.html", kind:"site"} ] },
-
-  { id:"okonomi-an", name:"お好み焼き あん", reading:"おこのみやき あん", genre:"お好み焼き", area:"千代田",
-    catch:"甘いキャベツと、無料の味噌汁。",
-    points:["芸北の甘いキャベツを使用。無料の味噌汁も隠れた人気。夜は鉄板焼で一杯"],
-    hours:"11:00〜14:00／17:00〜20:00・月休（要確認）", place:"北広島町本地25-18",
-    links:[ {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/an.html", kind:"site"},
-            {label:"ぐるなび", url:"https://r.gnavi.co.jp/18y3x0a10000/", kind:"src"} ] },
-
-  { id:"kitahiro-0banchi", name:"リサイクル きたひろ0番地", reading:"きたひろぜろばんち", genre:"その他", area:"千代田",
-    catch:"こだわりだしの、移動たこ焼き。",
-    points:["外はカリッ中はトロッ。こだわりのだし汁とタコのたこ焼きを移動販売"],
-    hours:"9:00〜18:00・木休（要確認）", place:"北広島町有田3388",
-    links:[ {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/0banchi.html", kind:"src"} ] },
-
-  { id:"hibiki", name:"レストラン 響", reading:"ひびき", genre:"定食", area:"千代田",
-    catch:"地元野菜の、減塩バイキング。",
-    points:["道の駅 舞ロードIC千代田内。石窯炊きご飯・天ぷら・ピザ・中華など60種超のビュッフェ"],
-    hours:"11:00〜15:00(L.O.14:00)・水休（要確認）", place:"北広島町有田1122（道の駅 舞ロードIC千代田）",
-    links:[ {label:"公式サイト", url:"https://kitahiro-ichiba.com/restaurant_hiviki.html", kind:"site"},
-            {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34019530/", kind:"src"} ] },
-
-  { id:"kitahiro-shokudo", name:"きたひろ食堂", reading:"きたひろしょくどう", genre:"定食", area:"千代田",
-    catch:"舞ロー丼と、きたひろラーメン。",
-    points:["道の駅 舞ロードIC千代田内の軽食処。きたひろラーメン・舞ロー丼・カレーが手軽"],
-    hours:"10:00〜17:00（軽食15:00まで・要確認）", place:"北広島町有田1122（道の駅 舞ロードIC千代田）",
-    links:[ {label:"公式サイト", url:"https://kitahiro-ichiba.com/", kind:"site"},
-            {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34022229/", kind:"src"} ] },
-
-  { id:"michizure", name:"酔膳亭 みちづれ", reading:"すいぜんてい みちづれ", genre:"和食", area:"千代田",
-    catch:"両海の魚介と寿司を、ランチで。",
-    points:["日本海・瀬戸内の新鮮魚介と寿司をリーズナブルに。個室・座敷もありランチ可"],
-    hours:"11:00〜14:00 ほか・水休（要確認）", place:"北広島町有田1556-1",
-    links:[ {label:"公式サイト", url:"https://www.yamagata-suizentei-michizure.com/", kind:"site"},
-            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/michidure.html", kind:"src"} ] },
-
-  // ---- 豊平エリア ----
-  { id:"liand-bagel", star:true, name:"Liand bagel", reading:"リアンドベーグル", genre:"ベーグル", area:"豊平",
-    catch:"土曜だけ開く、古民家のベーグル工房。",
-    points:["アート/デザインに携わる池田夫妻が営む週イチ営業。人参・りんご等の自家製ボタニカル酵母で48時間低温発酵"],
-    hours:"土曜のみ営業（公式SNS・ECで要確認）", place:"北広島町都志見1828",
-    links:[ {label:"Instagram", url:"https://www.instagram.com/liand_bagel/", kind:"ig"},
-            {label:"オンライン販売(BASE)", url:"https://liandbagel.official.ec/", kind:"site"},
-            {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34029422/", kind:"src"} ] },
-
-  { id:"kobori", name:"豊平手打ちそば こぼり", reading:"こぼり", genre:"そば", area:"豊平",
-    catch:"ミシュラン掲載の、手打ちそば。",
-    points:["豊平手打ちそば保存会出身の主人が打つ、地元産「とよむすめ」のコシある手打ちそば"],
-    hours:"土日祝11:00〜15:00（売切れ終了）／平日休", place:"北広島町阿坂3425-7",
-    links:[ {label:"公式サイト", url:"https://y783100.gorp.jp/", kind:"site"},
-            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/kobori.html", kind:"src"} ] },
-
-  { id:"isobe", name:"そば お味処 いそべ", reading:"いそべ", genre:"そば", area:"豊平",
-    catch:"骨董の店で味わう、かもざる。",
-    points:["住宅街の一軒家。骨董・雑貨が並ぶ店内で、焦がしネギ香る「かもざる」が名物（予約制）"],
-    hours:"11:00〜15:00・予約制・不定休", place:"北広島町阿坂12621-7",
-    links:[ {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/isobe.html", kind:"site"},
-            {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34014205/", kind:"src"} ] },
-
-  { id:"ryuzunosato", name:"お食事処 龍頭の里", reading:"りゅうずのさと", genre:"そば", area:"豊平",
-    catch:"龍頭山を望む座敷で、そば会席。",
-    points:["道の駅 豊平どんぐり村内。手打ちそばや地元食材の創作料理・会席（要予約）を座敷やテラスで"],
-    hours:"平日11:00〜15:00／土日祝〜19:00・第3火休（要確認）", place:"北広島町都志見12609（豊平どんぐり村）",
-    links:[ {label:"公式サイト", url:"https://www.dongurimura.co.jp/?cn=100012", kind:"site"},
-            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/ryuzunosato.html", kind:"src"} ] },
-
-  { id:"donguri-an", name:"そば処 どんぐり庵", reading:"どんぐりあん", genre:"そば", area:"豊平",
-    catch:"挽きたて打ちたて、豊平そば。",
-    points:["道の駅 豊平どんぐり村内。名人直伝のダシで味わう自信の手打ちそば。となりでそば打ち体験も"],
-    hours:"11:00〜14:00・第3火休", place:"北広島町都志見12609（道の駅 豊平どんぐり村）",
-    links:[ {label:"公式サイト", url:"https://www.dongurimura.co.jp/?cn=100027", kind:"site"},
-            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/dongurian.html", kind:"src"} ] },
-
-  { id:"dude", name:"森のカフェ＆レストラン Dude", reading:"でゅーど", genre:"イタリアン", area:"豊平",
-    catch:"森の中の、自家菜園イタリアン。",
-    points:["絵本のような一軒家。料理歴35年のシェフが自家菜園の有機野菜で作る本格パスタ・ピザ"],
-    hours:"平日11:00〜16:00／土日〜20:00・月休（冬期休）", place:"北広島町西宗13962-280",
-    links:[ {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/dude.html", kind:"site"},
-            {label:"Retty", url:"https://retty.me/area/PRE34/ARE284/SUB56902/100000609004/", kind:"src"} ] },
-
-  { id:"cafe-watanabe", name:"cafe house Watanabe", reading:"かふぇはうす わたなべ", genre:"カフェ", area:"豊平",
-    catch:"スープカレーと、シフォン専門。",
-    points:["どんぐり村のすぐ下。地元卵・国産小麦のシフォンケーキとスープカレーセットが看板"],
-    hours:"11:00〜17:00（要確認）", place:"北広島町都志見3706",
-    links:[ {label:"公式サイト", url:"https://cafe-house-watanabe.jimdofree.com/", kind:"site"},
-            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/watanabe.html", kind:"src"} ] },
-
-  { id:"kitsutsuki", name:"ガレットとクレープのお店 啄木鳥", reading:"きつつき", genre:"カフェ", area:"豊平",
-    catch:"豊平そば粉の、香ばしいガレット。",
-    points:["どんぐり村奥の隠れ家。地物（豊平）そば粉のガレットと季節のクレープが楽しめる"],
-    hours:"11:00〜17:00・火/第1水休", place:"北広島町阿坂10421-1",
-    links:[ {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/kitsutsuki.html", kind:"site"},
-            {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34017325/", kind:"src"} ] },
-
-  { id:"nonohana", name:"野の花かふぇ", reading:"ののはな かふぇ", genre:"カフェ", area:"豊平",
-    catch:"地元野菜ランチと、ふわふわシフォン。",
-    points:["龍頭山ふもとの古民家カフェ。金・土だけ、地元野菜たっぷりのランチと自家製スイーツを"],
-    hours:"金・土 11:00〜16:00・冬期休（要確認）", place:"北広島町都志見10733-99",
-    links:[ {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34014932/", kind:"src"},
-            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/nonohana.html", kind:"site"} ] },
-
-  { id:"yamagoya", name:"自家焙煎 山小屋cafe", reading:"やまごや かふぇ", genre:"カフェ", area:"豊平",
-    catch:"自家焙煎珈琲と、絶品カレー。",
-    points:["2019年開業の小さなカフェ。自家焙煎の新鮮コーヒーと絶品カレーが看板"],
-    hours:"10:00〜17:00（10〜3月は〜15:00）・火水休", place:"北広島町今吉田1545-1",
-    links:[ {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34027633/", kind:"src"},
-            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/yamagoyacafe.html", kind:"site"} ] },
-
-  // ---- 芸北エリア ----
-  { id:"kario-chaya", name:"かりお茶屋", reading:"かりおちゃや", genre:"そば", area:"芸北",
-    catch:"八幡高原名物の、赤そば。",
-    points:["高原の自然館に併設。八幡高原で育つ名物「赤そば」を、赤そば畑のそばで味わえる"],
-    hours:"10:00〜16:00・火休・冬期休（要確認）", place:"北広島町東八幡原10119-1（高原の自然館）",
-    links:[ {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34007742/", kind:"src"},
-            {label:"北広島町観光協会", url:"http://kitahiro.jp/eat-buy/eatsingle/geihokusingle/kario.html", kind:"site"} ] },
-
-  { id:"oudomari-chaya", name:"王泊茶屋", reading:"おうどまりちゃや", genre:"そば", area:"芸北",
-    catch:"湖畔の、石臼挽きそば＆カフェ。",
-    points:["2024年開業。国産石臼挽きそば粉のこだわり蕎麦と、王泊ダム湖畔の眺めの併設カフェ"],
-    hours:"そば11:00〜14:30／カフェ〜16:30・火水休（季節変更）", place:"北広島町細見361-94（芸北王泊ダム湖畔）",
-    links:[ {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/geihokusingle/pg7834.html", kind:"site"},
-            {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34032483/", kind:"src"} ] },
-
-  { id:"shojikimura", name:"コーヒーハウス 正直村", reading:"しょうじきむら", genre:"カフェ", area:"芸北",
-    catch:"聖湖を望む、ログハウス喫茶。",
-    points:["聖湖畔のログハウス風カフェ。テラスから臥竜山を望み、コーヒーや軽食でくつろげる秘境カフェ"],
-    hours:"10:30〜16:00・冬期(12〜3月)休", place:"北広島町西八幡原10770-1（聖湖畔）",
-    links:[ {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/geihokusingle/shojikimura.html", kind:"src"} ] },
-
-  { id:"daisen", name:"山奥の料理屋 大仙", reading:"だいせん", genre:"和食", area:"芸北",
-    catch:"日本海の幸と、山の幸の料理屋。",
-    points:["親子2代で営む料理屋。日本海の新鮮な魚介と芸北の山の幸を生かした地産地消のまごころ料理"],
-    hours:"11:30〜13:30／17:00〜22:00・不定休（要確認）", place:"北広島町川小田10076",
-    igPost:"https://www.instagram.com/p/CKiKC9FhfMr/",
-    links:[ {label:"公式サイト", url:"https://geihoku-daisen.com/", kind:"site"},
-            {label:"北広島町観光協会", url:"http://kitahiro.jp/eat-buy/eatsingle/geihokusingle/daisen.html", kind:"src"} ] },
-
-  { id:"alpenya", name:"あるぺん屋（八幡高原酒造）", reading:"あるぺんや", genre:"和食", area:"芸北",
-    catch:"名水仕込みの、どぶろく鍋。",
-    points:["八幡高原の名水で仕込むどぶろくの蔵。名物「どぶろく鍋」や自家製麹の腸活メニュー（要予約）"],
-    hours:"11:00〜14:00・月火休・要予約", place:"北広島町西八幡原10405-3",
-    links:[ {label:"公式サイト", url:"https://www.alpenya2.com/", kind:"site"},
-            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/geihokusingle/alpine.html", kind:"src"} ] },
-
-  { id:"jokenji", name:"イタリアン精進料理 淨謙寺", reading:"じょうけんじ", genre:"和食", area:"芸北",
-    catch:"寺で味わう、彩りの精進料理。",
-    points:["浄土真宗の寺で味わう完全予約制ランチ。30種超の地元食材を朱漆器に盛る彩り豊かな精進料理"],
-    hours:"完全予約制・主に金土日・5〜12月", place:"北広島町奥原161",
-    links:[ {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/geihokusingle/jokenji.html", kind:"site"},
-            {label:"食べログ", url:"https://tabelog.com/en/hiroshima/A3408/A340801/34015662/", kind:"src"} ] },
-
-  { id:"zousan-cafe", name:"芸北ぞうさんカフェ", reading:"げいほくぞうさんかふぇ", genre:"カフェ", area:"芸北",
-    catch:"薪窯の手作りピザと、ハーブティ。",
-    points:["スキー場施設を改装した開放的なカフェ。間伐材の薪窯で焼く手作りピザとハーブティーが名物"],
-    hours:"11:00〜18:00・水木休", place:"北広島町荒神原201（国道186号沿い）",
-    links:[ {label:"公式サイト", url:"https://www.zousancafe.com/", kind:"site"},
-            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/geihokusingle/zousancafe.html", kind:"src"} ] },
-
-  // ---- 大朝エリア ----
-  { id:"yuzuan", name:"囲炉裏の店 ゆず庵", reading:"ゆずあん", genre:"和食", area:"大朝",
-    catch:"囲炉裏で、両海の幸を小料理で。",
-    points:["浜田の海の幸・石見ポーク・瀬戸内の牡蠣などを囲炉裏で。昼は定食ランチも（要確認）"],
-    hours:"昼11:30〜13:30（平日）ほか・水/第2火休（要確認）", place:"北広島町大朝633-3",
-    links:[ {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/oasasingle/yuzuan.html", kind:"site"},
-            {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34021880/", kind:"src"} ] },
-
-  { id:"wasaru-shokudo", name:"こちら大朝わさ～る内食堂", reading:"わさ～るないしょくどう", genre:"ラーメン", area:"大朝",
-    catch:"産直施設の、汁なし担担麺。",
-    points:["産直施設「わさ～る」内の食堂。汁なし担担麺などの麺類を手軽に味わえる"],
-    hours:"9:00〜15:00・第3水休", place:"北広島町大朝2513-1（わさ～る内）",
-    links:[ {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34024886/", kind:"src"} ] },
-
-  { id:"resthouse-oasa", name:"レストハウス大朝", reading:"れすとはうすおおあさ", genre:"定食", area:"大朝",
-    catch:"公園内の食堂、ぶっかけそば。",
-    points:["中国平和記念墓地公園内。冷やしぶっかけそばや牡蠣フライ定食などを提供"],
-    hours:"10:00〜17:00・火休・冬期(12〜2月)休", place:"北広島町田原106（中国平和記念墓地公園内）",
-    links:[ {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34021463/", kind:"src"},
-            {label:"ヒトサラ", url:"https://hitosara.com/0031506777/", kind:"site"} ] },
-
-  { id:"ainosato", name:"天意の里 ハーブガーデン", reading:"あいのさと はーぶがーでん", genre:"カフェ", area:"大朝",
-    catch:"ハーブ園の、農家レストラン。",
-    points:["約4万㎡・100種超のハーブ園。無農薬野菜と国産肉のハーブランチが名物（5〜6月のカモミール摘みも人気）"],
-    hours:"10:00〜（季節変動）・木休・冬期休（要確認）", place:"北広島町大朝11654-1",
-    links:[ {label:"公式サイト", url:"http://www.oasa.jp/ainosato/", kind:"site"},
-            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/oasasingle/ainosato.html", kind:"src"} ] },
-
-  { id:"karashiro", name:"からしろ館／からしろ茶屋", reading:"からしろかん", genre:"カフェ", area:"大朝",
-    catch:"県境の産直＋100円珈琲の茶屋。",
-    points:["島根県境の産直施設。地元野菜の販売に加え、併設茶屋でランチや100円コーヒーが気軽に"],
-    hours:"ランチ11:00〜14:00・火休", place:"北広島町宮迫386-12",
-    links:[ {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34014120/", kind:"src"} ] },
-
-  { id:"kaachan-gyoza", name:"むらかみふぁ～む かあちゃん餃子", reading:"かあちゃんぎょうざ", genre:"その他", area:"大朝",
-    catch:"自社農場の、かあちゃん餃子。",
-    points:["自社農場の手作り「かあちゃん餃子」と日替わり弁当。焼きたて餃子が人気（テイクアウト主体）"],
-    hours:"11:00〜14:30 ほか・土日祝休（要確認）", place:"北広島町大朝2486-3",
-    links:[ {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/oasasingle/gyoza.html", kind:"site"},
-            {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34021462/", kind:"src"} ] },
-];
-
-/* 出典一覧（フッター用） */
-const SOURCES = [
-  {label:"北広島町観光協会（食べる）", url:"https://kitahiro.jp/eat-buy/"},
-  {label:"中国新聞デジタル（プチヘルメース）", url:"https://www.chugoku-np.co.jp/articles/-/588149"},
-  {label:"食べログ 北広島町ランチ", url:"https://tabelog.com/hiroshima/C34369/rstLst/lunch/"},
-  {label:"道の駅 豊平どんぐり村", url:"https://www.dongurimura.co.jp/"},
-];
-
-const AREA_ORDER = ["千代田","大朝","豊平","芸北"];
-const AREA_NOTE = {
-  "千代田":"中国道・千代田ICの玄関口エリア",
-  "大朝":"島根との県境に近い、山あいの里",
-  "豊平":"西日本有数のそばの産地",
-  "芸北":"スキー場と高原・湖の高原エリア",
-};
-
-const KIND_STYLE = {
-  ig:   {bg:"linear-gradient(45deg,#F58529,#DD2A7B,#8134AF)", fg:"#fff", icon:"📷"},
-  site: {bg:C.main, fg:"#fff", icon:"🔗"},
-  src:  {bg:"transparent", fg:C.main, icon:"✓", border:`1px solid ${C.main}`},
-  map:  {bg:C.warm, fg:"#fff", icon:"📍"},
-};
-
-function mapsUrl(s){
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${s.name} ${s.place}`)}`;
-}
-
-function Chip({active, onClick, children}){
-  return (
-    <button type="button" onClick={onClick} aria-pressed={active} className="pbchip"
-      style={{ cursor:"pointer", border:`2px solid ${active?C.mainD:C.border}`,
-        background: active?C.main:C.bgW, color: active?"#fff":C.fg,
-        padding:"7px 15px", borderRadius:999, fontSize:14, fontWeight:700,
-        boxShadow: active?`0 3px 0 ${C.mainD}`:`0 2px 0 ${C.border}`, whiteSpace:"nowrap" }}>
-      {children}
-    </button>
-  );
-}
-
-function LinkBtn({l}){
-  const st = KIND_STYLE[l.kind] || KIND_STYLE.site;
-  return (
-    <a href={l.url} target="_blank" rel="noopener noreferrer"
-      style={{ display:"inline-flex", alignItems:"center", gap:6, textDecoration:"none",
-        background:st.bg, color:st.fg, border:st.border||"none",
-        padding:"8px 12px", borderRadius:10, fontSize:13, fontWeight:700 }}>
-      <span aria-hidden="true">{st.icon}</span>{l.label}
-    </a>
-  );
-}
-
-function StoreCard({s}){
-  const [showIG, setShowIG] = useState(false);
-  const { ref, photo } = useStorePhoto(s);
-  const gphoto = photo && photo.url;
-  const srcUrl = photoSourceUrl(s);
-  const genreImg = GENRE_IMG[s.genre] || FALLBACK_IMG;
-  const cover = gphoto || s.officialImg || (srcUrl ? unfurl(srcUrl) : genreImg);
-  const realish = !!(gphoto || s.officialImg || srcUrl);
-  return (
-    <article className="pbcard" style={{ background:C.bgW, borderRadius:24, overflow:"hidden",
-      border:`2px solid ${C.border}`, boxShadow:"0 8px 22px rgba(120,100,70,.10)",
-      display:"flex", flexDirection:"column" }}>
-      <div ref={ref} style={{position:"relative", aspectRatio:"16/10", background:C.bgWarm}}>
-        <img src={cover} alt={`${s.name}（${s.genre}）の${realish?"写真":"イメージ"}`} loading="lazy" decoding="async"
-          onError={e=>{ const t=e.target;
-            if(t.src!==genreImg && t.src!==FALLBACK_IMG){ t.src=genreImg; }
-            else if(t.src!==FALLBACK_IMG){ t.src=FALLBACK_IMG; } }}
-          style={{width:"100%", height:"100%", objectFit:"cover", display:"block"}}/>
-        {gphoto && photo.attrName && (
-          <span style={{position:"absolute", bottom:32, right:8, fontSize:10, color:"#fff",
-            background:"rgba(0,0,0,.5)", padding:"2px 6px", borderRadius:6, maxWidth:"62%",
-            overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap"}}>📷 {photo.attrName}</span>
-        )}
-        {s.star && (
-          <span style={{position:"absolute", top:12, left:12, background:C.accent, color:"#fff",
-            fontSize:12, fontWeight:800, padding:"5px 10px", borderRadius:999,
-            boxShadow:"0 2px 8px rgba(0,0,0,.25)"}}>★ 編集部いちおし</span>
-        )}
-        <span style={{position:"absolute", top:12, right:12, background:"rgba(27,30,22,.78)", color:"#fff",
-          fontSize:12, fontWeight:700, padding:"5px 10px", borderRadius:999}}>{s.area}エリア</span>
-        <span style={{position:"absolute", bottom:0, left:0, right:0,
-          background:"linear-gradient(transparent,rgba(0,0,0,.55))", color:"#fff",
-          padding:"24px 14px 10px", fontSize:13, fontWeight:700}}>
-          <span style={{background:C.mainD, padding:"3px 10px", borderRadius:999}}>{s.genre}</span>
-        </span>
+/* ===== テンプレート ===== */
+function shopCard(shop){
+  const chapter = shop.chapterStart ? `
+    <div id="${shop.chapter.anchor}" style="scroll-margin-top:132px;margin:38px 0 20px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="width:9px;height:9px;border-radius:50%;background:${shop.chapter.color};display:inline-block;"></span>
+        <span style="font-family:'Lora',serif;font-style:italic;font-size:12px;color:#9aa0b3;">${esc(shop.chapter.romaji)}</span>
       </div>
-
-      <div style={{padding:"16px 16px 18px", display:"flex", flexDirection:"column", gap:10, flex:1}}>
-        <div>
-          <h3 style={{margin:"0 0 2px", fontSize:19, color:C.fg, lineHeight:1.25}}>{s.name}</h3>
-          <div style={{fontSize:12, color:C.fgXL, letterSpacing:.3}}>{s.reading}</div>
-        </div>
-
-        <p style={{margin:0, color:C.mainD, fontWeight:700, fontSize:15, lineHeight:1.5}}>{s.catch}</p>
-
-        <ul style={{margin:"2px 0 0", padding:0, listStyle:"none", display:"flex", flexDirection:"column", gap:6}}>
-          {s.points.map((p,i)=>(
-            <li key={i} style={{display:"flex", gap:8, fontSize:13.5, color:C.fgL, lineHeight:1.55}}>
-              <span aria-hidden="true" style={{color:C.warm, fontWeight:900}}>—</span><span>{p}</span>
-            </li>
-          ))}
-        </ul>
-
-        <dl style={{margin:"4px 0 0", display:"grid", gridTemplateColumns:"auto 1fr", gap:"4px 10px",
-          fontSize:13, color:C.fgL, borderTop:`1px dashed ${C.border}`, paddingTop:10}}>
-          <dt style={{fontWeight:700, color:C.fg}}>場所</dt><dd style={{margin:0}}>{s.place}</dd>
-          <dt style={{fontWeight:700, color:C.fg}}>営業</dt><dd style={{margin:0}}>{s.hours}</dd>
-        </dl>
-
-        <div style={{display:"flex", flexWrap:"wrap", gap:8, marginTop:"auto", paddingTop:8}}>
-          {s.links.map((l,i)=><LinkBtn key={i} l={l}/>)}
-          <a href={mapsUrl(s)} target="_blank" rel="noopener noreferrer"
-            style={{display:"inline-flex", alignItems:"center", gap:6, textDecoration:"none",
-              background:KIND_STYLE.map.bg, color:KIND_STYLE.map.fg,
-              padding:"8px 12px", borderRadius:10, fontSize:13, fontWeight:700}}>
-            <span aria-hidden="true">📍</span>地図で開く
-          </a>
-        </div>
-
-        {s.igPost && (
-          <div style={{marginTop:4}}>
-            <button type="button" onClick={()=>setShowIG(v=>!v)} aria-expanded={showIG}
-              style={{cursor:"pointer", width:"100%", border:`1.5px solid ${C.border}`,
-                background:C.bgWarm, color:C.mainD, padding:"9px 12px", borderRadius:10,
-                fontSize:13, fontWeight:700}}>
-              📷 {showIG ? "公式の写真を閉じる" : "公式の写真を見る（Instagram）"}
-            </button>
-            {showIG && <div style={{marginTop:10}}><IGEmbed permalink={s.igPost}/></div>}
-          </div>
-        )}
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-top:5px;">
+        <div style="font-family:'Yuji Syuku',serif;font-size:36px;line-height:1.1;color:#f3ecda;">${esc(shop.chapter.label)}</div>
+        <div style="flex:0 0 auto;width:48px;height:48px;border-radius:50%;border:2px solid ${shop.chapter.color};display:flex;align-items:center;justify-content:center;color:${shop.chapter.color};font-family:'Shippori Mincho B1',serif;font-size:13px;transform:rotate(-5deg);font-variant-numeric:tabular-nums;">${shop.chapter.count}軒</div>
       </div>
-    </article>
-  );
+      <p style="margin:9px 0 0;font-size:12.5px;line-height:1.8;color:#9aa3b6;">${esc(shop.chapter.mood)}</p>
+      <p style="margin:3px 0 0;font-family:'Lora',serif;font-style:italic;font-size:11.5px;line-height:1.6;color:#7e879b;">${esc(shop.chapter.moodEn)}</p>
+      <div style="height:2px;margin-top:11px;background:linear-gradient(90deg,${shop.chapter.color},rgba(201,164,78,0));"></div>
+    </div>` : '';
+  const badges = shop.badges.map(b=>`<span style="${b.style}">${esc(b.t)} <span style="font-family:'Lora',serif;font-style:italic;font-size:9.5px;opacity:.8;">${esc(b.e)}</span></span>`).join('');
+  const links = shop.links.map(l=>`<a class="lnk" href="${l.url}" target="_blank" rel="noopener" style="text-decoration:none;font-size:12px;color:#d7cdb6;border:1px solid rgba(201,164,78,.3);border-radius:8px;padding:6px 12px;background:rgba(201,164,78,.05);white-space:nowrap;">${esc(l.label)} →</a>`).join('');
+  const pointHtml = shop.hasPoint ? `<p style="font-size:13px;line-height:1.95;color:#9aa3b6;margin:0 0 16px;text-wrap:pretty;">${esc(shop.point)}</p>` : '';
+  const recBadge = shop.recommended ? `<span style="font-size:11px;color:#fff;background:#d2503b;border-radius:999px;padding:3px 11px;">★ いちおし</span>` : '';
+  return chapter + `
+    <div id="${shop.shopAnchor}" style="scroll-margin-top:132px;background:#212a3e;border:1px solid rgba(201,164,78,.14);border-left:3px solid ${shop.areaColor};border-radius:16px;overflow:hidden;margin-bottom:18px;box-shadow:0 14px 30px -22px rgba(0,0,0,.8);">
+      <a href="${shop.photoLink}" target="_blank" rel="noopener" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;height:140px;text-decoration:none;background-color:#1c2436;background-image:repeating-linear-gradient(45deg,rgba(201,164,78,.05),rgba(201,164,78,.05) 9px,rgba(0,0,0,0) 9px,rgba(0,0,0,0) 18px);border-bottom:1px solid rgba(201,164,78,.12);">
+        <span style="position:absolute;top:10px;right:12px;width:9px;height:9px;border-radius:50%;background:${shop.areaColor};"></span>
+        <span style="font-family:'Shippori Mincho B1',serif;font-size:15px;color:#d7cdb6;">写真をみる　→</span>
+        <span style="font-size:10.5px;letter-spacing:.05em;color:#7e879b;">公式 / 地図 / 食べログ へ · See photos</span>
+      </a>
+      <div style="padding:17px 18px 19px;">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <span style="font-family:'Lora',serif;font-style:italic;font-size:13px;color:#c9a44e;font-variant-numeric:tabular-nums;letter-spacing:.04em;">No.${shop.numLabel}</span>
+          <span style="font-size:11px;color:#d8c89a;border:1px solid rgba(201,164,78,.4);background:rgba(201,164,78,.08);border-radius:999px;padding:3px 11px;">${esc(shop.genre)} <span style="font-family:'Lora',serif;font-style:italic;opacity:.7;font-size:10px;">${esc(shop.genreEn)}</span></span>
+          ${recBadge}
+          <span style="display:inline-flex;align-items:center;gap:5px;margin-left:auto;font-size:11px;color:#aeb6c6;"><span style="width:7px;height:7px;border-radius:50%;background:${shop.areaColor};display:inline-block;"></span>${esc(shop.area)}</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:11px;">${badges}</div>
+        <div style="font-family:'Shippori Mincho B1',serif;font-weight:700;font-size:22px;line-height:1.4;color:#f3ecda;margin:13px 0 1px;text-wrap:pretty;">${esc(shop.name)}</div>
+        <div style="font-family:'Lora',serif;font-style:italic;font-size:12px;color:#8f97aa;">${esc(shop.reading)}</div>
+        <p style="font-family:'Shippori Mincho B1',serif;font-weight:600;font-size:19px;line-height:1.85;color:#ecd29a;margin:13px 0 4px;text-wrap:balance;">${esc(shop.catch)}</p>
+        <p style="font-family:'Lora',serif;font-style:italic;font-size:13px;line-height:1.6;color:#9aa3b6;margin:0 0 12px;text-wrap:pretty;">${esc(shop.catchEn)}</p>
+        ${pointHtml}
+        <div style="display:grid;grid-template-columns:4.4em 1fr;row-gap:9px;column-gap:10px;border-top:1px solid rgba(201,164,78,.12);padding-top:14px;align-items:start;">
+          <div style="font-size:11px;color:#b6924e;letter-spacing:.08em;line-height:1.5;">営業<br><span style="font-family:'Lora',serif;font-style:italic;font-size:9.5px;color:#7e879b;">Hours</span></div>
+          <div style="font-size:12.5px;line-height:1.7;color:#c4ccd9;">${esc(shop.hours)}</div>
+          <div style="font-size:11px;color:#b6924e;letter-spacing:.08em;line-height:1.5;">住所<br><span style="font-family:'Lora',serif;font-style:italic;font-size:9.5px;color:#7e879b;">Address</span></div>
+          <div style="font-size:12.5px;line-height:1.7;color:#c4ccd9;">${esc(shop.address)}</div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:15px;">${links}</div>
+      </div>
+    </div>`;
 }
 
-function App(){
-  const [areas, setAreas] = useState(()=>new Set());
-  const [genres, setGenres] = useState(()=>new Set());
-  const [q, setQ] = useState("");
+function view(){
+  const v = compute();
+  const dayStrip = v.dayChips.map(d=>`<button data-act="day" data-val="${d.value}" style="${d.style}">${d.label}</button>`).join('');
+  const areaChips = v.areaChips.map(c=>`<button data-act="area" data-val="${c.value}" style="${c.style}"><span style="font-size:13px;">${esc(c.label)}</span><i>${esc(c.en)} · ${c.count}</i></button>`).join('');
+  const genreChips = v.genreChips.map(c=>`<button data-act="genre" data-val="${c.value}" style="${c.style}"><span style="font-size:13px;">${esc(c.label)}</span><i>${esc(c.en)} · ${c.count}</i></button>`).join('');
 
-  // 構造化データ(JSON-LD)をデータから生成して挿入（町外検索の発見性UP）
-  useEffect(()=>{
-    const data = { "@context":"https://schema.org", "@type":"ItemList",
-      name:"広島・北広島町 おすすめランチガイド",
-      itemListElement: STORES.map((s,i)=>({ "@type":"ListItem", position:i+1,
-        item:{ "@type":"Restaurant", name:s.name, servesCuisine:s.genre,
-          address:{ "@type":"PostalAddress", addressLocality:"北広島町", addressRegion:"広島県", addressCountry:"JP" } } })) };
-    const el = document.createElement("script");
-    el.type = "application/ld+json"; el.text = JSON.stringify(data);
-    document.head.appendChild(el);
-    return ()=>{ document.head.removeChild(el); };
-  }, []);
+  const filterPanel = v.filterOpen ? `
+    <div class="emaki-scroll" style="margin-top:13px;max-height:54vh;overflow-y:auto;">
+      <div style="font-size:11px;letter-spacing:.12em;color:#b6924e;margin-bottom:7px;">エリア <span style="font-family:'Lora',serif;font-style:italic;color:#8b93a6;">Area</span></div>
+      <div class="emaki-scroll pillrow" style="display:flex;flex-wrap:nowrap;gap:8px;overflow-x:auto;padding-bottom:3px;">${areaChips}</div>
+      <div style="font-size:11px;letter-spacing:.12em;color:#b6924e;margin:13px 0 7px;">ジャンル <span style="font-family:'Lora',serif;font-style:italic;color:#8b93a6;">Genre</span></div>
+      <div class="emaki-scroll pillrow" style="display:flex;flex-wrap:nowrap;gap:8px;overflow-x:auto;padding-bottom:3px;">${genreChips}</div>
+      <div class="pillrow" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;">
+        <button data-act="skip" style="${v.skipBtnStyle}">要予約・限定を除く <i>Skip limited</i></button>
+        <button data-act="rec" style="${v.recBtnStyle}">★ いちおし <i>Picks</i></button>
+      </div>
+      <div style="font-size:11px;letter-spacing:.12em;color:#b6924e;margin:14px 0 7px;">並び替え <span style="font-family:'Lora',serif;font-style:italic;color:#8b93a6;">Sort</span></div>
+      <div class="pillrow" style="display:flex;flex-wrap:wrap;gap:8px;">
+        <button data-act="sortArea" style="${v.sortAreaStyle}">エリア順 <i>By area</i></button>
+        <button data-act="sortPick" style="${v.sortPickStyle}">おすすめ順 <i>Picks first</i></button>
+      </div>
+      ${v.hasActive?`<div style="margin-top:14px;text-align:right;"><button data-act="reset" style="background:none;border:none;color:#9aa0b3;font-size:12px;cursor:pointer;text-decoration:underline;text-underline-offset:3px;">すべてリセット Reset all</button></div>`:''}
+    </div>` : '';
 
-  const allAreas  = useMemo(()=>AREA_ORDER.filter(a=>STORES.some(s=>s.area===a)), []);
-  const allGenres = useMemo(()=>[...new Set(STORES.map(s=>s.genre))], []);
+  const resultLine = v.hasActive ? `<div style="margin-top:10px;font-size:12px;color:#c9a44e;font-variant-numeric:tabular-nums;">該当 ${v.resultCount} 軒 <span style="font-family:'Lora',serif;font-style:italic;color:#8b93a6;">— ${v.resultCount} of ${v.count} places</span></div>` : '';
 
-  const toggle = useCallback((setFn, val)=>{
-    setFn(prev=>{ const n=new Set(prev); n.has(val)?n.delete(val):n.add(val); return n; });
-  }, []);
+  const introCards = AREA_ORDER.map(a=>{
+    const m=META[a]; const cnt=v.areaCount[a]||0;
+    return `<a href="#area-${m.romaji.toLowerCase()}" style="text-decoration:none;color:inherit;display:flex;align-items:baseline;justify-content:space-between;background:#212a3e;border:1px solid rgba(201,164,78,.14);border-left:3px solid ${m.color};border-radius:10px;padding:12px 13px;"><span><span style="font-family:'Shippori Mincho B1',serif;font-size:17px;color:#f1e8d4;">${a}</span> <span style="font-family:'Lora',serif;font-style:italic;font-size:10px;color:#8b93a6;">${m.romaji}</span></span><span style="font-size:12px;color:${m.color};font-variant-numeric:tabular-nums;">${cnt}</span></a>`;
+  }).join('');
+  const picks = SHOPS.filter(s=>s.recommended).map((s,i,arr)=>`<a href="#shop-${s.id}" style="text-decoration:none;color:inherit;display:flex;align-items:baseline;gap:8px;padding:8px 0;${i<arr.length-1?'border-bottom:1px dashed rgba(201,164,78,.2);':''}"><span style="font-family:'Shippori Mincho B1',serif;font-size:15px;color:#f1e8d4;flex:0 0 auto;">${esc(s.name)}</span><span style="font-size:11.5px;color:#9aa3b6;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(s.catch)}</span><span style="margin-left:auto;color:#c9a44e;font-size:12px;flex:0 0 auto;">→</span></a>`).join('');
+  const intro = v.showIntro ? `
+    <div style="padding:30px 18px 8px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+        <span style="font-family:'Yuji Syuku',serif;font-size:22px;color:#f1e8d4;">目次</span>
+        <span style="flex:1;height:1px;background:rgba(201,164,78,.25);"></span>
+        <span style="font-family:'Lora',serif;font-style:italic;font-size:12px;color:#9aa0b3;">Contents · tap to jump</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">${introCards}</div>
+      <div style="margin-top:16px;background:#1d2638;border:1px solid rgba(201,164,78,.16);border-radius:12px;padding:14px 16px 4px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><span style="color:#d2503b;font-size:13px;">★</span><span style="font-family:'Shippori Mincho B1',serif;font-size:14px;color:#ecd29a;">編集部のいちおし</span><span style="font-family:'Lora',serif;font-style:italic;font-size:11px;color:#8b93a6;">Editor's Picks</span></div>
+        ${picks}
+      </div>
+    </div>` : '';
 
-  const filtered = useMemo(()=>{
-    const kw = q.trim().toLowerCase();
-    return STORES.filter(s=>{
-      if(areas.size && !areas.has(s.area)) return false;
-      if(genres.size && !genres.has(s.genre)) return false;
-      if(kw){
-        const hay = [s.name,s.reading,s.genre,s.area,s.catch,s.place,...s.points].join(" ").toLowerCase();
-        if(!hay.includes(kw)) return false;
-      }
-      return true;
-    });
-  }, [areas, genres, q]);
+  const empty = v.emptyState ? `
+    <div style="padding:56px 30px;text-align:center;">
+      <div style="font-family:'Yuji Syuku',serif;font-size:30px;color:#566079;">∅</div>
+      <p style="font-size:14px;color:#c2c8d6;margin:14px 0 4px;font-family:'Shippori Mincho B1',serif;">条件に合うお店がありません。</p>
+      <p style="font-family:'Lora',serif;font-style:italic;font-size:12px;color:#8b93a6;margin:0 0 18px;">No places match. Try loosening the filters.</p>
+      <button data-act="reset" style="background:rgba(201,164,78,.1);border:1px solid rgba(201,164,78,.4);border-radius:999px;color:#c9a44e;font-family:inherit;font-size:12.5px;padding:9px 20px;cursor:pointer;">条件をリセット / Reset</button>
+    </div>` : '';
 
-  const clearAll = ()=>{ setAreas(new Set()); setGenres(new Set()); setQ(""); };
-  const hasFilter = areas.size || genres.size || q.trim();
+  const list = v.items.map(shopCard).join('');
 
-  return (
-    <div style={{background:C.bg, color:C.fg, minHeight:"100vh"}}>
+  return `
+  <div id="top" style="position:relative;min-height:100vh;font-family:'Zen Kaku Gothic New',sans-serif;color:#ece3cf;line-break:strict;">
+    <div style="position:fixed;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,#d2503b,#c9a44e);transform:scaleX(0);transform-origin:0 50%;z-index:60;animation:emaki-progress auto linear;animation-timeline:scroll(root);"></div>
+    <div style="max-width:480px;margin:0 auto;position:relative;border-left:1px solid rgba(201,164,78,.07);border-right:1px solid rgba(201,164,78,.07);">
 
-      {/* ===== Hero（絵本のような里山の風景） ===== */}
-      <header style={{position:"relative", overflow:"hidden",
-        background:"linear-gradient(180deg,#FBE3B8 0%,#FBF0D6 40%,#EAF3E0 100%)"}}>
-        {/* お日さま */}
-        <div className="pbsun" aria-hidden="true" style={{position:"absolute", top:34, right:"9%", width:78, height:78,
-          borderRadius:"50%", background:"radial-gradient(circle at 50% 45%,#FFDD7A,#F2B23C)",
-          boxShadow:"0 0 0 12px rgba(255,216,107,.28)"}}/>
-        {/* 雲 */}
-        <div className="pbcloud" aria-hidden="true" style={{position:"absolute", top:54, left:"9%", fontSize:44}}>☁️</div>
-        <div className="pbcloud" aria-hidden="true" style={{position:"absolute", top:118, right:"30%", fontSize:30, animationDelay:"2s"}}>☁️</div>
-        {/* なだらかな丘 */}
-        <svg viewBox="0 0 1440 220" preserveAspectRatio="none" aria-hidden="true"
-          style={{position:"absolute", bottom:-1, left:0, width:"100%", height:170}}>
-          <path d="M0,118 C240,58 430,168 720,118 C1020,66 1200,168 1440,108 L1440,220 L0,220 Z" fill="#CDE3B0"/>
-          <path d="M0,158 C260,108 520,200 860,150 C1120,110 1280,190 1440,150 L1440,220 L0,220 Z" fill="#A7C58A"/>
-          <path d="M0,194 C300,164 600,210 960,188 C1200,176 1320,206 1440,188 L1440,220 L0,220 Z" fill="#7BA05B"/>
+      <div style="position:relative;overflow:hidden;padding:42px 24px 86px;text-align:center;">
+        <div style="position:absolute;top:36px;right:28px;width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 38% 38%,#e7cd8e,#c9a44e);box-shadow:0 0 22px 3px rgba(201,164,78,.22);"></div>
+        <div style="position:absolute;top:40px;left:24px;width:50px;height:50px;border:2px solid #d2503b;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#e0917f;font-family:'Yuji Syuku',serif;font-size:12px;line-height:1.25;transform:rotate(-6deg);">四十<br>軒</div>
+        <div style="font-family:'Shippori Mincho B1',serif;font-size:13px;color:#9aa0b3;letter-spacing:.3em;margin-top:6px;">広 島 県 ・ 北 広 島 町</div>
+        <h1 style="font-family:'Yuji Syuku',serif;font-weight:400;font-size:clamp(44px,13vw,60px);line-height:1.14;margin:10px 0 0;color:#f3ecda;letter-spacing:.05em;">味めぐり絵巻</h1>
+        <div style="font-family:'Lora',serif;font-style:italic;font-size:12px;letter-spacing:.1em;color:#b6924e;margin-top:9px;">A Picture-Scroll of Flavors · Kitahiroshima</div>
+        <p style="font-family:'Shippori Mincho B1',serif;font-size:14px;line-height:1.85;color:#c2c8d6;margin:16px 0 0;text-wrap:balance;">千代田・豊平・芸北・大朝、四つの里の<br>たべあるき四十軒。下で探せます。</p>
+        <p style="font-family:'Lora',serif;font-style:italic;font-size:11.5px;line-height:1.6;color:#8b93a6;margin:6px 0 0;">Search 40 lunch spots across four districts.</p>
+        <svg viewBox="0 0 480 100" preserveAspectRatio="none" style="position:absolute;left:0;bottom:0;width:100%;height:90px;display:block;">
+          <path d="M0 100 L70 50 L140 76 L215 38 L290 72 L360 42 L440 74 L480 56 L480 100 Z" fill="#1b2433"></path>
+          <path d="M0 100 L90 70 L165 84 L250 58 L325 86 L405 66 L480 82 L480 100 Z" fill="#141b28"></path>
         </svg>
-        {/* ちいさな挿絵 */}
-        <div aria-hidden="true" style={{position:"absolute", bottom:16, left:"7%", fontSize:38}}>🏫</div>
-        <div aria-hidden="true" style={{position:"absolute", bottom:30, right:"13%", fontSize:30}}>🍞</div>
-        <div aria-hidden="true" style={{position:"absolute", bottom:20, right:"30%", fontSize:26}}>🥯</div>
+      </div>
 
-        <div style={{position:"relative", maxWidth:980, margin:"0 auto", padding:"54px 20px 132px",
-          color:C.fg, textAlign:"center"}}>
-          <div style={{fontSize:13.5, fontWeight:700, letterSpacing:3, color:C.mainD}}>ひろしま・きたひろしまちょう</div>
-          <h1 className="pbtitle" style={{fontSize:"clamp(32px,6.6vw,58px)", margin:"10px 0 16px",
-            lineHeight:1.25, color:C.mainD, textShadow:"2px 2px 0 #FFFDF7, 3px 3px 0 rgba(123,160,91,.18)"}}>
-            北広島町のランチ、<br/>ぜんぶここに。
-          </h1>
-          <p style={{fontSize:"clamp(15px,2.2vw,18px)", maxWidth:620, margin:"0 auto 22px",
-            lineHeight:1.9, color:C.fgL}}>
-            広島市内から車で約1時間。山あいの町に、わざわざ行きたくなる一皿が点在しています。
-            廃校のパン屋、土曜だけのベーグル、西日本有数のそば——
-            町外の人にこそ知ってほしい、実在のおすすめランチ・カフェ <strong style={{color:C.accent}}>{STORES.length}軒</strong>を集めました。
-          </p>
-          <div style={{display:"flex", gap:10, flexWrap:"wrap", justifyContent:"center", fontSize:13.5}}>
-            {["✓ 全店ほんとうに実在を確認","🔎 エリア×ジャンルで絞り込み","📍 地図・公式SNSへすぐ"].map((t,i)=>(
-              <span key={i} style={{background:C.bgW, border:`2px solid ${C.border}`, color:C.fgL,
-                padding:"7px 14px", borderRadius:999, fontWeight:700, boxShadow:`0 2px 0 ${C.border}`}}>{t}</span>
-            ))}
-          </div>
+      <div style="margin:0 18px;padding:12px 15px;background:rgba(210,80,59,.08);border:1px solid rgba(210,80,59,.28);border-radius:10px;display:flex;gap:9px;align-items:flex-start;">
+        <span style="color:#e0917f;font-size:13px;flex:0 0 auto;">※</span>
+        <div>
+          <p style="margin:0;font-size:12px;line-height:1.8;color:#b9bdc9;">営業時間・定休日・曜日表示は<b style="color:#d8c89a;font-weight:700;">目安</b>です。各カードの公式・地図・食べログで、おでかけ前に必ずご確認を。</p>
+          <p style="margin:4px 0 0;font-family:'Lora',serif;font-style:italic;font-size:11px;line-height:1.55;color:#8b93a6;">Hours &amp; open days are a guide — please confirm via each shop's links.</p>
         </div>
-      </header>
+      </div>
 
-      {/* ===== 北広島町ってどこ？ ===== */}
-      <section style={{maxWidth:1100, margin:"0 auto", padding:"28px 20px 4px"}}>
-        <div style={{background:C.bgW, border:`2px dashed ${C.warmL}`, borderRadius:22, padding:"18px 22px"}}>
-          <h2 style={{margin:"0 0 8px", fontSize:20, color:C.mainD}}>🗺️ 北広島町って、どこ？</h2>
-          <p style={{margin:"0 0 12px", fontSize:14.5, color:C.fgL, lineHeight:1.7}}>
-            広島県の北西部・山県郡にある町。2005年に旧 <strong>千代田・大朝・豊平・芸北</strong> の4町が合併して生まれました。
-            中国自動車道・千代田ICが玄関口。下のエリアタグはこの4地域に対応しています。
-          </p>
-          <div style={{display:"flex", flexWrap:"wrap", gap:8}}>
-            {AREA_ORDER.map(a=>(
-              <span key={a} style={{fontSize:12.5, color:C.fgL, background:C.bgW,
-                border:`1px solid ${C.border}`, borderRadius:10, padding:"6px 10px"}}>
-                <strong style={{color:C.main}}>{a}</strong>：{AREA_NOTE[a]}
-              </span>
-            ))}
+      <div style="position:sticky;top:0;z-index:50;margin-top:16px;background:rgba(20,26,38,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid rgba(201,164,78,.16);border-bottom:1px solid rgba(201,164,78,.16);padding:11px 16px;">
+        <div style="display:flex;gap:10px;align-items:center;">
+          <div style="flex:1;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.05);border:1px solid rgba(201,164,78,.25);border-radius:10px;padding:0 12px;">
+            <span style="color:#9aa0b3;font-size:14px;">⌕</span>
+            <input id="q" type="text" value="${esc(v.q)}" placeholder="店名・キーワードで検索 / Search" style="flex:1;min-width:0;background:transparent;border:none;outline:none;color:#f1e8d4;font-family:inherit;font-size:13.5px;padding:10px 0;" />
+            ${v.hasQuery?`<button data-act="clearQuery" style="background:none;border:none;color:#9aa0b3;font-size:15px;cursor:pointer;padding:4px;line-height:1;">×</button>`:''}
           </div>
+          <button data-act="toggleFilter" style="flex:0 0 auto;display:flex;align-items:center;gap:6px;background:${v.filterBtnBg};border:1px solid rgba(201,164,78,.35);border-radius:10px;padding:10px 13px;color:#d8c89a;font-family:inherit;font-size:13px;cursor:pointer;">
+            <span>絞り込み</span>
+            ${v.hasActive?`<span style="display:inline-flex;align-items:center;justify-content:center;min-width:17px;height:17px;border-radius:999px;background:#d2503b;color:#fff;font-size:10px;font-variant-numeric:tabular-nums;padding:0 4px;">${v.activeCount}</span>`:''}
+            <span style="font-size:10px;">${v.caret}</span>
+          </button>
         </div>
-      </section>
-
-      {/* ===== フィルタ ===== */}
-      <section style={{position:"sticky", top:0, zIndex:10, background:`${C.bg}f2`,
-        backdropFilter:"blur(6px)", borderBottom:`1px solid ${C.border}`, marginTop:18}}>
-        <div style={{maxWidth:1100, margin:"0 auto", padding:"14px 20px"}}>
-          <div style={{display:"flex", gap:8, flexWrap:"wrap", alignItems:"center", marginBottom:10}}>
-            <input type="search" value={q} onChange={e=>setQ(e.target.value)}
-              placeholder="🔎 店名・キーワードで探す（例：そば、古民家、土曜、自家焙煎）"
-              aria-label="キーワード検索"
-              style={{flex:"1 1 240px", minWidth:0, padding:"10px 14px", fontSize:15,
-                border:`1.5px solid ${C.border}`, borderRadius:12, background:C.bgW, color:C.fg}}/>
-            <span style={{fontSize:14, fontWeight:800, color:C.mainD, whiteSpace:"nowrap"}}>
-              {filtered.length}件 / 全{STORES.length}件
-            </span>
-            {hasFilter ? (
-              <button type="button" onClick={clearAll}
-                style={{cursor:"pointer", border:"none", background:"none", color:C.accent,
-                  fontSize:13, fontWeight:700, textDecoration:"underline"}}>条件をクリア</button>
-            ) : null}
-          </div>
-          <div style={{display:"flex", gap:6, flexWrap:"wrap", alignItems:"center", marginBottom:8}}>
-            <span style={{fontSize:12, fontWeight:800, color:C.fgXL, marginRight:2}}>エリア</span>
-            {allAreas.map(a=>(<Chip key={a} active={areas.has(a)} onClick={()=>toggle(setAreas,a)}>{a}</Chip>))}
-          </div>
-          <div style={{display:"flex", gap:6, flexWrap:"wrap", alignItems:"center"}}>
-            <span style={{fontSize:12, fontWeight:800, color:C.fgXL, marginRight:2}}>ジャンル</span>
-            {allGenres.map(g=>(<Chip key={g} active={genres.has(g)} onClick={()=>toggle(setGenres,g)}>{g}</Chip>))}
-          </div>
+        <div class="emaki-scroll pillrow" style="display:flex;flex-wrap:nowrap;gap:7px;overflow-x:auto;margin-top:10px;">
+          <button data-act="today" style="${v.todayStyle}">今日 <i>Today ${v.todayJP}</i></button>
+          ${dayStrip}
+          <button data-act="lunch" style="${v.lunchBtnStyle}">ランチ営業 <i>Lunch</i></button>
         </div>
-      </section>
+        ${filterPanel}
+        ${resultLine}
+      </div>
 
-      {/* ===== カードグリッド ===== */}
-      <main style={{maxWidth:1100, margin:"0 auto", padding:"24px 20px 8px"}}>
-        {filtered.length ? (
-          <div style={{display:"grid", gap:20, gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))"}}>
-            {filtered.map(s=><StoreCard key={s.id} s={s}/>)}
-          </div>
-        ) : (
-          <div style={{textAlign:"center", padding:"60px 20px", color:C.fgL}}>
-            <div style={{fontSize:40}}>🍙</div>
-            <p style={{fontSize:16, fontWeight:700, margin:"10px 0 4px"}}>条件に合うお店が見つかりませんでした</p>
-            <button type="button" onClick={clearAll}
-              style={{cursor:"pointer", border:`1.5px solid ${C.main}`, background:C.bgW,
-                color:C.main, padding:"8px 16px", borderRadius:10, fontWeight:700, fontSize:14}}>
-              条件をクリアして全部見る
-            </button>
-          </div>
-        )}
-      </main>
+      ${intro}
+      ${empty}
+      <div style="padding:8px 18px 10px;">${list}</div>
 
-      {/* ===== フッター（情報の正確性ノート＋出典） ===== */}
-      <footer style={{background:C.bgDark, color:"#D8D3C8", marginTop:32}}>
-        <div style={{maxWidth:1100, margin:"0 auto", padding:"36px 20px 40px"}}>
-          <h2 style={{color:"#fff", fontSize:18, margin:"0 0 10px"}}>このページについて / 情報の正確性</h2>
-          <p style={{fontSize:13.5, lineHeight:1.8, margin:"0 0 14px", maxWidth:780}}>
-            本ページは北広島町のランチを町外の方へ紹介するために作成した
-            <strong style={{color:"#fff"}}>ファンメイドのまとめ</strong>です。
-            掲載情報は <strong style={{color:"#fff"}}>2026年6月時点</strong> の公開情報（北広島町観光協会・食べログ・各店公式 等）に基づく調査で、
-            掲載店はいずれも実在を確認しています。ただし
-            <strong style={{color:"#fff"}}>営業日・営業時間・定休日・メニュー・価格は変動し、冬期休業の店も多く</strong>あります。
-            おでかけ前に、必ず各カードの公式リンク（Instagram・公式サイト等）で最新情報をご確認ください。
-            掲載の希望・修正の依頼があれば、各店および制作者までお知らせください。
-          </p>
-          <div style={{display:"flex", flexWrap:"wrap", gap:"6px 16px", fontSize:13, marginBottom:18}}>
-            <span style={{color:"#9B978E", fontWeight:700}}>主な出典：</span>
-            {SOURCES.map((s,i)=>(
-              <a key={i} href={s.url} target="_blank" rel="noopener noreferrer"
-                style={{color:C.warmL, textDecoration:"none"}}>{s.label} ↗</a>
-            ))}
-          </div>
-          <div style={{borderTop:"1px solid #3A3D34", paddingTop:14, fontSize:12, color:"#9B978E"}}>
-            🍙 北広島町おすすめランチガイド ／ {GMAPS_KEY
-              ? "※店舗写真は Google マップの公開写真を表示しています（各写真の撮影者の帰属を画像内に表示）。最新の様子は各店の公式リンク先もご覧ください。"
-              : "※店舗写真は各店の食べログ・公式ページの代表画像を引用して表示しています（著作権は各掲載元に帰属／取得できない店はイラスト画像）。掲載取り下げのご希望は制作者までご連絡ください。"}
-          </div>
-        </div>
-      </footer>
+      <div style="padding:32px 22px 56px;text-align:center;border-top:1px solid rgba(201,164,78,.12);margin-top:20px;">
+        <div style="font-family:'Yuji Syuku',serif;font-size:26px;color:#f1e8d4;letter-spacing:.1em;">畢</div>
+        <p style="font-size:12px;line-height:1.95;color:#8b93a6;margin:14px 0 0;text-wrap:pretty;">全40軒・2026年6月時点の公開情報より。<br>出典：北広島町観光協会／食べログ／中国新聞 ほか各サイト。</p>
+        <p style="font-family:'Lora',serif;font-style:italic;font-size:11px;line-height:1.7;color:#727b8f;margin:8px 0 0;text-wrap:pretty;">40 places · compiled June 2026 from public sources. Hours &amp; open days are a guide — confirm before visiting.</p>
+        <a href="#top" style="display:inline-block;margin-top:20px;text-decoration:none;font-size:12px;color:#c9a44e;border:1px solid rgba(201,164,78,.35);border-radius:999px;padding:8px 20px;">▲ はじめにもどる / Back to top</a>
+      </div>
     </div>
-  );
+  </div>`;
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+/* ===== レンダリング＋操作 ===== */
+const app = document.getElementById('app');
+function render(){
+  const ae = document.activeElement;
+  const wasSearch = ae && ae.id === 'q';
+  const sel = wasSearch ? ae.selectionStart : null;
+  app.innerHTML = view();
+  if(wasSearch){ const el=document.getElementById('q'); if(el){ el.focus(); try{ el.setSelectionRange(sel,sel); }catch(e){} } }
+}
+const ACT = {
+  clearQuery: ()=>{ state.q=''; },
+  toggleFilter: ()=>{ state.filterOpen=!state.filterOpen; },
+  area: v=>{ state.area=v; },
+  genre: v=>{ state.genre=v; },
+  rec: ()=>{ state.recOnly=!state.recOnly; },
+  lunch: ()=>{ state.lunchOnly=!state.lunchOnly; },
+  skip: ()=>{ state.skipLimited=!state.skipLimited; },
+  day: v=>{ state.dayFilter = state.dayFilter===v ? null : v; },
+  today: ()=>{ const t=['日','月','火','水','木','金','土'][new Date().getDay()]; state.dayFilter = state.dayFilter===t ? null : t; },
+  sortArea: ()=>{ state.sortMode='area'; },
+  sortPick: ()=>{ state.sortMode='pick'; },
+  reset: ()=>{ Object.assign(state,{q:'',area:'all',genre:'all',recOnly:false,lunchOnly:false,skipLimited:false,dayFilter:null}); },
+};
+app.addEventListener('click', e=>{
+  const b = e.target.closest('[data-act]');
+  if(!b) return;
+  const fn = ACT[b.dataset.act];
+  if(fn){ fn(b.dataset.val); render(); }
+});
+app.addEventListener('input', e=>{
+  if(e.target.id==='q'){ state.q=e.target.value; render(); }
+});
+render();
 </script>
 </body>
 </html>
