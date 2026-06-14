@@ -96,6 +96,55 @@ function IGEmbed({permalink}){
   );
 }
 
+/* ===== Googleマップの店舗写真（要APIキー・クライアント側・遅延取得） =====
+   ▼下の GMAPS_KEY に Google Maps Platform のAPIキーを入れると、全店に「お店の実写」を自動表示します。
+   ・Google Cloud で「Places API (New)」＋「Maps JavaScript API」を有効化／請求先を設定（無料枠あり）
+   ・キーは必ず［アプリの制限：ウェブサイト(HTTPリファラ)］で  https://hero-sud.github.io/*  に限定すること
+   ・各写真にはGoogleの帰属表示（撮影者名）を重ねて表示します
+   ・表示が見えたカードだけ取得（遅延）＆セッション内キャッシュで呼び出しを最小化 */
+const GMAPS_KEY = ""; // ← ここにAPIキーを貼る（空ならジャンル代表画像のまま動作）
+const KITAHIRO_CENTER = { lat: 34.6789, lng: 132.5417 };
+
+let __gmaps = null;
+function loadGoogle(){
+  if (!GMAPS_KEY) return Promise.reject(new Error("no key"));
+  if (__gmaps) return __gmaps;
+  // Google公式の動的ライブラリ・ブートストラップローダ
+  ((g)=>{var h,a,k,p="maps",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{a=m.createElement("script");e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src="https://maps."+c+"apis.com/maps/api/js?"+e;d[q]=f;a.onerror=()=>h=n(Error("Google Maps could not load."));m.head.append(a);}));d[l]?0:d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n));})({ key: GMAPS_KEY, v: "weekly" });
+  __gmaps = google.maps.importLibrary("places");
+  return __gmaps;
+}
+
+const __photoCache = {};
+function useStorePhoto(store){
+  const ref = useRef(null);
+  const inView = useInView(ref, "300px");
+  const [photo, setPhoto] = useState(()=>__photoCache[store.id] || null);
+  useEffect(()=>{
+    if (!GMAPS_KEY || !inView || photo) return;
+    let alive = true;
+    (async ()=>{
+      try{
+        const { Place } = await loadGoogle();
+        const { places } = await Place.searchByText({
+          textQuery: `${store.name} ${store.place}`,
+          fields: ["photos"],
+          maxResultCount: 1, language: "ja", region: "jp",
+          locationBias: { center: KITAHIRO_CENTER, radius: 25000 },
+        });
+        const ph = places && places[0] && places[0].photos && places[0].photos[0];
+        if (ph && alive){
+          const attr = (ph.authorAttributions && ph.authorAttributions[0]) || null;
+          const data = { url: ph.getURI({ maxWidth: 900 }), attrName: attr && attr.displayName };
+          __photoCache[store.id] = data; setPhoto(data);
+        }
+      }catch(e){ /* キー未設定/取得失敗時はジャンル代表画像のまま */ }
+    })();
+    return ()=>{ alive = false; };
+  }, [inView, photo]);
+  return { ref, photo };
+}
+
 /* ===== ファクトチェック済み・実在店舗データ（2026年6月時点の公開情報に基づく調査） =====
    出典: 北広島町観光協会(kitahiro.jp) / 食べログ / 中国新聞 / 各店公式 / Retty / ヒトサラ 等。
    営業時間・定休日は変動・冬期休業も多いため、各カードの公式リンクで要確認。 */
@@ -440,15 +489,22 @@ function LinkBtn({l}){
 
 function StoreCard({s}){
   const [showIG, setShowIG] = useState(false);
-  const cover = s.officialImg || GENRE_IMG[s.genre] || FALLBACK_IMG;
+  const { ref, photo } = useStorePhoto(s);
+  const real = photo && photo.url;
+  const cover = real || s.officialImg || GENRE_IMG[s.genre] || FALLBACK_IMG;
   return (
     <article style={{ background:C.bgW, borderRadius:18, overflow:"hidden",
       border:`1px solid ${C.border}`, boxShadow:"0 6px 24px rgba(40,40,30,.06)",
       display:"flex", flexDirection:"column" }}>
-      <div style={{position:"relative", aspectRatio:"16/10", background:C.bgWarm}}>
-        <img src={cover} alt={`${s.name}（${s.genre}）のイメージ`} loading="lazy" decoding="async"
+      <div ref={ref} style={{position:"relative", aspectRatio:"16/10", background:C.bgWarm}}>
+        <img src={cover} alt={`${s.name}（${s.genre}）の${real?"写真":"イメージ"}`} loading="lazy" decoding="async"
           onError={e=>{ if(e.target.src!==FALLBACK_IMG){e.target.src=FALLBACK_IMG;} }}
           style={{width:"100%", height:"100%", objectFit:"cover", display:"block"}}/>
+        {real && photo.attrName && (
+          <span style={{position:"absolute", bottom:32, right:8, fontSize:10, color:"#fff",
+            background:"rgba(0,0,0,.5)", padding:"2px 6px", borderRadius:6, maxWidth:"62%",
+            overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap"}}>📷 {photo.attrName}</span>
+        )}
         {s.star && (
           <span style={{position:"absolute", top:12, left:12, background:C.accent, color:"#fff",
             fontSize:12, fontWeight:800, padding:"5px 10px", borderRadius:999,
@@ -668,7 +724,9 @@ function App(){
             ))}
           </div>
           <div style={{borderTop:"1px solid #3A3D34", paddingTop:14, fontSize:12, color:"#9B978E"}}>
-            🍙 北広島町おすすめランチガイド ／ ※カバー画像はジャンルのイメージ画像です。各店の実際の写真は公式リンク先（Instagram・公式サイト）でご覧ください。
+            🍙 北広島町おすすめランチガイド ／ {GMAPS_KEY
+              ? "※店舗写真は Google マップの公開写真を表示しています（各写真の撮影者の帰属を画像内に表示）。最新の様子は各店の公式リンク先もご覧ください。"
+              : "※カバー画像はジャンルのイメージ画像です。各店の実際の写真は公式リンク先（Instagram・公式サイト）でご覧ください。"}
           </div>
         </div>
       </footer>
