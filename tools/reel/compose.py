@@ -83,7 +83,7 @@ def make_card(kind):
     im = backdrop(); d = ImageDraw.Draw(im, "RGBA")
     if kind == "prompt":
         d.rounded_rectangle([90, 700, W - 90, 1250], radius=36, fill=(20, 24, 30, 235), outline=(120, 200, 90, 255), width=4)
-        outline(d, (130, 748), "🗨  入力したプロンプト", f(40), (180, 220, 150, 255), sw=3)
+        outline(d, (130, 748), "〔 入力したプロンプト 〕", f(40), (180, 220, 150, 255), sw=3)
         yy = 870
         for ln in ["「広島のプチヘルメースっていう", "廃校のパン屋を、歩いて行ける", "オープンワールドにして」"]:
             outline(d, (130, yy), ln, f(54), (255, 255, 255, 255), sw=5); yy += 96
@@ -100,24 +100,23 @@ def make_card(kind):
     elif kind == "assets":
         outline(d, (W / 2, 540), "AIが自動で用意したもの", f(64), (255, 255, 255, 255), sw=9, anchor="mm")
         yy = 700
-        for c in ["🧍 キャラ（無料CC0素材）", "🏫 廃校・パン屋・教室カフェ", "🌾 田んぼ・山・川・electric poles",
-                  "🌧 天気（晴れ・霧・雨）", "🧓 歩く村人・🐕 犬の散歩"]:
-            c = c.replace("electric poles", "電柱")
+        for c in ["・ キャラ（無料CC0素材）", "・ 廃校・パン屋・教室カフェ", "・ 田んぼ・山・川・電柱",
+                  "・ 天気（晴れ・霧・雨）", "・ 歩く村人・犬の散歩"]:
             d.rounded_rectangle([110, yy, W - 110, yy + 116], radius=26, fill=(16, 20, 26, 220))
             outline(d, (150, yy + 58), c, f(46), (235, 240, 245, 255), sw=4, anchor="lm"); yy += 140
     elif kind == "news":
         im = backdrop(tint=(34, 8, 8), dark=0.58); d = ImageDraw.Draw(im, "RGBA")
         d.rounded_rectangle([90, 680, W - 90, 1280], radius=30, fill=(14, 14, 16, 238), outline=(220, 70, 60, 255), width=5)
-        outline(d, (130, 728), "⚠ 速報 ／ 実話", f(44), (255, 120, 110, 255), sw=4)
+        outline(d, (130, 728), "【 速報 ／ 実話 】", f(44), (255, 120, 110, 255), sw=4)
         for i, ln in enumerate(["米政府の指令で", "「Fable 5」全停止。", "公開から、わずか3日。"]):
             outline(d, (130, 850 + i * 112), ln, f(62), (255, 255, 255, 255), sw=6)
         outline(d, (130, 1210), "理由は —「強すぎる」から。", f(46), (255, 210, 120, 255), sw=4)
     elif kind == "link":
-        outline(d, (W / 2, 700), "👇 あなたも歩ける", f(70), (255, 255, 255, 255), sw=9, anchor="mm")
+        outline(d, (W / 2, 700), "▼ あなたも歩ける", f(70), (255, 255, 255, 255), sw=9, anchor="mm")
         d.rounded_rectangle([110, 840, W - 110, 1090], radius=34, fill=(16, 20, 26, 232), outline=(90, 170, 230, 255), width=4)
         outline(d, (W / 2, 922), "リンクは プロフィールから", f(54), (160, 210, 245, 255), sw=5, anchor="mm")
         outline(d, (W / 2, 1014), "「プチヘルメース」追体験ゲーム", f(42), (235, 240, 245, 255), sw=4, anchor="mm")
-        outline(d, (W / 2, 1210), "🔖 保存して、あとで散歩。", f(50), (255, 235, 150, 255), sw=6, anchor="mm")
+        outline(d, (W / 2, 1210), "★ 保存して、あとで散歩。", f(50), (255, 235, 150, 255), sw=6, anchor="mm")
     im.convert("RGB").save(os.path.join(CARDS, f"{kind}.png"), quality=95)
 
 def make_end():
