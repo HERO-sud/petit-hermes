@@ -396,6 +396,69 @@ app.addEventListener('input', e=>{
   if(e.target.id==='q'){ state.q=e.target.value; render(); }
 });
 render();
+
+/* ===== ?demo : 実UIを自動操作しながらVOICEVOX音声＋テロップを再生（画面収録で完成動画に） ===== */
+if (location.search.indexOf('demo') >= 0) initDemo();
+function initDemo(){
+  const WHO={metan:{n:'四国めたん',c:'#d2503b'},zunda:{n:'ずんだもん',c:'#c9a44e'},hau:{n:'雨晴はう',c:'#5b8aa0'}};
+  const DEMO=[
+    {t:0.2, who:'metan', telop:'「北広島町 ランチ」で検索', op:{scroll:'top'}},
+    {t:3.94, who:'zunda', telop:'これ、ぜんぶAIが作った！？', op:{scroll:'down1'}},
+    {t:8.82, who:'metan', telop:'AIに“見つけてもらう”時代／40軒調査', op:{scroll:'down2'}},
+    {t:15.67, who:'metan', telop:'「パン」で、しぼる', op:{filterOpen:true, genre:'パン', focus:'shop-petit-hermes'}},
+    {t:18.01, who:'zunda', telop:'プチヘルメース（廃校のパン屋）', op:{focus:'shop-petit-hermes'}},
+    {t:21.45, who:'zunda', telop:'「豊平」で、さがす', op:{genre:'all', area:'豊平', focus:'shop-liand-bagel'}},
+    {t:25.35, who:'hau', telop:'Liand bagel（土曜だけ）', op:{focus:'shop-liand-bagel'}},
+    {t:28.32, who:'metan', telop:'「大朝」で、さがす', op:{area:'大朝', focus:'shop-yuzuan'}},
+    {t:30.54, who:'zunda', telop:'囲炉裏の店 ゆず庵', op:{focus:'shop-yuzuan'}},
+    {t:33.33, who:'metan', telop:'エリア×ジャンル×曜日で検索', op:{area:'all', genre:'all', filterOpen:false, scroll:'down1'}},
+    {t:37.09, who:'zunda', telop:'調べる・作る・直す、ぜんぶAI', op:{scroll:'top'}},
+    {t:41.57, who:'metan', telop:'Claude Design → Claude Code', op:{scroll:'top'}},
+    {t:45.42, who:'hau', telop:'町外の人も、迷わない', op:{filterOpen:false, scroll:'down1'}},
+    {t:49.47, who:'metan', telop:'保存して、週末いこう', op:{scroll:'footer'}},
+    {t:52.71, who:'zunda', telop:'“行きたい店”はコメントで', op:{scroll:'footer'}},
+  ];
+  const tel=document.createElement('div');
+  tel.style.cssText='position:fixed;left:0;right:0;bottom:7%;z-index:9999;pointer-events:none;text-align:center;padding:0 18px;opacity:0;transition:opacity .25s;';
+  tel.innerHTML='<div id="dwho" style="display:inline-block;font-weight:700;color:#fff;font-size:14px;padding:4px 14px;border-radius:999px;margin-bottom:8px;"></div><div id="dtel" style="font-family:\'Shippori Mincho B1\',serif;font-weight:700;font-size:clamp(24px,6vw,34px);line-height:1.45;color:#f3ecda;text-shadow:0 2px 8px rgba(0,0,0,.95),0 0 18px rgba(0,0,0,.7);"></div>';
+  document.body.appendChild(tel);
+  const dwho=tel.querySelector('#dwho'), dtel=tel.querySelector('#dtel');
+  const audio=new Audio('assets/narration.mp3'); audio.preload='auto';
+  const bs='cursor:pointer;border:none;font-weight:800;border-radius:999px;padding:13px 22px;font-size:16px;';
+  const ov=document.createElement('div');
+  ov.style.cssText='position:fixed;inset:0;z-index:10000;background:rgba(16,21,32,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:28px;color:#f3ecda;font-family:sans-serif;';
+  ov.innerHTML='<div style="font-size:22px;font-weight:800;">🎬 録画モード</div><div style="font-size:13px;line-height:1.85;max-width:320px;color:#c2c8d6;">サイトを台本どおり自動操作しながら、VOICEVOX音声とテロップを同期再生します。<br><b>PC(Chrome)</b>＝「⏺録画」→このタブを選ぶとwebmを書き出し。<br><b>スマホ</b>＝「▶再生」して画面収録してください。</div><div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;"><button id="drec" style="'+bs+'background:#d2503b;color:#fff;">⏺ 録画（PC）</button><button id="dplay" style="'+bs+'background:#c9a44e;color:#1a2230;">▶ 再生</button></div>';
+  document.body.appendChild(ov);
+  let lastFocus=null, lastBeat=-1, raf=0;
+  function clearFocus(){ if(lastFocus){ lastFocus.style.outline=''; lastFocus.style.outlineOffset=''; lastFocus=null; } }
+  function applyBeat(i){
+    const b=DEMO[i], op=b.op||{}; let changed=false;
+    ['q','area','genre','filterOpen'].forEach(k=>{ if(k in op && state[k]!==op[k]){ state[k]=op[k]; changed=true; } });
+    if(changed) render();
+    dwho.textContent=WHO[b.who].n; dwho.style.background=WHO[b.who].c; dtel.textContent=b.telop; tel.style.opacity='1';
+    requestAnimationFrame(()=>{
+      clearFocus();
+      if(op.focus){ const el=document.getElementById(op.focus); if(el){ el.scrollIntoView({behavior:'smooth',block:'center'}); el.style.outline='3px solid #c9a44e'; el.style.outlineOffset='3px'; lastFocus=el; } }
+      else if(op.scroll==='top'){ window.scrollTo({top:0,behavior:'smooth'}); }
+      else if(op.scroll==='footer'){ window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'}); }
+      else if(op.scroll==='down1'){ const e=document.querySelector('.shoplist'); if(e) window.scrollTo({top:e.offsetTop-150,behavior:'smooth'}); }
+      else if(op.scroll==='down2'){ const e=document.querySelector('.shoplist'); if(e) window.scrollTo({top:e.offsetTop+520,behavior:'smooth'}); }
+    });
+  }
+  function loop(){ const t=audio.currentTime; let bi=0; for(let i=0;i<DEMO.length;i++){ if(t>=DEMO[i].t) bi=i; } if(bi!==lastBeat){ lastBeat=bi; applyBeat(bi); } if(!audio.ended) raf=requestAnimationFrame(loop); }
+  function begin(){ ov.style.display='none'; state.q='';state.area='all';state.genre='all';state.filterOpen=false; render(); window.scrollTo(0,0); lastBeat=-1; audio.currentTime=0; audio.play(); raf=requestAnimationFrame(loop); audio.onended=()=>{ tel.style.opacity='0'; clearFocus(); }; }
+  ov.querySelector('#dplay').onclick=begin;
+  ov.querySelector('#drec').onclick=async()=>{
+    if(!navigator.mediaDevices||!navigator.mediaDevices.getDisplayMedia){ alert('録画はPCのChrome等で。スマホは「▶再生」して画面収録してください。'); return; }
+    try{
+      const s=await navigator.mediaDevices.getDisplayMedia({video:{frameRate:30},audio:true});
+      const rec=new MediaRecorder(s,{mimeType:'video/webm'}); const ch=[];
+      rec.ondataavailable=e=>{ if(e.data&&e.data.size) ch.push(e.data); };
+      rec.onstop=()=>{ s.getTracks().forEach(t=>t.stop()); const bl=new Blob(ch,{type:'video/webm'}); const a=document.createElement('a'); a.href=URL.createObjectURL(bl); a.download='kitahiroshima-emaki.webm'; document.body.appendChild(a); a.click(); a.remove(); };
+      rec.start(); begin(); audio.addEventListener('ended',()=>setTimeout(()=>rec.stop(),500),{once:true});
+    }catch(e){ alert('録画を開始できませんでした。スマホは「▶再生」して画面収録してください。'); }
+  };
+}
 </script>
 </body>
 </html>
