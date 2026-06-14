@@ -1,0 +1,12 @@
+# 生成物・大容量バイナリ（再生成可能）
+frames/
+composed/
+overlays/
+cards/
+wav/
+out/
+bin/
+runtime/
+end.png
+timing.json
+*.log
