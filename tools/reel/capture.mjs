@@ -6,8 +6,8 @@ import { startServer, launch, sleep, BASE } from '../e2e/lib.mjs';
 const DIR = new URL('./', import.meta.url).pathname;
 const TL = JSON.parse(readFileSync(DIR + 'timeline.json', 'utf8'));
 const timing = existsSync(DIR + 'timing.json') ? JSON.parse(readFileSync(DIR + 'timing.json', 'utf8')) : null;
-const FPS = 30;
-const RECYCLE_EVERY = 3;   // N beat ごとにブラウザを作り直してメモリを解放
+const FPS = 30;            // 出力と一致＝補間ゼロで最も滑らか。時間優先より品質優先
+const RECYCLE_EVERY = 5;   // N beat ごとにブラウザを作り直してメモリを解放
 const ROOT = DIR + 'frames/';
 mkdirSync(ROOT, { recursive: true });
 
@@ -31,7 +31,7 @@ const durOf = (id) => {
 const lerp = (a, b, t) => a + (b - a) * t;
 const smooth = (t) => t * t * (3 - 2 * t);
 const beatN = (id) => Math.max(2, Math.round(durOf(id) * FPS));
-const done = (id) => { const d = `${ROOT}b${String(id).padStart(2, '0')}`; return existsSync(d) && readdirSync(d).filter((f) => f.endsWith('.png')).length >= beatN(id); };
+const done = (id) => { const d = `${ROOT}b${String(id).padStart(2, '0')}`; return existsSync(d) && readdirSync(d).filter((f) => f.endsWith('.jpg')).length >= beatN(id); };
 
 const server = await startServer();
 
@@ -65,7 +65,7 @@ async function captureBeat(page, id) {
     await page.evaluate(([x, z, y]) => { window.__game.teleport(x, z); window.__game.setYaw(y); },
       [lerp(path.x0, path.x1, t), lerp(path.z0, path.z1, t), lerp(path.y0, path.y1, t)]);
     await sleep(40);
-    await page.screenshot({ path: `${d}/f${String(k).padStart(4, '0')}.png` });
+    await page.screenshot({ path: `${d}/f${String(k).padStart(4, '0')}.jpg`, type: 'jpeg', quality: 95 });
   }
 }
 

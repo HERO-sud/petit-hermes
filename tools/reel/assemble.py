@@ -7,7 +7,8 @@ import json, os, subprocess, tempfile
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 FF = os.path.join(ROOT, "bin", "ffmpeg")
-FPS = 30
+FPS = 30        # 最終出力fps（撮影fpsと一致）
+CAP_FPS = 30    # 撮影fps（frame連番の入力レート）
 with open(os.path.join(ROOT, "timeline.json"), encoding="utf-8") as f:
     TL = json.load(f)
 with open(os.path.join(ROOT, "timing.json"), encoding="utf-8") as f:
@@ -31,10 +32,11 @@ for i, b in enumerate(beats):
     out = os.path.join(tmp, f"c{i:02d}.mp4")
     kind, _, name = b["bg"].partition(":")
     if kind == "frame":
-        seq = os.path.join(ROOT, "frames", f"b{b['id']:02d}", "f%04d.png")
-        run([FF, "-y", "-framerate", str(FPS), "-i", seq, "-loop", "1", "-i", ov,
+        seq = os.path.join(ROOT, "frames", f"b{b['id']:02d}", "f%04d.jpg")
+        # 1080pネイティブ連番（30fps）にテロップを重ねる
+        run([FF, "-y", "-framerate", str(CAP_FPS), "-i", seq, "-loop", "1", "-i", ov,
              "-filter_complex", "[0:v][1:v]overlay=0:0:shortest=1,format=yuv420p",
-             "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-r", str(FPS), out])
+             "-c:v", "libx264", "-preset", "veryfast", "-crf", "19", "-r", str(FPS), out])
     else:  # card
         card = os.path.join(ROOT, "cards", f"{name}.png")
         z = f"1.0+0.05*on/{N}"
