@@ -13,26 +13,46 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.26.5/babel.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
   html,body,#root{margin:0;padding:0;min-height:100vh}
-  body{-webkit-font-smoothing:antialiased;font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",system-ui,sans-serif}
+  body{
+    -webkit-font-smoothing:antialiased;
+    font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Noto Sans JP",system-ui,sans-serif;
+    color:#4A4036;
+    background-color:#FBF4E6;
+    background-image:radial-gradient(#F0E4CC 1.3px, transparent 1.3px),radial-gradient(#F0E4CC 1.3px, transparent 1.3px);
+    background-size:30px 30px; background-position:0 0,15px 15px;
+  }
+  h1,h2,h3,.pbtitle{font-family:"Yomogi","Zen Maru Gothic","Hiragino Maru Gothic ProN",cursive;letter-spacing:.02em}
   *{box-sizing:border-box}
   @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
-  ::selection{background:#C4A06E;color:#1B1E16}
+  ::selection{background:#F2C879;color:#4A4036}
+  .pbcard{transition:transform .2s cubic-bezier(.2,.8,.3,1), box-shadow .2s}
+  .pbcard:hover{transform:translateY(-5px) rotate(-.6deg); box-shadow:0 16px 30px rgba(120,100,70,.16)!important}
+  .pbcard:nth-child(even):hover{transform:translateY(-5px) rotate(.6deg)}
+  .pbchip{transition:transform .12s ease, background .15s, color .15s, border-color .15s}
+  .pbchip:hover{transform:translateY(-2px)}
+  @keyframes pbfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+  .pbsun{animation:pbfloat 6s ease-in-out infinite}
+  .pbcloud{animation:pbfloat 9s ease-in-out infinite}
 </style>
+
 </head>
 <body>
 <div id="root"></div>
 <script type="text/babel">
 const { useState, useMemo, useCallback, useEffect, useRef } = React;
 
-/* ===== 配色（プチヘルメース・ブランド準拠：里山の緑×素朴な土の色） ===== */
+/* ===== 配色（絵本トーン：やわらかい里山の緑×はちみつ色×クリーム） ===== */
 const C = {
-  fg:"#2A2A25", fgL:"#6B6860", fgXL:"#9B978E",
-  bg:"#FAF8F4", bgW:"#FFFFFF", bgWarm:"#F4EFE7", bgDark:"#1B1E16",
-  main:"#4E5D3E", mainD:"#3A4A2F", mainL:"#6B7D5A",
-  warm:"#A67C52", warmL:"#C4A06E", warmXL:"#E8D5B7",
-  border:"#E3DDD2", accent:"#8B4513",
+  fg:"#4A4036", fgL:"#7A6E5E", fgXL:"#A89A85",
+  bg:"#FBF4E6", bgW:"#FFFDF7", bgWarm:"#FBEFD8", bgDark:"#5B4A3A",
+  main:"#7BA05B", mainD:"#5E8443", mainL:"#A7C58A",
+  warm:"#E0A05A", warmL:"#F2C879", warmXL:"#FBE3B8",
+  border:"#EAD9B8", accent:"#E08A5A",
 };
 
 /* 画像が404でも崩れないよう、確実に存在する食の画像へフォールバック */
@@ -52,6 +72,16 @@ const GENRE_IMG = {
   "イタリアン": img("1565299624946-b28f40a0ae38"),
   "その他":    img("1574071318508-1cdbab80d002"),
 };
+
+/* ===== 多角的な写真取得（鍵不要・クライアント側） =====
+   各店の食べログ/公式/観光協会ページの代表画像(og:image)を、無料のリンクプレビューAPI
+   (microlink)経由で取得して表示。取得失敗・未掲載の店はジャンルのイラストへ自動フォールバック。 */
+const unfurl = url => `https://api.microlink.io/?url=${encodeURIComponent(url)}&embed=image.url`;
+function photoSourceUrl(s){
+  const l = s.links || [];
+  const pick = l.find(x=>/tabelog\.com/.test(x.url)) || l.find(x=>x.kind==="site") || l.find(x=>x.kind==="src") || l[0];
+  return pick && pick.url;
+}
 
 /* ===== Instagram公式埋め込み（鍵不要・正規・遅延読み込み） =====
    他者写真の直リンク/転載はせず、公式の埋め込み機能で“本物・最新”の写真を表示。
@@ -465,11 +495,11 @@ function mapsUrl(s){
 
 function Chip({active, onClick, children}){
   return (
-    <button type="button" onClick={onClick} aria-pressed={active}
-      style={{ cursor:"pointer", border:`1.5px solid ${active?C.main:C.border}`,
+    <button type="button" onClick={onClick} aria-pressed={active} className="pbchip"
+      style={{ cursor:"pointer", border:`2px solid ${active?C.mainD:C.border}`,
         background: active?C.main:C.bgW, color: active?"#fff":C.fg,
-        padding:"7px 14px", borderRadius:999, fontSize:14, fontWeight:600,
-        transition:"all .15s", whiteSpace:"nowrap" }}>
+        padding:"7px 15px", borderRadius:999, fontSize:14, fontWeight:700,
+        boxShadow: active?`0 3px 0 ${C.mainD}`:`0 2px 0 ${C.border}`, whiteSpace:"nowrap" }}>
       {children}
     </button>
   );
@@ -490,17 +520,22 @@ function LinkBtn({l}){
 function StoreCard({s}){
   const [showIG, setShowIG] = useState(false);
   const { ref, photo } = useStorePhoto(s);
-  const real = photo && photo.url;
-  const cover = real || s.officialImg || GENRE_IMG[s.genre] || FALLBACK_IMG;
+  const gphoto = photo && photo.url;
+  const srcUrl = photoSourceUrl(s);
+  const genreImg = GENRE_IMG[s.genre] || FALLBACK_IMG;
+  const cover = gphoto || s.officialImg || (srcUrl ? unfurl(srcUrl) : genreImg);
+  const realish = !!(gphoto || s.officialImg || srcUrl);
   return (
-    <article style={{ background:C.bgW, borderRadius:18, overflow:"hidden",
-      border:`1px solid ${C.border}`, boxShadow:"0 6px 24px rgba(40,40,30,.06)",
+    <article className="pbcard" style={{ background:C.bgW, borderRadius:24, overflow:"hidden",
+      border:`2px solid ${C.border}`, boxShadow:"0 8px 22px rgba(120,100,70,.10)",
       display:"flex", flexDirection:"column" }}>
       <div ref={ref} style={{position:"relative", aspectRatio:"16/10", background:C.bgWarm}}>
-        <img src={cover} alt={`${s.name}（${s.genre}）の${real?"写真":"イメージ"}`} loading="lazy" decoding="async"
-          onError={e=>{ if(e.target.src!==FALLBACK_IMG){e.target.src=FALLBACK_IMG;} }}
+        <img src={cover} alt={`${s.name}（${s.genre}）の${realish?"写真":"イメージ"}`} loading="lazy" decoding="async"
+          onError={e=>{ const t=e.target;
+            if(t.src!==genreImg && t.src!==FALLBACK_IMG){ t.src=genreImg; }
+            else if(t.src!==FALLBACK_IMG){ t.src=FALLBACK_IMG; } }}
           style={{width:"100%", height:"100%", objectFit:"cover", display:"block"}}/>
-        {real && photo.attrName && (
+        {gphoto && photo.attrName && (
           <span style={{position:"absolute", bottom:32, right:8, fontSize:10, color:"#fff",
             background:"rgba(0,0,0,.5)", padding:"2px 6px", borderRadius:6, maxWidth:"62%",
             overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap"}}>📷 {photo.attrName}</span>
@@ -515,7 +550,7 @@ function StoreCard({s}){
         <span style={{position:"absolute", bottom:0, left:0, right:0,
           background:"linear-gradient(transparent,rgba(0,0,0,.55))", color:"#fff",
           padding:"24px 14px 10px", fontSize:13, fontWeight:700}}>
-          <span style={{background:C.mainL, padding:"2px 8px", borderRadius:6}}>{s.genre}</span>
+          <span style={{background:C.mainD, padding:"3px 10px", borderRadius:999}}>{s.genre}</span>
         </span>
       </div>
 
@@ -611,34 +646,54 @@ function App(){
   return (
     <div style={{background:C.bg, color:C.fg, minHeight:"100vh"}}>
 
-      {/* ===== Hero ===== */}
-      <header style={{position:"relative", color:"#fff", overflow:"hidden"}}>
-        <img src={img("1517433670267-08bbd4be890f")} alt="" aria-hidden="true"
-          onError={e=>{ if(e.target.src!==FALLBACK_IMG){e.target.src=FALLBACK_IMG;} }}
-          style={{position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover"}}/>
-        <div style={{position:"absolute", inset:0, background:"linear-gradient(180deg,rgba(27,30,22,.55),rgba(27,30,22,.82))"}}/>
-        <div style={{position:"relative", maxWidth:1100, margin:"0 auto", padding:"72px 20px 64px"}}>
-          <div style={{fontSize:14, fontWeight:700, letterSpacing:4, opacity:.9}}>HIROSHIMA · KITAHIROSHIMA</div>
-          <h1 style={{fontSize:"clamp(30px,6vw,56px)", margin:"10px 0 14px", lineHeight:1.15, fontWeight:900}}>
+      {/* ===== Hero（絵本のような里山の風景） ===== */}
+      <header style={{position:"relative", overflow:"hidden",
+        background:"linear-gradient(180deg,#FBE3B8 0%,#FBF0D6 40%,#EAF3E0 100%)"}}>
+        {/* お日さま */}
+        <div className="pbsun" aria-hidden="true" style={{position:"absolute", top:34, right:"9%", width:78, height:78,
+          borderRadius:"50%", background:"radial-gradient(circle at 50% 45%,#FFDD7A,#F2B23C)",
+          boxShadow:"0 0 0 12px rgba(255,216,107,.28)"}}/>
+        {/* 雲 */}
+        <div className="pbcloud" aria-hidden="true" style={{position:"absolute", top:54, left:"9%", fontSize:44}}>☁️</div>
+        <div className="pbcloud" aria-hidden="true" style={{position:"absolute", top:118, right:"30%", fontSize:30, animationDelay:"2s"}}>☁️</div>
+        {/* なだらかな丘 */}
+        <svg viewBox="0 0 1440 220" preserveAspectRatio="none" aria-hidden="true"
+          style={{position:"absolute", bottom:-1, left:0, width:"100%", height:170}}>
+          <path d="M0,118 C240,58 430,168 720,118 C1020,66 1200,168 1440,108 L1440,220 L0,220 Z" fill="#CDE3B0"/>
+          <path d="M0,158 C260,108 520,200 860,150 C1120,110 1280,190 1440,150 L1440,220 L0,220 Z" fill="#A7C58A"/>
+          <path d="M0,194 C300,164 600,210 960,188 C1200,176 1320,206 1440,188 L1440,220 L0,220 Z" fill="#7BA05B"/>
+        </svg>
+        {/* ちいさな挿絵 */}
+        <div aria-hidden="true" style={{position:"absolute", bottom:16, left:"7%", fontSize:38}}>🏫</div>
+        <div aria-hidden="true" style={{position:"absolute", bottom:30, right:"13%", fontSize:30}}>🍞</div>
+        <div aria-hidden="true" style={{position:"absolute", bottom:20, right:"30%", fontSize:26}}>🥯</div>
+
+        <div style={{position:"relative", maxWidth:980, margin:"0 auto", padding:"54px 20px 132px",
+          color:C.fg, textAlign:"center"}}>
+          <div style={{fontSize:13.5, fontWeight:700, letterSpacing:3, color:C.mainD}}>ひろしま・きたひろしまちょう</div>
+          <h1 className="pbtitle" style={{fontSize:"clamp(32px,6.6vw,58px)", margin:"10px 0 16px",
+            lineHeight:1.25, color:C.mainD, textShadow:"2px 2px 0 #FFFDF7, 3px 3px 0 rgba(123,160,91,.18)"}}>
             北広島町のランチ、<br/>ぜんぶここに。
           </h1>
-          <p style={{fontSize:"clamp(15px,2.2vw,19px)", maxWidth:660, lineHeight:1.7, opacity:.95, margin:"0 0 22px"}}>
+          <p style={{fontSize:"clamp(15px,2.2vw,18px)", maxWidth:620, margin:"0 auto 22px",
+            lineHeight:1.9, color:C.fgL}}>
             広島市内から車で約1時間。山あいの町に、わざわざ行きたくなる一皿が点在しています。
-            廃校のパン屋、土曜だけのベーグル、西日本有数のそば、高原のカフェ——
-            <strong>町外の人にこそ知ってほしい</strong>、実在のおすすめランチ・カフェ <strong>{STORES.length}軒</strong>を集めました。
+            廃校のパン屋、土曜だけのベーグル、西日本有数のそば——
+            町外の人にこそ知ってほしい、実在のおすすめランチ・カフェ <strong style={{color:C.accent}}>{STORES.length}軒</strong>を集めました。
           </p>
-          <div style={{display:"flex", gap:18, flexWrap:"wrap", fontSize:14}}>
-            <span>✓ 全店じっさいに実在を確認（出典リンク付き）</span>
-            <span>🔎 エリア×ジャンルで絞り込み</span>
-            <span>📍 各店の地図・公式SNSへすぐ</span>
+          <div style={{display:"flex", gap:10, flexWrap:"wrap", justifyContent:"center", fontSize:13.5}}>
+            {["✓ 全店ほんとうに実在を確認","🔎 エリア×ジャンルで絞り込み","📍 地図・公式SNSへすぐ"].map((t,i)=>(
+              <span key={i} style={{background:C.bgW, border:`2px solid ${C.border}`, color:C.fgL,
+                padding:"7px 14px", borderRadius:999, fontWeight:700, boxShadow:`0 2px 0 ${C.border}`}}>{t}</span>
+            ))}
           </div>
         </div>
       </header>
 
       {/* ===== 北広島町ってどこ？ ===== */}
       <section style={{maxWidth:1100, margin:"0 auto", padding:"28px 20px 4px"}}>
-        <div style={{background:C.bgWarm, border:`1px solid ${C.border}`, borderRadius:16, padding:"18px 20px"}}>
-          <h2 style={{margin:"0 0 8px", fontSize:18, color:C.mainD}}>北広島町って、どこ？</h2>
+        <div style={{background:C.bgW, border:`2px dashed ${C.warmL}`, borderRadius:22, padding:"18px 22px"}}>
+          <h2 style={{margin:"0 0 8px", fontSize:20, color:C.mainD}}>🗺️ 北広島町って、どこ？</h2>
           <p style={{margin:"0 0 12px", fontSize:14.5, color:C.fgL, lineHeight:1.7}}>
             広島県の北西部・山県郡にある町。2005年に旧 <strong>千代田・大朝・豊平・芸北</strong> の4町が合併して生まれました。
             中国自動車道・千代田ICが玄関口。下のエリアタグはこの4地域に対応しています。
@@ -726,7 +781,7 @@ function App(){
           <div style={{borderTop:"1px solid #3A3D34", paddingTop:14, fontSize:12, color:"#9B978E"}}>
             🍙 北広島町おすすめランチガイド ／ {GMAPS_KEY
               ? "※店舗写真は Google マップの公開写真を表示しています（各写真の撮影者の帰属を画像内に表示）。最新の様子は各店の公式リンク先もご覧ください。"
-              : "※カバー画像はジャンルのイメージ画像です。各店の実際の写真は公式リンク先（Instagram・公式サイト）でご覧ください。"}
+              : "※店舗写真は各店の食べログ・公式ページの代表画像を引用して表示しています（著作権は各掲載元に帰属／取得できない店はイラスト画像）。掲載取り下げのご希望は制作者までご連絡ください。"}
           </div>
         </div>
       </footer>
