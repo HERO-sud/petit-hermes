@@ -40,22 +40,19 @@ for i, b in enumerate(beats):
         fc = ("[0:v]scale=1080:1920:flags=lanczos,setsar=1[v];[v][1:v]overlay=0:0:shortest=1,format=yuv420p")
         run([FF, "-y", "-framerate", f"{in_fps:.4f}", "-i", seq, "-loop", "1", "-i", ov,
              "-filter_complex", fc, "-c:v", "libx264", "-preset", "medium", "-crf", "19", "-r", str(FPS), "-t", f"{dur:.3f}", out])
-    else:  # card
+    else:  # card（静止＋テロップ。zoompanは暴走するため使わない）
         card = os.path.join(ROOT, "cards", f"{name}.png")
-        z = f"1.0+0.05*on/{N}"
-        fc = (f"[0:v]scale=2160:3840:flags=lanczos,"
-              f"zoompan=z='{z}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d={N}:s=1080x1920:fps={FPS}[bg];"
-              f"[bg][1:v]overlay=0:0:shortest=1,format=yuv420p")
-        run([FF, "-y", "-loop", "1", "-t", f"{dur:.3f}", "-i", card, "-loop", "1", "-i", ov,
-             "-filter_complex", fc, "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-r", str(FPS), out])
+        fc = "[0:v]scale=1080:1920:flags=lanczos,setsar=1[v];[v][1:v]overlay=0:0:shortest=1,format=yuv420p"
+        run([FF, "-y", "-loop", "1", "-t", f"{dur:.3f}", "-i", card, "-loop", "1", "-t", f"{dur:.3f}", "-i", ov,
+             "-filter_complex", fc, "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-r", str(FPS), "-t", f"{dur:.3f}", out])
     clips.append(out)
     print(f"beat {b['id']:02d} [{kind}] {dur:.2f}s")
 
-# エンドカード（Ken Burns、テロップ無し）
-endc = os.path.join(tmp, "cend.mp4"); Ne = round(end_dur * FPS)
+# エンドカード（静止・テロップ無し）
+endc = os.path.join(tmp, "cend.mp4")
 run([FF, "-y", "-loop", "1", "-t", f"{end_dur:.3f}", "-i", os.path.join(ROOT, "end.png"),
-     "-vf", f"scale=2160:3840,zoompan=z='1.0+0.04*on/{Ne}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d={Ne}:s=1080x1920:fps={FPS},format=yuv420p",
-     "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-r", str(FPS), endc])
+     "-vf", "scale=1080:1920:flags=lanczos,setsar=1,format=yuv420p",
+     "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-r", str(FPS), "-t", f"{end_dur:.3f}", endc])
 clips.append(endc)
 
 # 連結
