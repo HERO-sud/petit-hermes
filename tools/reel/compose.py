@@ -67,7 +67,7 @@ def make_overlay(beat):
 
 # ---------- カード ----------
 def backdrop(tint=(8, 10, 14), blur=18, dark=0.5):
-    src = os.path.join(FRAMES, "b01", "f0000.png")
+    src = os.path.join(FRAMES, "b01", "f0000.jpg")
     if os.path.exists(src):
         im = Image.open(src).convert("RGB")
         s = max(W / im.width, H / im.height)
