@@ -7,7 +7,7 @@ import { startServer, launch, sleep, BASE } from '../e2e/lib.mjs';
 const DIR = new URL('./', import.meta.url).pathname;
 const TL = JSON.parse(readFileSync(DIR + 'timeline.json', 'utf8'));
 const timing = existsSync(DIR + 'timing.json') ? JSON.parse(readFileSync(DIR + 'timing.json', 'utf8')) : null;
-const CAP_FPS = 8;   // キーフレーム密度（低解像度で実描画→後段minterpolateで30fps化）
+const CAP_FPS = 30;  // 全フレーム実描画（補間なし＝カクつき原理ゼロ）。540pで軽量化
 const ROOT = DIR + 'frames/';
 mkdirSync(ROOT, { recursive: true });
 

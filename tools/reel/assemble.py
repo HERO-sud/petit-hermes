@@ -36,12 +36,10 @@ for i, b in enumerate(beats):
         seq = os.path.join(bd, "f%04d.jpg")
         # 実フレーム数から入力fpsを算出（密度がbeatごとに違っても尺=dur・音と同期）
         nframes = len(glob.glob(os.path.join(bd, "*.jpg"))) or 1
-        in_fps = max(1.0, nframes / dur)
-        # キーフレームを minterpolate で30fpsへ補間→540を1080へ拡大→テロップ重ね（滑らか＆くっきり文字）
-        fc = ("[0:v]minterpolate=fps=30:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1,"
-              "scale=1080:1920:flags=lanczos,setsar=1[v];[v][1:v]overlay=0:0:shortest=1,format=yuv420p")
+        in_fps = max(1.0, nframes / dur)   # 全フレーム実描画なら≒30。補間せずそのまま連結（カクつき原理ゼロ）
+        fc = ("[0:v]scale=1080:1920:flags=lanczos,setsar=1[v];[v][1:v]overlay=0:0:shortest=1,format=yuv420p")
         run([FF, "-y", "-framerate", f"{in_fps:.4f}", "-i", seq, "-loop", "1", "-i", ov,
-             "-filter_complex", fc, "-c:v", "libx264", "-preset", "veryfast", "-crf", "19", "-r", str(FPS), "-t", f"{dur:.3f}", out])
+             "-filter_complex", fc, "-c:v", "libx264", "-preset", "medium", "-crf", "19", "-r", str(FPS), "-t", f"{dur:.3f}", out])
     else:  # card
         card = os.path.join(ROOT, "cards", f"{name}.png")
         z = f"1.0+0.05*on/{N}"
