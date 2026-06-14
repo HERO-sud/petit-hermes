@@ -7,7 +7,7 @@ import { startServer, launch, sleep, BASE } from '../e2e/lib.mjs';
 const DIR = new URL('./', import.meta.url).pathname;
 const TL = JSON.parse(readFileSync(DIR + 'timeline.json', 'utf8'));
 const timing = existsSync(DIR + 'timing.json') ? JSON.parse(readFileSync(DIR + 'timing.json', 'utf8')) : null;
-const CAP_FPS = 12;
+const CAP_FPS = 8;   // キーフレーム密度（低解像度で実描画→後段minterpolateで30fps化）
 const ROOT = DIR + 'frames/';
 mkdirSync(ROOT, { recursive: true });
 
@@ -42,7 +42,7 @@ const TAG = process.env.BEATS ? `[w${process.env.PORT || ''}]` : '';
 const server = await startServer();
 
 async function boot() {
-  const { browser, page } = await launch({ viewport: { width: 720, height: 1280 } });
+  const { browser, page } = await launch({ viewport: { width: 540, height: 960 } });
   await page.goto(`${BASE}/game.html?q=min`, { waitUntil: 'networkidle0', timeout: 120000 });
   await page.waitForFunction(() => !document.getElementById('startBtn').disabled, { timeout: 150000 });
   await page.click('#startBtn');
