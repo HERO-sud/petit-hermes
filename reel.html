@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>北広島町ランチ 紹介リール（自動再生・録画用）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBF4E6; --bgW:#FFFDF7; --warmXL:#FBE3B8; --honey:#F2C879;
+    --green:#7BA05B; --greenD:#5E8443; --greenL:#A7C58A; --greenXL:#CDE3B0;
+    --peach:#E08A5A; --brown:#5B4A3A; --border:#EAD9B8; --fg:#4A4036; --fgL:#7A6E5E;
+    --metan:#E08A5A; --zunda:#5E8443; --hau:#6E8AD0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Noto Sans JP",system-ui,sans-serif;
+    background:#2A2620; color:var(--fg);
+    display:flex; flex-direction:column; align-items:center; gap:14px;
+    padding:14px; min-height:100%;
+  }
+  h1,h2,h3,.title{font-family:"Yomogi","Zen Maru Gothic",cursive}
+  /* 9:16ステージ */
+  #stage{
+    position:relative; width:min(92vw,360px); aspect-ratio:9/16; border-radius:26px;
+    overflow:hidden; background:var(--bg); box-shadow:0 18px 50px rgba(0,0,0,.5);
+    border:6px solid #15130F;
+  }
+  /* 操作しているっぽいURLバー */
+  #chrome{position:absolute;top:0;left:0;right:0;z-index:5;display:flex;align-items:center;gap:6px;
+    padding:9px 12px;background:rgba(255,253,247,.92);backdrop-filter:blur(4px);
+    border-bottom:1px solid var(--border);font-size:11px;color:var(--fgL);font-weight:700}
+  #chrome .dot{width:8px;height:8px;border-radius:50%;background:var(--greenL)}
+  #chrome .url{flex:1;background:#fff;border:1px solid var(--border);border-radius:999px;
+    padding:4px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* シーン表示エリア */
+  #view{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:60px 22px 150px;transition:background .5s ease}
+  #emoji{font-size:96px;line-height:1;filter:drop-shadow(0 8px 12px rgba(0,0,0,.18))}
+  #badge{margin-top:14px;display:none;background:var(--peach);color:#fff;font-weight:800;
+    font-size:13px;padding:6px 14px;border-radius:999px;box-shadow:0 3px 0 #b96b3f}
+  #vtitle{margin-top:14px;font-size:30px;line-height:1.3;color:var(--greenD);
+    text-shadow:2px 2px 0 #FFFDF7}
+  #vsub{margin-top:8px;font-size:15px;color:var(--fgL);font-weight:700}
+  /* お日さま・丘（heroっぽさ） */
+  .sun{position:absolute;top:54px;right:30px;width:54px;height:54px;border-radius:50%;
+    background:radial-gradient(circle at 50% 45%,#FFDD7A,#F2B23C);box-shadow:0 0 0 10px rgba(255,216,107,.28);z-index:1}
+  .hills{position:absolute;left:0;right:0;bottom:130px;height:120px;z-index:0}
+  /* フィルタ・タップ演出（siteモード） */
+  #chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:300px;margin-top:6px}
+  .chip{font-size:13px;font-weight:800;padding:6px 13px;border-radius:999px;border:2px solid var(--border);
+    background:#fff;color:var(--fg);box-shadow:0 2px 0 var(--border)}
+  .chip.on{background:var(--green);color:#fff;border-color:var(--greenD);box-shadow:0 3px 0 var(--greenD)}
+  #count{margin-top:14px;font-weight:800;color:var(--greenD);font-size:18px}
+  #tap{position:absolute;width:34px;height:34px;border-radius:50%;border:3px solid var(--peach);
+    opacity:0;pointer-events:none;z-index:6}
+  @keyframes ripple{0%{transform:scale(.5);opacity:.9}100%{transform:scale(1.8);opacity:0}}
+  .tapping{animation:ripple .6s ease-out}
+  /* テロップ */
+  #telopWrap{position:absolute;left:0;right:0;bottom:64px;z-index:7;display:flex;flex-direction:column;align-items:center;padding:0 18px}
+  #who{font-size:12px;font-weight:800;color:#fff;padding:3px 12px;border-radius:999px;margin-bottom:8px;opacity:0}
+  #telop{font-family:"Yomogi","Zen Maru Gothic",cursive;font-size:26px;line-height:1.4;font-weight:700;color:#fff;
+    text-shadow:0 2px 0 rgba(0,0,0,.35),0 0 12px rgba(0,0,0,.35);
+    background:linear-gradient(transparent,rgba(0,0,0,.0));max-width:320px}
+  .telop-in{animation:telopin .4s cubic-bezier(.2,.9,.3,1.2)}
+  @keyframes telopin{0%{transform:translateY(10px) scale(.96);opacity:0}100%{transform:translateY(0) scale(1);opacity:1}}
+  /* 進捗バー */
+  #bar{position:absolute;left:0;bottom:0;height:6px;background:var(--peach);width:0;z-index:8;transition:width .3s linear}
+  /* 開始/操作ボタン */
+  #overlay{position:absolute;inset:0;z-index:20;background:rgba(20,17,13,.78);color:#fff;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:26px}
+  #overlay h2{font-size:24px;color:#fff}
+  #overlay p{font-size:13px;line-height:1.7;color:#EADFce;max-width:280px}
+  .btn{cursor:pointer;border:none;font-weight:800;border-radius:999px;padding:13px 22px;font-size:16px;
+    background:var(--honey);color:#4A4036;box-shadow:0 4px 0 #cfa23f}
+  .btn.alt{background:var(--bgW);color:var(--greenD)}
+  #controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+  #note{color:#EADFce;font-size:12px;max-width:360px;text-align:center;line-height:1.7}
+  a{color:var(--honey)}
+  .hidden{display:none!important}
+</style>
+</head>
+<body>
+  <div id="stage">
+    <div id="chrome"><span class="dot"></span><span class="url">🔒 hero-sud.github.io/petit-hermes/lunch.html</span><span>⋯</span></div>
+    <div id="view">
+      <div class="sun hidden" id="sun"></div>
+      <svg class="hills hidden" id="hills" viewBox="0 0 360 120" preserveAspectRatio="none">
+        <path d="M0,60 C70,28 130,84 200,58 C270,34 320,84 360,56 L360,120 L0,120 Z" fill="#CDE3B0"/>
+        <path d="M0,82 C80,52 170,104 250,78 C310,58 340,96 360,80 L360,120 L0,120 Z" fill="#A7C58A"/>
+        <path d="M0,100 C90,84 200,110 280,98 C320,92 345,104 360,98 L360,120 L0,120 Z" fill="#7BA05B"/>
+      </svg>
+      <div id="emoji">🍙</div>
+      <div id="badge"></div>
+      <div id="vtitle" class="title"></div>
+      <div id="vsub"></div>
+      <div id="chips" class="hidden"></div>
+      <div id="count" class="hidden"></div>
+    </div>
+    <div id="tap"></div>
+    <div id="telopWrap"><div id="who"></div><div id="telop"></div></div>
+    <div id="bar"></div>
+    <div id="overlay">
+      <h2>🍙 北広島町ランチ<br>紹介リール</h2>
+      <p>自動で再生されます。スマホは<b>画面収録</b>しながら再生、PCは<b>⏺録画</b>でwebmを書き出せます。<br>（音声はブラウザの日本語読み上げを3キャラ風に再生）</p>
+      <div id="controls">
+        <button class="btn" id="play">▶ 再生</button>
+        <button class="btn alt" id="rec">⏺ 録画して再生（PC）</button>
+        <button class="btn alt" id="mute">🔇 音声なしで再生</button>
+      </div>
+    </div>
+  </div>
+  <div id="note">
+    ※ブラウザ内蔵の日本語音声を、四国めたん／ずんだもん／雨晴はう風にピッチ・速度を変えて再生しています（VOICEVOXの実音声ではありません）。<br>
+    VOICEVOXの声にしたい場合は「🔇音声なし」で再生→画面収録し、<code>reel-script.md</code>のセリフをVOICEVOXで作って重ねてください。テロップは映像に入っています。
+  </div>
+
+<script>
+(function(){
+  "use strict";
+  var $ = function(id){ return document.getElementById(id); };
+  var view=$("view"), emoji=$("emoji"), badge=$("badge"), vtitle=$("vtitle"), vsub=$("vsub"),
+      chips=$("chips"), count=$("count"), who=$("who"), telop=$("telop"), bar=$("bar"),
+      sun=$("sun"), hills=$("hills"), tap=$("tap"), overlay=$("overlay");
+
+  var SPEAKER = {
+    metan:{ name:"四国めたん", color:"var(--metan)", pitch:1.2, rate:1.04 },
+    zunda:{ name:"ずんだもん", color:"var(--zunda)", pitch:1.55, rate:1.12 },
+    hau:{   name:"雨晴はう",   color:"var(--hau)",   pitch:1.0,  rate:0.95 }
+  };
+
+  var BG = {
+    hero:"linear-gradient(180deg,#FBE3B8 0%,#FBF0D6 42%,#EAF3E0 100%)",
+    info:"linear-gradient(180deg,#FBF0D6,#EAF3E0)",
+    card:"linear-gradient(180deg,#FFFDF7,#FBEFD8)",
+    site:"linear-gradient(180deg,#EAF3E0,#FFFDF7)",
+    cta:"linear-gradient(180deg,#FBE3B8,#FBF0D6)",
+    end:"linear-gradient(180deg,#FBF0D6,#EAF3E0)"
+  };
+
+  // 1分前後の絵コンテ（台本準拠）
+  var BEATS = [
+    {who:"metan", mode:"hero", emoji:"🏫", title:"北広島町のランチ、\nぜんぶここに。",
+     telop:"廃校の教室が、パン屋に。", say:"広島の、いちばん奥。廃校の教室が、パン屋さんになってるの、知ってる？"},
+    {who:"zunda", mode:"info", emoji:"🗺️", title:"北広島町って\nどこ？", sub:"千代田・大朝・豊平・芸北",
+     telop:"北広島町って、どこ？", say:"きたひろしまちょうって、どこなのだ？"},
+    {who:"metan", mode:"info", emoji:"🚗", sub:"広島市から車で約1時間",
+     telop:"広島市から車で約1時間", say:"広島市から車で、約一時間。でも実は、名店だらけなの！"},
+    {who:"metan", mode:"card", emoji:"🍞", badge:"旧・南方小学校", title:"プチヘルメース",
+     telop:"① プチヘルメース｜パン", say:"まずは、廃校で焼く天然酵母パン。プチヘルメース！"},
+    {who:"zunda", mode:"card", emoji:"🥖", title:"プチヘルメース",
+     telop:"規格外の野菜が、酵母に！", say:"規格外の野菜や果物を、酵母にしてるのだ！"},
+    {who:"metan", mode:"card", emoji:"🥯", badge:"土曜だけ", title:"Liand bagel",
+     telop:"② リアンドベーグル｜土曜だけ", say:"次は、土曜だけ開く古民家のベーグル。リアンドベーグル。"},
+    {who:"hau", mode:"card", emoji:"🥯", title:"Liand bagel",
+     telop:"48時間発酵の、ごほうび", say:"四十八時間かけて発酵させる、ごほうびみたいなベーグルです。"},
+    {who:"zunda", mode:"card", emoji:"🍛", badge:"South in North", title:"廃校のカレー",
+     telop:"③ 廃校のスパイスカレー", say:"しかも同じ廃校に、スパイスカレー屋さんもあるのだ！"},
+    {who:"metan", mode:"card", emoji:"🥢", title:"豊平そば",
+     telop:"豊平は西日本有数のそば処", say:"豊平は、西日本でも指折りの、そば処なんだよ。"},
+    {who:"zunda", mode:"card", emoji:"🥗", title:"古民家カフェ",
+     telop:"地元野菜の、古民家ランチ", say:"古民家カフェの、地元野菜ランチも最高なのだ！"},
+    {who:"hau", mode:"card", emoji:"☕", title:"高原カフェ",
+     telop:"高原で、自家焙煎の一杯", say:"高原で、自家焙煎の一杯も、いいですよ。"},
+    {who:"zunda", mode:"card", emoji:"🍳", title:"お好み焼き",
+     telop:"ざく切りキャベツのお好み焼き", say:"ざく切りキャベツのお好み焼きも、外せないのだ！"},
+    {who:"metan", mode:"card", emoji:"🍚", title:"道の駅ランチ",
+     telop:"道の駅の野菜バイキングも", say:"道の駅の、地元野菜バイキングまで、あるんだから！"},
+    {who:"metan", mode:"site", count:"全 40 軒", active:"千代田",
+     telop:"実在40軒を、1サイトに", say:"この実在、四十軒。ぜんぶ一つのサイトに、まとめたよ！"},
+    {who:"zunda", mode:"site", count:"全 40 軒", active:"そば",
+     telop:"エリア×ジャンルで探せる", say:"エリアとジャンルで、サッと探せるのだ！"},
+    {who:"hau", mode:"cta", emoji:"📌",
+     telop:"週末、どこ行く？", say:"週末、どこ行く？ 迷ったら……"},
+    {who:"metan", mode:"cta", emoji:"🔖",
+     telop:"保存して、リンクへ📍", say:"この投稿を保存して、プロフィールのリンクから、チェック！"},
+    {who:"hau", mode:"end", emoji:"🍙", title:"北広島町で、\n待ってます。",
+     telop:"北広島町で、待ってます。", say:"北広島町で、待ってます。"}
+  ];
+
+  var AREA=["千代田","大朝","豊平","芸北"], GENRE=["パン","そば","カフェ","お好み焼き","ラーメン","和食"];
+  var useVoice=true, voice=null, audioCtx=null;
+
+  function pickVoice(){
+    try{
+      var vs = window.speechSynthesis ? speechSynthesis.getVoices() : [];
+      voice = vs.filter(function(v){return /ja|JP/i.test(v.lang);})[0] || vs[0] || null;
+    }catch(e){ voice=null; }
+  }
+  if(window.speechSynthesis){
+    pickVoice();
+    speechSynthesis.onvoiceschanged = pickVoice;
+  }
+
+  function pop(){
+    try{
+      audioCtx = audioCtx || new (window.AudioContext||window.webkitAudioContext)();
+      var o=audioCtx.createOscillator(), g=audioCtx.createGain();
+      o.type="sine"; o.frequency.value=720; g.gain.value=0.06;
+      o.connect(g); g.connect(audioCtx.destination);
+      o.start(); o.frequency.exponentialRampToValueAtTime(440, audioCtx.currentTime+0.12);
+      g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime+0.16);
+      o.stop(audioCtx.currentTime+0.18);
+    }catch(e){}
+  }
+
+  function renderChips(active){
+    chips.innerHTML="";
+    var label=document.createElement("div");
+    label.style.cssText="width:100%;font-size:11px;font-weight:800;color:#A89A85;margin-bottom:2px";
+    label.textContent="エリア / ジャンル";
+    chips.appendChild(label);
+    AREA.concat(GENRE).forEach(function(g){
+      var c=document.createElement("span");
+      c.className="chip"+(g===active?" on":"");
+      c.textContent=g; chips.appendChild(c);
+    });
+  }
+
+  function showTap(){
+    // フィルタを“タップ”する演出（中央付近で波紋）
+    tap.style.left="50%"; tap.style.top="58%"; tap.style.marginLeft="-17px";
+    tap.classList.remove("tapping"); void tap.offsetWidth; tap.classList.add("tapping");
+  }
+
+  function applyView(b){
+    view.style.background = BG[b.mode] || BG.card;
+    sun.classList.toggle("hidden", b.mode!=="hero");
+    hills.classList.toggle("hidden", b.mode!=="hero");
+    var isSite = b.mode==="site";
+    chips.classList.toggle("hidden", !isSite);
+    count.classList.toggle("hidden", !isSite);
+    emoji.classList.toggle("hidden", isSite);
+    if(isSite){ renderChips(b.active); count.textContent=b.count||""; showTap(); }
+    else { emoji.textContent=b.emoji||"🍙"; }
+    badge.style.display = b.badge?"inline-block":"none";
+    if(b.badge) badge.textContent=b.badge;
+    vtitle.style.display = b.title?"block":"none";
+    if(b.title) vtitle.innerText=b.title;
+    vsub.style.display = b.sub?"block":"none";
+    if(b.sub) vsub.textContent=b.sub;
+    // emoji pop
+    emoji.style.animation="none"; void emoji.offsetWidth; emoji.style.animation="telopin .5s ease";
+  }
+
+  function showTelop(b){
+    var sp=SPEAKER[b.who]||SPEAKER.metan;
+    who.textContent=sp.name; who.style.background=sp.color; who.style.opacity="1";
+    telop.textContent=b.telop;
+    telop.classList.remove("telop-in"); void telop.offsetWidth; telop.classList.add("telop-in");
+  }
+
+  function speak(b){
+    return new Promise(function(resolve){
+      var sp=SPEAKER[b.who]||SPEAKER.metan;
+      var minMs = Math.max(2200, b.say.length*135); // フォールバック尺
+      var done=false, finish=function(){ if(done) return; done=true; resolve(); };
+      if(useVoice && window.speechSynthesis){
+        try{
+          var u=new SpeechSynthesisUtterance(b.say);
+          if(voice) u.voice=voice;
+          u.lang="ja-JP"; u.pitch=sp.pitch; u.rate=sp.rate;
+          u.onend=function(){ setTimeout(finish, 250); };
+          u.onerror=function(){ setTimeout(finish, minMs); };
+          speechSynthesis.speak(u);
+          // 念のための保険（onendが来ない環境用）
+          setTimeout(finish, minMs+4000);
+          return;
+        }catch(e){}
+      }
+      setTimeout(finish, minMs);
+    });
+  }
+
+  var running=false;
+  function runReel(){
+    if(running) return Promise.resolve();
+    running=true;
+    var i=0;
+    function step(){
+      if(i>=BEATS.length){ bar.style.width="100%"; running=false; showEnd(); return; }
+      var b=BEATS[i];
+      applyView(b); showTelop(b); pop();
+      bar.style.width = Math.round((i+1)/BEATS.length*100)+"%";
+      speak(b).then(function(){ i++; step(); });
+    }
+    step();
+    return Promise.resolve();
+  }
+
+  function showEnd(){
+    overlay.classList.remove("hidden");
+    overlay.innerHTML='<h2>🍙 おつかれさま！</h2>'+
+      '<p>もう一度見る／録画し直せます。<br>サイト：hero-sud.github.io/petit-hermes/lunch.html</p>'+
+      '<div id="controls"><button class="btn" id="again">▶ もう一度</button></div>';
+    var ag=document.getElementById("again");
+    if(ag) ag.onclick=function(){ overlay.classList.add("hidden"); start(false); };
+  }
+
+  function start(rec){
+    overlay.classList.add("hidden");
+    if(window.speechSynthesis){ try{ speechSynthesis.cancel(); }catch(e){} }
+    if(rec){ startRecording().then(function(){ runReel(); }); }
+    else { runReel(); }
+  }
+
+  // PC向け：タブ/画面を録画してwebm保存
+  var mediaRec=null, chunks=[];
+  function startRecording(){
+    return new Promise(function(resolve){
+      if(!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia){
+        alert("この端末では録画ボタンを使えません。スマホの画面収録機能で撮ってください。");
+        resolve(); return;
+      }
+      navigator.mediaDevices.getDisplayMedia({video:{frameRate:30}, audio:true}).then(function(stream){
+        chunks=[];
+        try{ mediaRec=new MediaRecorder(stream,{mimeType:"video/webm"}); }
+        catch(e){ mediaRec=new MediaRecorder(stream); }
+        mediaRec.ondataavailable=function(ev){ if(ev.data&&ev.data.size) chunks.push(ev.data); };
+        mediaRec.onstop=function(){
+          stream.getTracks().forEach(function(t){t.stop();});
+          var blob=new Blob(chunks,{type:"video/webm"});
+          var a=document.createElement("a");
+          a.href=URL.createObjectURL(blob); a.download="kitahiroshima-lunch-reel.webm";
+          document.body.appendChild(a); a.click(); a.remove();
+        };
+        mediaRec.start();
+        resolve();
+      }).catch(function(){ resolve(); });
+    });
+  }
+  function stopRecording(){ if(mediaRec && mediaRec.state!=="inactive"){ try{ mediaRec.stop(); }catch(e){} } }
+
+  // 終了時に録画停止
+  var _showEnd=showEnd;
+  showEnd=function(){ stopRecording(); _showEnd(); };
+
+  document.getElementById("play").onclick=function(){ useVoice=true; start(false); };
+  document.getElementById("rec").onclick=function(){ useVoice=true; start(true); };
+  document.getElementById("mute").onclick=function(){ useVoice=false; start(false); };
+})();
+</script>
+</body>
+</html>
