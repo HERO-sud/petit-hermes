@@ -4,33 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>北広島町のランチ、ぜんぶここに。｜広島・北広島町おすすめランチガイド</title>
-<meta name="description" content="広島県山県郡・北広島町の実在するおすすめランチ＆カフェ9店を、エリア・ジャンルで絞り込めるガイドに。パン『プチヘルメース』、土曜だけのベーグル『リアンドベーグル』、豊平そば、古民家カフェまで。町外の人にこそ知ってほしい一皿。">
+<meta name="description" content="広島県山県郡・北広島町（千代田・大朝・豊平・芸北）の実在するおすすめランチ＆カフェを、エリア・ジャンルで絞り込めるガイドに。廃校のパン屋『プチヘルメース』、土曜だけのベーグル『リアンドベーグル』、西日本有数の豊平そば、古民家カフェまで。町外の人にこそ知ってほしい一皿。">
 <meta property="og:title" content="北広島町のランチ、ぜんぶここに。">
-<meta property="og:description" content="広島・北広島町の実在おすすめランチ9選。エリア×ジャンルで絞り込み、各店のInstagram/地図へすぐ飛べる。">
+<meta property="og:description" content="広島・北広島町の実在おすすめランチを多数掲載。エリア×ジャンルで絞り込み、各店の公式SNS/地図へすぐ飛べる。">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍙</text></svg>">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.26.5/babel.min.js"></script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  "name": "広島・北広島町 おすすめランチ9選",
-  "itemListElement": [
-    {"@type":"ListItem","position":1,"item":{"@type":"Bakery","name":"プチヘルメース","servesCuisine":"パン","address":{"@type":"PostalAddress","addressLocality":"北広島町","addressRegion":"広島県","addressCountry":"JP"}}},
-    {"@type":"ListItem","position":2,"item":{"@type":"Bakery","name":"Liand bagel（リアンドベーグル）","servesCuisine":"ベーグル","address":{"@type":"PostalAddress","addressLocality":"北広島町","addressRegion":"広島県","addressCountry":"JP"}}},
-    {"@type":"ListItem","position":3,"item":{"@type":"Restaurant","name":"Casual Kitchen Hana","servesCuisine":"定食・洋食","address":{"@type":"PostalAddress","addressLocality":"北広島町","addressRegion":"広島県","addressCountry":"JP"}}},
-    {"@type":"ListItem","position":4,"item":{"@type":"CafeOrCoffeeShop","name":"cafe solaMie","servesCuisine":"定食・カフェ","address":{"@type":"PostalAddress","addressLocality":"北広島町","addressRegion":"広島県","addressCountry":"JP"}}},
-    {"@type":"ListItem","position":5,"item":{"@type":"CafeOrCoffeeShop","name":"野の花かふぇ","servesCuisine":"古民家カフェ","address":{"@type":"PostalAddress","addressLocality":"北広島町","addressRegion":"広島県","addressCountry":"JP"}}},
-    {"@type":"ListItem","position":6,"item":{"@type":"CafeOrCoffeeShop","name":"自家焙煎 山小屋Cafe","servesCuisine":"自家焙煎コーヒー","address":{"@type":"PostalAddress","addressLocality":"北広島町","addressRegion":"広島県","addressCountry":"JP"}}},
-    {"@type":"ListItem","position":7,"item":{"@type":"Restaurant","name":"そば処 どんぐり庵（道の駅 豊平どんぐり村）","servesCuisine":"そば","address":{"@type":"PostalAddress","addressLocality":"北広島町","addressRegion":"広島県","addressCountry":"JP"}}},
-    {"@type":"ListItem","position":8,"item":{"@type":"Restaurant","name":"さんまらーめん立盛","servesCuisine":"ラーメン","address":{"@type":"PostalAddress","addressLocality":"北広島町","addressRegion":"広島県","addressCountry":"JP"}}},
-    {"@type":"ListItem","position":9,"item":{"@type":"Restaurant","name":"味みや","servesCuisine":"お好み焼き","address":{"@type":"PostalAddress","addressLocality":"北広島町","addressRegion":"広島県","addressCountry":"JP"}}}
-  ]
-}
-</script>
 <style>
   html,body,#root{margin:0;padding:0;min-height:100vh}
   body{-webkit-font-smoothing:antialiased;font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",system-ui,sans-serif}
@@ -44,9 +26,36 @@
 <script type="text/babel">
 const { useState, useMemo, useCallback, useEffect, useRef } = React;
 
+/* ===== 配色（プチヘルメース・ブランド準拠：里山の緑×素朴な土の色） ===== */
+const C = {
+  fg:"#2A2A25", fgL:"#6B6860", fgXL:"#9B978E",
+  bg:"#FAF8F4", bgW:"#FFFFFF", bgWarm:"#F4EFE7", bgDark:"#1B1E16",
+  main:"#4E5D3E", mainD:"#3A4A2F", mainL:"#6B7D5A",
+  warm:"#A67C52", warmL:"#C4A06E", warmXL:"#E8D5B7",
+  border:"#E3DDD2", accent:"#8B4513",
+};
+
+/* 画像が404でも崩れないよう、確実に存在する食の画像へフォールバック */
+const FALLBACK_IMG = "https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=900&q=80";
+const img = id => `https://images.unsplash.com/photo-${id}?w=900&q=80`;
+
+/* ジャンル別の代表（イメージ）画像。本物の写真は各カードの公式リンク先で。 */
+const GENRE_IMG = {
+  "パン":      img("1509440159596-0249088772ff"),
+  "ベーグル":  img("1554433607-66b5efe9d304"),
+  "そば":      img("1612929633738-8fe44f7ec841"),
+  "ラーメン":  img("1569718212165-3a8278d5f624"),
+  "お好み焼き": img("1626700051175-6818013e1d4f"),
+  "カフェ":    img("1495474472287-4d71bcdd2085"),
+  "定食":      img("1546069901-ba9599a7e63c"),
+  "和食":      img("1580822184713-fc5400e7fe10"),
+  "イタリアン": img("1565299624946-b28f40a0ae38"),
+  "その他":    img("1574071318508-1cdbab80d002"),
+};
+
 /* ===== Instagram公式埋め込み（鍵不要・正規・遅延読み込み） =====
    他者写真の直リンク/転載はせず、公式の埋め込み機能で“本物・最新”の写真を表示。
-   IntersectionObserverで見えたカードだけ読み込むため30軒あっても初期表示が軽い。 */
+   IntersectionObserverで見えたカードだけ読み込むため初期表示が軽い。 */
 let __igScriptLoading = false;
 function ensureIGScript(){
   if (window.instgrm && window.instgrm.Embeds) return Promise.resolve();
@@ -61,20 +70,16 @@ function ensureIGScript(){
     setTimeout(()=>{ clearInterval(t); res(); }, 6000);
   });
 }
-
 function useInView(ref, rootMargin="240px"){
   const [inView, setInView] = useState(false);
   useEffect(()=>{
     if (inView || !ref.current) return;
-    const io = new IntersectionObserver(([e])=>{
-      if (e.isIntersecting){ setInView(true); io.disconnect(); }
-    }, {rootMargin});
+    const io = new IntersectionObserver(([e])=>{ if(e.isIntersecting){ setInView(true); io.disconnect(); } }, {rootMargin});
     io.observe(ref.current);
     return ()=>io.disconnect();
   }, [inView]);
   return inView;
 }
-
 function IGEmbed({permalink}){
   const wrap = useRef(null);
   const inView = useInView(wrap);
@@ -91,184 +96,293 @@ function IGEmbed({permalink}){
   );
 }
 
-/* ===== 配色（プチヘルメース・ブランド準拠：里山の緑×素朴な土の色） ===== */
-const C = {
-  fg:"#2A2A25", fgL:"#6B6860", fgXL:"#9B978E",
-  bg:"#FAF8F4", bgW:"#FFFFFF", bgWarm:"#F4EFE7", bgDark:"#1B1E16",
-  main:"#4E5D3E", mainD:"#3A4A2F", mainL:"#6B7D5A",
-  warm:"#A67C52", warmL:"#C4A06E", warmXL:"#E8D5B7",
-  border:"#E3DDD2", accent:"#8B4513",
-};
-
-/* 画像が404でも崩れないよう、確実に存在する食の画像へフォールバック */
-const FALLBACK_IMG = "https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=900&q=80";
-const img = id => `https://images.unsplash.com/photo-${id}?w=900&q=80`;
-
 /* ===== ファクトチェック済み・実在店舗データ（2026年6月時点の公開情報に基づく調査） =====
-   出典: 中国新聞 / 食べログ / 北広島町観光協会 / リビング広島 / 各店公式 など。
-   営業時間・定休日・価格は変動するため、各カードから各店の公式SNS・公式サイトで要確認。 */
+   出典: 北広島町観光協会(kitahiro.jp) / 食べログ / 中国新聞 / 各店公式 / Retty / ヒトサラ 等。
+   営業時間・定休日は変動・冬期休業も多いため、各カードの公式リンクで要確認。 */
 const STORES = [
-  {
-    id:"petit-hermes", star:true,
-    name:"プチヘルメース", reading:"Petit Hermès",
-    genre:"パン", area:"大朝",
-    img: img("1589367920969-ab8e050bbb04"),
-    catch:"廃校の教室から焼きたて。規格外の果実と野菜を酵母に。",
-    points:[
-      "2013年に閉校した旧南方小学校の1階をリノベした天然酵母パン店",
-      "規格外でも美味しい地元の野菜・果物を活用し、食品ロス削減にも挑戦",
-      "“廃校×パン”という物語ごと味わいたい、北広島町の象徴的な一軒",
-    ],
-    hours:"営業日・時間は公式Instagramで要確認",
-    price:"パン単品 〜",
-    place:"北広島町南方（旧南方小学校）",
-    links:[
-      {label:"Instagram", url:"https://www.instagram.com/petit_hermes/", kind:"ig"},
-      {label:"中国新聞の記事（出典）", url:"https://www.chugoku-np.co.jp/articles/-/588149", kind:"src"},
-    ],
-  },
-  {
-    id:"liand-bagel", star:true,
-    name:"Liand bagel", reading:"リアンドベーグル",
-    genre:"ベーグル", area:"豊平",
-    img: img("1554433607-66b5efe9d304"),
-    catch:"土曜だけ開く、古民家の小さなベーグル工房。",
-    points:[
-      "アート/デザインに携わる池田夫妻が営む、週イチ・土曜のみ営業の人気店",
-      "人参・りんご・じゃがいも・玄米から起こす自家製天然酵母。冷蔵で48時間低温発酵",
-      "ボタニカルなベーグルにスコーン、自家焙煎コーヒー。ふるさと納税の定期便も",
-    ],
-    hours:"土曜のみ営業（公式SNS・BASEで要確認）",
-    price:"ベーグル単品 〜",
-    place:"北広島町豊平1828",
-    links:[
-      {label:"Instagram", url:"https://www.instagram.com/liand_bagel/", kind:"ig"},
-      {label:"オンライン販売(BASE)", url:"https://liandbagel.official.ec/", kind:"site"},
-      {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34029422/", kind:"src"},
-    ],
-  },
-  {
-    id:"cafe-solamie",
-    name:"cafe solaMie", reading:"カフェ ソラミー",
-    genre:"定食・カフェ", area:"千代田",
-    img: img("1559925393-8be0ec4767c8"),
-    catch:"田舎道に突如あらわれる、丸窓のかわいいカフェ。",
-    points:[
-      "2022年冬オープン。千代田ICから北へ約10分、丸い窓が目印の一軒",
-      "鯉の泳ぐ池を眺めながら、まごころ定食やスイーツをゆっくりと",
-    ],
-    hours:"11:00〜17:00（L.O.16:30）／月・木休（要確認）",
-    price:"定食・カフェ 〜",
-    place:"北広島町蔵迫2819",
-    links:[
-      {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34030496/", kind:"src"},
-      {label:"紹介記事(リビング広島)", url:"https://mrs.living.jp/hiroshima/town_gourmet/reporter/5326673", kind:"site"},
-    ],
-  },
-  {
-    id:"nonohana-cafe",
-    name:"野の花かふぇ", reading:"ののはな かふぇ",
-    genre:"古民家カフェ", area:"豊平",
-    img: img("1414235077428-338989a2e8c0"),
-    catch:"地元野菜のランチと、ふわふわシフォン。金土だけの隠れ家。",
-    points:[
-      "北広島町・都志見の古民家カフェ。地元野菜たっぷりのランチが名物",
-      "自家製オーガニックコーヒーとふわふわシフォンケーキでひと息",
-      "金・土のみ営業、冬期（12〜2月）はお休み。スローな時間が流れる",
-    ],
-    hours:"金・土 11:00〜16:00／冬期休（要確認）",
-    price:"ランチ・カフェ 〜",
-    place:"北広島町都志見10733-99",
-    links:[
-      {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34014932/", kind:"src"},
-      {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/nonohana.html", kind:"site"},
-    ],
-  },
-  {
-    id:"yamakoya-cafe",
-    name:"自家焙煎 山小屋Cafe", reading:"やまごや かふぇ",
-    genre:"カフェ", area:"豊平",
-    img: img("1495474472287-4d71bcdd2085"),
-    catch:"北広島町ではじまった、自家焙煎の一杯。",
-    points:[
-      "豊平エリアの自家焙煎コーヒーが楽しめるカフェ",
-      "山あいの空気と、ていねいに淹れた珈琲でほっとひと休み",
-    ],
-    hours:"営業日・時間は要確認",
-    price:"カフェ 〜",
-    place:"北広島町豊平",
-    links:[
-      {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34027633/", kind:"src"},
-    ],
-  },
-  {
-    id:"donguri-an",
-    name:"そば処 どんぐり庵", reading:"道の駅 豊平どんぐり村",
-    genre:"そば", area:"豊平",
-    img: img("1612929633738-8fe44f7ec841"),
-    catch:"西日本有数のそば処・豊平。栽培から製粉まで地元産。",
-    points:[
-      "道の駅「豊平どんぐり村」内のそば処。打ちたての豊平そばが名物",
-      "となりの『そば道場』ではそば打ち体験（約70〜80分）も人気",
-      "ドライブの立ち寄りにも便利。地域の特産が一度に楽しめる",
-    ],
-    hours:"11:00〜14:00（要確認）",
-    price:"そば 〜",
-    place:"北広島町都志見（道の駅 豊平どんぐり村）",
-    links:[
-      {label:"公式サイト", url:"https://www.dongurimura.co.jp/?cn=100027", kind:"site"},
-    ],
-  },
-  {
-    id:"tatumori",
-    name:"さんまらーめん立盛", reading:"たつもり",
-    genre:"ラーメン", area:"千代田",
-    img: img("1569718212165-3a8278d5f624"),
-    catch:"北広島町の新たならーめん処。だしのうどんやおでんも。",
-    points:[
-      "千代田・春木にある、地元で話題のらーめん店",
-      "らーめんはもちろん、だしの効いたうどんや冬のおでんも",
-    ],
-    hours:"11:00〜14:00／17:00〜21:00・月休（要確認）",
-    price:"らーめん 〜",
-    place:"北広島町春木251",
-    links:[
-      {label:"Instagram", url:"https://www.instagram.com/tatumori_kitahiroshima_town/", kind:"ig"},
-      {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34030671/", kind:"src"},
-    ],
-  },
-  {
-    id:"ajimiya",
-    name:"味みや", reading:"あじみや",
-    genre:"お好み焼き", area:"千代田",
-    img: img("1626700051175-6818013e1d4f"),
-    catch:"ざく切りキャベツの、ふるさとお好み焼き。",
-    points:[
-      "千代田ICから約5分。ざく切りキャベツが効いた広島流お好み焼き",
-      "地元に愛される、あたたかい鉄板の一枚",
-    ],
-    hours:"営業日・時間は要確認",
-    price:"お好み焼き 〜",
-    place:"北広島町（千代田）",
-    links:[
-      {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34027345/", kind:"src"},
-    ],
-  },
+  // ---- 千代田エリア ----
+  { id:"petit-hermes", star:true, name:"プチヘルメース", reading:"Petit Hermès", genre:"パン", area:"千代田",
+    catch:"廃校の教室で焼く、天然酵母パン。",
+    points:["2013年閉校の旧南方小学校1階。規格外の野菜・果物を酵母に活かす、町の象徴的な一軒"],
+    hours:"水・土のみ営業（時間は公式で要確認）", place:"北広島町南方1920（旧南方小学校）",
+    links:[ {label:"Instagram", url:"https://www.instagram.com/petit_hermes/", kind:"ig"},
+            {label:"公式ショップ", url:"https://petit-hermes.square.site/", kind:"site"},
+            {label:"中国新聞の記事（出典）", url:"https://www.chugoku-np.co.jp/articles/-/588149", kind:"src"} ] },
+
+  { id:"cafe-solamie", name:"cafe solaMie", reading:"カフェ ソラミー", genre:"カフェ", area:"千代田",
+    catch:"田舎道に突如あらわれる、丸窓のカフェ。",
+    points:["千代田ICから北へ約10分。鯉の泳ぐ池を眺めながら、生姜焼き定食やチーズケーキを"],
+    hours:"11:00〜17:00(L.O.16:30)／月・木ほか休（要確認）", place:"北広島町蔵迫2819",
+    links:[ {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34030496/", kind:"src"},
+            {label:"紹介記事(リビング広島)", url:"https://mrs.living.jp/hiroshima/town_gourmet/reporter/5326673", kind:"site"} ] },
+
+  { id:"corbusier", name:"昭和レトロと珈琲の店 コルビジェ", reading:"こるびじぇ", genre:"カフェ", area:"千代田",
+    catch:"昭和レトロと、サイフォン珈琲。",
+    points:["昭和レトロ雑貨に囲まれ、サイフォンで淹れる本格珈琲と手作り菓子が楽しめる喫茶"],
+    hours:"13:00〜17:00／日・祝休（要確認）", place:"北広島町今田3885-3",
+    links:[ {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34030926/", kind:"src"},
+            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/korubizye.html", kind:"site"} ] },
+
+  { id:"saboners", name:"サボナーズカフェ（温活部）", reading:"さぼなーずかふぇ", genre:"カフェ", area:"千代田",
+    catch:"自家焙煎珈琲と、よもぎ蒸し。",
+    points:["地元素材の自家焙煎コーヒーが自慢。気軽に「よもぎ蒸し」もできる温活カフェ"],
+    hours:"要予約（営業時間は要確認）", place:"北広島町有田459-1",
+    links:[ {label:"公式(オンライン)", url:"https://sabonerscafe.raku-uru.jp/", kind:"site"},
+            {label:"観光ガイドKITABITO", url:"https://kitabi-to.jp/spot_post/1053/", kind:"src"} ] },
+
+  { id:"appreciate", name:"appreciate ＋cafe", reading:"あぷりしえいと", genre:"カフェ", area:"千代田",
+    catch:"美容室併設の、くつろぎカフェ。",
+    points:["ヘアサロン併設。施術の前後やドライブの休憩に立ち寄れる地元の憩いの場"],
+    hours:"カフェ11:00〜16:30／水・木・第2第4日休（要確認）", place:"北広島町本地361-1",
+    links:[ {label:"Instagram", url:"https://www.instagram.com/appreciate_cafe/", kind:"ig"},
+            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/appreciate.html", kind:"src"} ] },
+
+  { id:"berryhouse", name:"ベリーハウス", reading:"べりーはうす", genre:"カフェ", area:"千代田",
+    catch:"ハーブガーデンの、隠れ家カフェ。",
+    points:["ハーブの庭に包まれた予約制カフェ。ハンドメイド作品も並ぶ、知る人ぞ知る一軒"],
+    hours:"11:00〜16:00（限定日・要予約）／1・8月休", place:"北広島町南方1102-1",
+    links:[ {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/berry.html", kind:"site"},
+            {label:"食べログ", url:"https://tabelog.com/en/hiroshima/A3408/A340801/34021873/", kind:"src"} ] },
+
+  { id:"tatumori", name:"さんまらーめん 立盛", reading:"たつもり", genre:"ラーメン", area:"千代田",
+    catch:"町の、新たならーめん処。",
+    points:["らーめんはもちろん、だしの効いたうどんや冬のおでんも。気まぐれの肴で一杯も"],
+    hours:"11:00〜14:00／17:00〜21:00頃・月休（要確認）", place:"北広島町春木251",
+    links:[ {label:"食べログ", url:"https://tabelog.com/en/hiroshima/A3408/A340801/34030671/", kind:"src"},
+            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/tatumori.html", kind:"site"} ] },
+
+  { id:"chiyoda-niban", name:"中華そば ちよだ二番", reading:"ちよだにばん", genre:"ラーメン", area:"千代田",
+    catch:"カウンターだけの、醤油中華そば。",
+    points:["小さな店であっさり醤油の中華そば。コスパよく地元で愛される一杯"],
+    hours:"主に日祝のランチ営業（要確認）", place:"北広島町壬生10",
+    links:[ {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34016311/", kind:"src"} ] },
+
+  { id:"ajimiya", name:"味みや", reading:"あじみや", genre:"お好み焼き", area:"千代田",
+    catch:"ざく切りキャベツの、お好み焼き。",
+    points:["千代田ICから約5分。ざく切りキャベツで野菜の甘みと香りを楽しむ広島流"],
+    hours:"11:00〜13:30／17:00〜21:30・月休（要確認）", place:"北広島町有田480-4",
+    links:[ {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/ajimiya.html", kind:"site"},
+            {label:"食べログ", url:"https://tabelog.com/en/hiroshima/A3408/A340801/34027345/", kind:"src"} ] },
+
+  { id:"okonomi-hiro", name:"お好みハウス ひろ", reading:"おこのみはうす ひろ", genre:"お好み焼き", area:"千代田",
+    catch:"通し営業の、昔ながらお好み焼き。",
+    points:["地元・春木の昔ながらのお好み焼き店。通し営業で立ち寄りやすい"],
+    hours:"10:30〜19:00・月休（要確認）", place:"北広島町春木167",
+    links:[ {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34027478/", kind:"src"},
+            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/hiro.html", kind:"site"} ] },
+
+  { id:"okonomi-an", name:"お好み焼き あん", reading:"おこのみやき あん", genre:"お好み焼き", area:"千代田",
+    catch:"甘いキャベツと、無料の味噌汁。",
+    points:["芸北の甘いキャベツを使用。無料の味噌汁も隠れた人気。夜は鉄板焼で一杯"],
+    hours:"11:00〜14:00／17:00〜20:00・月休（要確認）", place:"北広島町本地25-18",
+    links:[ {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/an.html", kind:"site"},
+            {label:"ぐるなび", url:"https://r.gnavi.co.jp/18y3x0a10000/", kind:"src"} ] },
+
+  { id:"kitahiro-0banchi", name:"リサイクル きたひろ0番地", reading:"きたひろぜろばんち", genre:"その他", area:"千代田",
+    catch:"こだわりだしの、移動たこ焼き。",
+    points:["外はカリッ中はトロッ。こだわりのだし汁とタコのたこ焼きを移動販売"],
+    hours:"9:00〜18:00・木休（要確認）", place:"北広島町有田3388",
+    links:[ {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/0banchi.html", kind:"src"} ] },
+
+  { id:"hibiki", name:"レストラン 響", reading:"ひびき", genre:"定食", area:"千代田",
+    catch:"地元野菜の、減塩バイキング。",
+    points:["道の駅 舞ロードIC千代田内。石窯炊きご飯・天ぷら・ピザ・中華など60種超のビュッフェ"],
+    hours:"11:00〜15:00(L.O.14:00)・水休（要確認）", place:"北広島町有田1122（道の駅 舞ロードIC千代田）",
+    links:[ {label:"公式サイト", url:"https://kitahiro-ichiba.com/restaurant_hiviki.html", kind:"site"},
+            {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34019530/", kind:"src"} ] },
+
+  { id:"kitahiro-shokudo", name:"きたひろ食堂", reading:"きたひろしょくどう", genre:"定食", area:"千代田",
+    catch:"舞ロー丼と、きたひろラーメン。",
+    points:["道の駅 舞ロードIC千代田内の軽食処。きたひろラーメン・舞ロー丼・カレーが手軽"],
+    hours:"10:00〜17:00（軽食15:00まで・要確認）", place:"北広島町有田1122（道の駅 舞ロードIC千代田）",
+    links:[ {label:"公式サイト", url:"https://kitahiro-ichiba.com/", kind:"site"},
+            {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34022229/", kind:"src"} ] },
+
+  { id:"michizure", name:"酔膳亭 みちづれ", reading:"すいぜんてい みちづれ", genre:"和食", area:"千代田",
+    catch:"両海の魚介と寿司を、ランチで。",
+    points:["日本海・瀬戸内の新鮮魚介と寿司をリーズナブルに。個室・座敷もありランチ可"],
+    hours:"11:00〜14:00 ほか・水休（要確認）", place:"北広島町有田1556-1",
+    links:[ {label:"公式サイト", url:"https://www.yamagata-suizentei-michizure.com/", kind:"site"},
+            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/chiyodasingle/michidure.html", kind:"src"} ] },
+
+  // ---- 豊平エリア ----
+  { id:"liand-bagel", star:true, name:"Liand bagel", reading:"リアンドベーグル", genre:"ベーグル", area:"豊平",
+    catch:"土曜だけ開く、古民家のベーグル工房。",
+    points:["アート/デザインに携わる池田夫妻が営む週イチ営業。人参・りんご等の自家製ボタニカル酵母で48時間低温発酵"],
+    hours:"土曜のみ営業（公式SNS・ECで要確認）", place:"北広島町都志見1828",
+    links:[ {label:"Instagram", url:"https://www.instagram.com/liand_bagel/", kind:"ig"},
+            {label:"オンライン販売(BASE)", url:"https://liandbagel.official.ec/", kind:"site"},
+            {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34029422/", kind:"src"} ] },
+
+  { id:"kobori", name:"豊平手打ちそば こぼり", reading:"こぼり", genre:"そば", area:"豊平",
+    catch:"ミシュラン掲載の、手打ちそば。",
+    points:["豊平手打ちそば保存会出身の主人が打つ、地元産「とよむすめ」のコシある手打ちそば"],
+    hours:"土日祝11:00〜15:00（売切れ終了）／平日休", place:"北広島町阿坂3425-7",
+    links:[ {label:"公式サイト", url:"https://y783100.gorp.jp/", kind:"site"},
+            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/kobori.html", kind:"src"} ] },
+
+  { id:"isobe", name:"そば お味処 いそべ", reading:"いそべ", genre:"そば", area:"豊平",
+    catch:"骨董の店で味わう、かもざる。",
+    points:["住宅街の一軒家。骨董・雑貨が並ぶ店内で、焦がしネギ香る「かもざる」が名物（予約制）"],
+    hours:"11:00〜15:00・予約制・不定休", place:"北広島町阿坂12621-7",
+    links:[ {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/isobe.html", kind:"site"},
+            {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34014205/", kind:"src"} ] },
+
+  { id:"ryuzunosato", name:"お食事処 龍頭の里", reading:"りゅうずのさと", genre:"そば", area:"豊平",
+    catch:"龍頭山を望む座敷で、そば会席。",
+    points:["道の駅 豊平どんぐり村内。手打ちそばや地元食材の創作料理・会席（要予約）を座敷やテラスで"],
+    hours:"平日11:00〜15:00／土日祝〜19:00・第3火休（要確認）", place:"北広島町都志見12609（豊平どんぐり村）",
+    links:[ {label:"公式サイト", url:"https://www.dongurimura.co.jp/?cn=100012", kind:"site"},
+            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/ryuzunosato.html", kind:"src"} ] },
+
+  { id:"donguri-an", name:"そば処 どんぐり庵", reading:"どんぐりあん", genre:"そば", area:"豊平",
+    catch:"挽きたて打ちたて、豊平そば。",
+    points:["道の駅 豊平どんぐり村内。名人直伝のダシで味わう自信の手打ちそば。となりでそば打ち体験も"],
+    hours:"11:00〜14:00・第3火休", place:"北広島町都志見12609（道の駅 豊平どんぐり村）",
+    links:[ {label:"公式サイト", url:"https://www.dongurimura.co.jp/?cn=100027", kind:"site"},
+            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/dongurian.html", kind:"src"} ] },
+
+  { id:"dude", name:"森のカフェ＆レストラン Dude", reading:"でゅーど", genre:"イタリアン", area:"豊平",
+    catch:"森の中の、自家菜園イタリアン。",
+    points:["絵本のような一軒家。料理歴35年のシェフが自家菜園の有機野菜で作る本格パスタ・ピザ"],
+    hours:"平日11:00〜16:00／土日〜20:00・月休（冬期休）", place:"北広島町西宗13962-280",
+    links:[ {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/dude.html", kind:"site"},
+            {label:"Retty", url:"https://retty.me/area/PRE34/ARE284/SUB56902/100000609004/", kind:"src"} ] },
+
+  { id:"cafe-watanabe", name:"cafe house Watanabe", reading:"かふぇはうす わたなべ", genre:"カフェ", area:"豊平",
+    catch:"スープカレーと、シフォン専門。",
+    points:["どんぐり村のすぐ下。地元卵・国産小麦のシフォンケーキとスープカレーセットが看板"],
+    hours:"11:00〜17:00（要確認）", place:"北広島町都志見3706",
+    links:[ {label:"公式サイト", url:"https://cafe-house-watanabe.jimdofree.com/", kind:"site"},
+            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/watanabe.html", kind:"src"} ] },
+
+  { id:"kitsutsuki", name:"ガレットとクレープのお店 啄木鳥", reading:"きつつき", genre:"カフェ", area:"豊平",
+    catch:"豊平そば粉の、香ばしいガレット。",
+    points:["どんぐり村奥の隠れ家。地物（豊平）そば粉のガレットと季節のクレープが楽しめる"],
+    hours:"11:00〜17:00・火/第1水休", place:"北広島町阿坂10421-1",
+    links:[ {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/kitsutsuki.html", kind:"site"},
+            {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34017325/", kind:"src"} ] },
+
+  { id:"nonohana", name:"野の花かふぇ", reading:"ののはな かふぇ", genre:"カフェ", area:"豊平",
+    catch:"地元野菜ランチと、ふわふわシフォン。",
+    points:["龍頭山ふもとの古民家カフェ。金・土だけ、地元野菜たっぷりのランチと自家製スイーツを"],
+    hours:"金・土 11:00〜16:00・冬期休（要確認）", place:"北広島町都志見10733-99",
+    links:[ {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34014932/", kind:"src"},
+            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/nonohana.html", kind:"site"} ] },
+
+  { id:"yamagoya", name:"自家焙煎 山小屋cafe", reading:"やまごや かふぇ", genre:"カフェ", area:"豊平",
+    catch:"自家焙煎珈琲と、絶品カレー。",
+    points:["2019年開業の小さなカフェ。自家焙煎の新鮮コーヒーと絶品カレーが看板"],
+    hours:"10:00〜17:00（10〜3月は〜15:00）・火水休", place:"北広島町今吉田1545-1",
+    links:[ {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34027633/", kind:"src"},
+            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/toyohirasingle/yamagoyacafe.html", kind:"site"} ] },
+
+  // ---- 芸北エリア ----
+  { id:"kario-chaya", name:"かりお茶屋", reading:"かりおちゃや", genre:"そば", area:"芸北",
+    catch:"八幡高原名物の、赤そば。",
+    points:["高原の自然館に併設。八幡高原で育つ名物「赤そば」を、赤そば畑のそばで味わえる"],
+    hours:"10:00〜16:00・火休・冬期休（要確認）", place:"北広島町東八幡原10119-1（高原の自然館）",
+    links:[ {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34007742/", kind:"src"},
+            {label:"北広島町観光協会", url:"http://kitahiro.jp/eat-buy/eatsingle/geihokusingle/kario.html", kind:"site"} ] },
+
+  { id:"oudomari-chaya", name:"王泊茶屋", reading:"おうどまりちゃや", genre:"そば", area:"芸北",
+    catch:"湖畔の、石臼挽きそば＆カフェ。",
+    points:["2024年開業。国産石臼挽きそば粉のこだわり蕎麦と、王泊ダム湖畔の眺めの併設カフェ"],
+    hours:"そば11:00〜14:30／カフェ〜16:30・火水休（季節変更）", place:"北広島町細見361-94（芸北王泊ダム湖畔）",
+    links:[ {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/geihokusingle/pg7834.html", kind:"site"},
+            {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34032483/", kind:"src"} ] },
+
+  { id:"shojikimura", name:"コーヒーハウス 正直村", reading:"しょうじきむら", genre:"カフェ", area:"芸北",
+    catch:"聖湖を望む、ログハウス喫茶。",
+    points:["聖湖畔のログハウス風カフェ。テラスから臥竜山を望み、コーヒーや軽食でくつろげる秘境カフェ"],
+    hours:"10:30〜16:00・冬期(12〜3月)休", place:"北広島町西八幡原10770-1（聖湖畔）",
+    links:[ {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/geihokusingle/shojikimura.html", kind:"src"} ] },
+
+  { id:"daisen", name:"山奥の料理屋 大仙", reading:"だいせん", genre:"和食", area:"芸北",
+    catch:"日本海の幸と、山の幸の料理屋。",
+    points:["親子2代で営む料理屋。日本海の新鮮な魚介と芸北の山の幸を生かした地産地消のまごころ料理"],
+    hours:"11:30〜13:30／17:00〜22:00・不定休（要確認）", place:"北広島町川小田10076",
+    igPost:"https://www.instagram.com/p/CKiKC9FhfMr/",
+    links:[ {label:"公式サイト", url:"https://geihoku-daisen.com/", kind:"site"},
+            {label:"北広島町観光協会", url:"http://kitahiro.jp/eat-buy/eatsingle/geihokusingle/daisen.html", kind:"src"} ] },
+
+  { id:"alpenya", name:"あるぺん屋（八幡高原酒造）", reading:"あるぺんや", genre:"和食", area:"芸北",
+    catch:"名水仕込みの、どぶろく鍋。",
+    points:["八幡高原の名水で仕込むどぶろくの蔵。名物「どぶろく鍋」や自家製麹の腸活メニュー（要予約）"],
+    hours:"11:00〜14:00・月火休・要予約", place:"北広島町西八幡原10405-3",
+    links:[ {label:"公式サイト", url:"https://www.alpenya2.com/", kind:"site"},
+            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/geihokusingle/alpine.html", kind:"src"} ] },
+
+  { id:"jokenji", name:"イタリアン精進料理 淨謙寺", reading:"じょうけんじ", genre:"和食", area:"芸北",
+    catch:"寺で味わう、彩りの精進料理。",
+    points:["浄土真宗の寺で味わう完全予約制ランチ。30種超の地元食材を朱漆器に盛る彩り豊かな精進料理"],
+    hours:"完全予約制・主に金土日・5〜12月", place:"北広島町奥原161",
+    links:[ {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/geihokusingle/jokenji.html", kind:"site"},
+            {label:"食べログ", url:"https://tabelog.com/en/hiroshima/A3408/A340801/34015662/", kind:"src"} ] },
+
+  { id:"zousan-cafe", name:"芸北ぞうさんカフェ", reading:"げいほくぞうさんかふぇ", genre:"カフェ", area:"芸北",
+    catch:"薪窯の手作りピザと、ハーブティ。",
+    points:["スキー場施設を改装した開放的なカフェ。間伐材の薪窯で焼く手作りピザとハーブティーが名物"],
+    hours:"11:00〜18:00・水木休", place:"北広島町荒神原201（国道186号沿い）",
+    links:[ {label:"公式サイト", url:"https://www.zousancafe.com/", kind:"site"},
+            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/geihokusingle/zousancafe.html", kind:"src"} ] },
+
+  // ---- 大朝エリア ----
+  { id:"yuzuan", name:"囲炉裏の店 ゆず庵", reading:"ゆずあん", genre:"和食", area:"大朝",
+    catch:"囲炉裏で、両海の幸を小料理で。",
+    points:["浜田の海の幸・石見ポーク・瀬戸内の牡蠣などを囲炉裏で。昼は定食ランチも（要確認）"],
+    hours:"昼11:30〜13:30（平日）ほか・水/第2火休（要確認）", place:"北広島町大朝633-3",
+    links:[ {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/oasasingle/yuzuan.html", kind:"site"},
+            {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34021880/", kind:"src"} ] },
+
+  { id:"wasaru-shokudo", name:"こちら大朝わさ～る内食堂", reading:"わさ～るないしょくどう", genre:"ラーメン", area:"大朝",
+    catch:"産直施設の、汁なし担担麺。",
+    points:["産直施設「わさ～る」内の食堂。汁なし担担麺などの麺類を手軽に味わえる"],
+    hours:"9:00〜15:00・第3水休", place:"北広島町大朝2513-1（わさ～る内）",
+    links:[ {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34024886/", kind:"src"} ] },
+
+  { id:"resthouse-oasa", name:"レストハウス大朝", reading:"れすとはうすおおあさ", genre:"定食", area:"大朝",
+    catch:"公園内の食堂、ぶっかけそば。",
+    points:["中国平和記念墓地公園内。冷やしぶっかけそばや牡蠣フライ定食などを提供"],
+    hours:"10:00〜17:00・火休・冬期(12〜2月)休", place:"北広島町田原106（中国平和記念墓地公園内）",
+    links:[ {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34021463/", kind:"src"},
+            {label:"ヒトサラ", url:"https://hitosara.com/0031506777/", kind:"site"} ] },
+
+  { id:"ainosato", name:"天意の里 ハーブガーデン", reading:"あいのさと はーぶがーでん", genre:"カフェ", area:"大朝",
+    catch:"ハーブ園の、農家レストラン。",
+    points:["約4万㎡・100種超のハーブ園。無農薬野菜と国産肉のハーブランチが名物（5〜6月のカモミール摘みも人気）"],
+    hours:"10:00〜（季節変動）・木休・冬期休（要確認）", place:"北広島町大朝11654-1",
+    links:[ {label:"公式サイト", url:"http://www.oasa.jp/ainosato/", kind:"site"},
+            {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/oasasingle/ainosato.html", kind:"src"} ] },
+
+  { id:"karashiro", name:"からしろ館／からしろ茶屋", reading:"からしろかん", genre:"カフェ", area:"大朝",
+    catch:"県境の産直＋100円珈琲の茶屋。",
+    points:["島根県境の産直施設。地元野菜の販売に加え、併設茶屋でランチや100円コーヒーが気軽に"],
+    hours:"ランチ11:00〜14:00・火休", place:"北広島町宮迫386-12",
+    links:[ {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34014120/", kind:"src"} ] },
+
+  { id:"kaachan-gyoza", name:"むらかみふぁ～む かあちゃん餃子", reading:"かあちゃんぎょうざ", genre:"その他", area:"大朝",
+    catch:"自社農場の、かあちゃん餃子。",
+    points:["自社農場の手作り「かあちゃん餃子」と日替わり弁当。焼きたて餃子が人気（テイクアウト主体）"],
+    hours:"11:00〜14:30 ほか・土日祝休（要確認）", place:"北広島町大朝2486-3",
+    links:[ {label:"北広島町観光協会", url:"https://kitahiro.jp/eat-buy/eatsingle/oasasingle/gyoza.html", kind:"site"},
+            {label:"食べログ", url:"https://tabelog.com/hiroshima/A3408/A340801/34021462/", kind:"src"} ] },
 ];
 
 /* 出典一覧（フッター用） */
 const SOURCES = [
-  {label:"北広島町観光協会", url:"https://kitahiro.jp/"},
+  {label:"北広島町観光協会（食べる）", url:"https://kitahiro.jp/eat-buy/"},
   {label:"中国新聞デジタル（プチヘルメース）", url:"https://www.chugoku-np.co.jp/articles/-/588149"},
-  {label:"食べログ 北広島町", url:"https://tabelog.com/hiroshima/C34369/rstLst/lunch/"},
-  {label:"リビング広島Web", url:"https://mrs.living.jp/hiroshima/town_gourmet/reporter/5326673"},
+  {label:"食べログ 北広島町ランチ", url:"https://tabelog.com/hiroshima/C34369/rstLst/lunch/"},
+  {label:"道の駅 豊平どんぐり村", url:"https://www.dongurimura.co.jp/"},
 ];
 
+const AREA_ORDER = ["千代田","大朝","豊平","芸北"];
 const AREA_NOTE = {
   "千代田":"中国道・千代田ICの玄関口エリア",
   "大朝":"島根との県境に近い、山あいの里",
   "豊平":"西日本有数のそばの産地",
-  "芸北":"スキー場と湿原の高原エリア",
+  "芸北":"スキー場と高原・湖の高原エリア",
 };
 
 const KIND_STYLE = {
@@ -279,51 +393,42 @@ const KIND_STYLE = {
 };
 
 function mapsUrl(s){
-  const q = encodeURIComponent(`${s.name} ${s.place}`);
-  return `https://www.google.com/maps/search/?api=1&query=${q}`;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${s.name} ${s.place}`)}`;
 }
 
 function Chip({active, onClick, children}){
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={active}
-      style={{
-        cursor:"pointer", border:`1.5px solid ${active?C.main:C.border}`,
+    <button type="button" onClick={onClick} aria-pressed={active}
+      style={{ cursor:"pointer", border:`1.5px solid ${active?C.main:C.border}`,
         background: active?C.main:C.bgW, color: active?"#fff":C.fg,
         padding:"7px 14px", borderRadius:999, fontSize:14, fontWeight:600,
-        transition:"all .15s", whiteSpace:"nowrap",
-      }}>
+        transition:"all .15s", whiteSpace:"nowrap" }}>
       {children}
     </button>
   );
 }
 
-function LinkBtn({l, store}){
+function LinkBtn({l}){
   const st = KIND_STYLE[l.kind] || KIND_STYLE.site;
   return (
     <a href={l.url} target="_blank" rel="noopener noreferrer"
-      style={{
-        display:"inline-flex", alignItems:"center", gap:6, textDecoration:"none",
+      style={{ display:"inline-flex", alignItems:"center", gap:6, textDecoration:"none",
         background:st.bg, color:st.fg, border:st.border||"none",
-        padding:"8px 12px", borderRadius:10, fontSize:13, fontWeight:700,
-      }}>
+        padding:"8px 12px", borderRadius:10, fontSize:13, fontWeight:700 }}>
       <span aria-hidden="true">{st.icon}</span>{l.label}
     </a>
   );
 }
 
-function StoreCard({s, index}){
+function StoreCard({s}){
   const [showIG, setShowIG] = useState(false);
+  const cover = s.officialImg || GENRE_IMG[s.genre] || FALLBACK_IMG;
   return (
-    <article style={{
-      background:C.bgW, borderRadius:18, overflow:"hidden",
+    <article style={{ background:C.bgW, borderRadius:18, overflow:"hidden",
       border:`1px solid ${C.border}`, boxShadow:"0 6px 24px rgba(40,40,30,.06)",
-      display:"flex", flexDirection:"column",
-    }}>
+      display:"flex", flexDirection:"column" }}>
       <div style={{position:"relative", aspectRatio:"16/10", background:C.bgWarm}}>
-        <img src={s.officialImg || s.img} alt={`${s.name}（${s.genre}）の${s.officialImg?"写真":"イメージ"}`} loading="lazy" decoding="async"
+        <img src={cover} alt={`${s.name}（${s.genre}）のイメージ`} loading="lazy" decoding="async"
           onError={e=>{ if(e.target.src!==FALLBACK_IMG){e.target.src=FALLBACK_IMG;} }}
           style={{width:"100%", height:"100%", objectFit:"cover", display:"block"}}/>
         {s.star && (
@@ -332,9 +437,7 @@ function StoreCard({s, index}){
             boxShadow:"0 2px 8px rgba(0,0,0,.25)"}}>★ 編集部いちおし</span>
         )}
         <span style={{position:"absolute", top:12, right:12, background:"rgba(27,30,22,.78)", color:"#fff",
-          fontSize:12, fontWeight:700, padding:"5px 10px", borderRadius:999}}>
-          {s.area}エリア
-        </span>
+          fontSize:12, fontWeight:700, padding:"5px 10px", borderRadius:999}}>{s.area}エリア</span>
         <span style={{position:"absolute", bottom:0, left:0, right:0,
           background:"linear-gradient(transparent,rgba(0,0,0,.55))", color:"#fff",
           padding:"24px 14px 10px", fontSize:13, fontWeight:700}}>
@@ -344,7 +447,7 @@ function StoreCard({s, index}){
 
       <div style={{padding:"16px 16px 18px", display:"flex", flexDirection:"column", gap:10, flex:1}}>
         <div>
-          <h3 style={{margin:"0 0 2px", fontSize:20, color:C.fg, lineHeight:1.25}}>{s.name}</h3>
+          <h3 style={{margin:"0 0 2px", fontSize:19, color:C.fg, lineHeight:1.25}}>{s.name}</h3>
           <div style={{fontSize:12, color:C.fgXL, letterSpacing:.3}}>{s.reading}</div>
         </div>
 
@@ -365,7 +468,7 @@ function StoreCard({s, index}){
         </dl>
 
         <div style={{display:"flex", flexWrap:"wrap", gap:8, marginTop:"auto", paddingTop:8}}>
-          {s.links.map((l,i)=><LinkBtn key={i} l={l} store={s}/>)}
+          {s.links.map((l,i)=><LinkBtn key={i} l={l}/>)}
           <a href={mapsUrl(s)} target="_blank" rel="noopener noreferrer"
             style={{display:"inline-flex", alignItems:"center", gap:6, textDecoration:"none",
               background:KIND_STYLE.map.bg, color:KIND_STYLE.map.fg,
@@ -382,11 +485,7 @@ function StoreCard({s, index}){
                 fontSize:13, fontWeight:700}}>
               📷 {showIG ? "公式の写真を閉じる" : "公式の写真を見る（Instagram）"}
             </button>
-            {showIG && (
-              <div style={{marginTop:10}}>
-                <IGEmbed permalink={s.igPost}/>
-              </div>
-            )}
+            {showIG && <div style={{marginTop:10}}><IGEmbed permalink={s.igPost}/></div>}
           </div>
         )}
       </div>
@@ -399,7 +498,20 @@ function App(){
   const [genres, setGenres] = useState(()=>new Set());
   const [q, setQ] = useState("");
 
-  const allAreas  = useMemo(()=>[...new Set(STORES.map(s=>s.area))], []);
+  // 構造化データ(JSON-LD)をデータから生成して挿入（町外検索の発見性UP）
+  useEffect(()=>{
+    const data = { "@context":"https://schema.org", "@type":"ItemList",
+      name:"広島・北広島町 おすすめランチガイド",
+      itemListElement: STORES.map((s,i)=>({ "@type":"ListItem", position:i+1,
+        item:{ "@type":"Restaurant", name:s.name, servesCuisine:s.genre,
+          address:{ "@type":"PostalAddress", addressLocality:"北広島町", addressRegion:"広島県", addressCountry:"JP" } } })) };
+    const el = document.createElement("script");
+    el.type = "application/ld+json"; el.text = JSON.stringify(data);
+    document.head.appendChild(el);
+    return ()=>{ document.head.removeChild(el); };
+  }, []);
+
+  const allAreas  = useMemo(()=>AREA_ORDER.filter(a=>STORES.some(s=>s.area===a)), []);
   const allGenres = useMemo(()=>[...new Set(STORES.map(s=>s.genre))], []);
 
   const toggle = useCallback((setFn, val)=>{
@@ -431,26 +543,26 @@ function App(){
           onError={e=>{ if(e.target.src!==FALLBACK_IMG){e.target.src=FALLBACK_IMG;} }}
           style={{position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover"}}/>
         <div style={{position:"absolute", inset:0, background:"linear-gradient(180deg,rgba(27,30,22,.55),rgba(27,30,22,.82))"}}/>
-        <div style={{position:"relative", maxWidth:1080, margin:"0 auto", padding:"72px 20px 64px"}}>
+        <div style={{position:"relative", maxWidth:1100, margin:"0 auto", padding:"72px 20px 64px"}}>
           <div style={{fontSize:14, fontWeight:700, letterSpacing:4, opacity:.9}}>HIROSHIMA · KITAHIROSHIMA</div>
           <h1 style={{fontSize:"clamp(30px,6vw,56px)", margin:"10px 0 14px", lineHeight:1.15, fontWeight:900}}>
             北広島町のランチ、<br/>ぜんぶここに。
           </h1>
-          <p style={{fontSize:"clamp(15px,2.2vw,19px)", maxWidth:640, lineHeight:1.7, opacity:.95, margin:"0 0 22px"}}>
+          <p style={{fontSize:"clamp(15px,2.2vw,19px)", maxWidth:660, lineHeight:1.7, opacity:.95, margin:"0 0 22px"}}>
             広島市内から車で約1時間。山あいの町に、わざわざ行きたくなる一皿が点在しています。
-            廃校のパン屋、土曜だけのベーグル、西日本有数のそば——
-            <strong>町外の人にこそ知ってほしい</strong>、実在のおすすめランチ{STORES.length}軒を集めました。
+            廃校のパン屋、土曜だけのベーグル、西日本有数のそば、高原のカフェ——
+            <strong>町外の人にこそ知ってほしい</strong>、実在のおすすめランチ・カフェ <strong>{STORES.length}軒</strong>を集めました。
           </p>
           <div style={{display:"flex", gap:18, flexWrap:"wrap", fontSize:14}}>
-            <span style={{display:"inline-flex", alignItems:"center", gap:6}}>✓ 全店じっさいに実在を確認</span>
-            <span style={{display:"inline-flex", alignItems:"center", gap:6}}>🔎 エリア×ジャンルで絞り込み</span>
-            <span style={{display:"inline-flex", alignItems:"center", gap:6}}>📍 各店の地図・SNSへすぐ</span>
+            <span>✓ 全店じっさいに実在を確認（出典リンク付き）</span>
+            <span>🔎 エリア×ジャンルで絞り込み</span>
+            <span>📍 各店の地図・公式SNSへすぐ</span>
           </div>
         </div>
       </header>
 
       {/* ===== 北広島町ってどこ？ ===== */}
-      <section style={{maxWidth:1080, margin:"0 auto", padding:"28px 20px 4px"}}>
+      <section style={{maxWidth:1100, margin:"0 auto", padding:"28px 20px 4px"}}>
         <div style={{background:C.bgWarm, border:`1px solid ${C.border}`, borderRadius:16, padding:"18px 20px"}}>
           <h2 style={{margin:"0 0 8px", fontSize:18, color:C.mainD}}>北広島町って、どこ？</h2>
           <p style={{margin:"0 0 12px", fontSize:14.5, color:C.fgL, lineHeight:1.7}}>
@@ -458,10 +570,10 @@ function App(){
             中国自動車道・千代田ICが玄関口。下のエリアタグはこの4地域に対応しています。
           </p>
           <div style={{display:"flex", flexWrap:"wrap", gap:8}}>
-            {Object.entries(AREA_NOTE).map(([a,note])=>(
+            {AREA_ORDER.map(a=>(
               <span key={a} style={{fontSize:12.5, color:C.fgL, background:C.bgW,
                 border:`1px solid ${C.border}`, borderRadius:10, padding:"6px 10px"}}>
-                <strong style={{color:C.main}}>{a}</strong>：{note}
+                <strong style={{color:C.main}}>{a}</strong>：{AREA_NOTE[a]}
               </span>
             ))}
           </div>
@@ -471,10 +583,10 @@ function App(){
       {/* ===== フィルタ ===== */}
       <section style={{position:"sticky", top:0, zIndex:10, background:`${C.bg}f2`,
         backdropFilter:"blur(6px)", borderBottom:`1px solid ${C.border}`, marginTop:18}}>
-        <div style={{maxWidth:1080, margin:"0 auto", padding:"14px 20px"}}>
+        <div style={{maxWidth:1100, margin:"0 auto", padding:"14px 20px"}}>
           <div style={{display:"flex", gap:8, flexWrap:"wrap", alignItems:"center", marginBottom:10}}>
             <input type="search" value={q} onChange={e=>setQ(e.target.value)}
-              placeholder="🔎 店名・キーワードで探す（例：そば、古民家、土曜）"
+              placeholder="🔎 店名・キーワードで探す（例：そば、古民家、土曜、自家焙煎）"
               aria-label="キーワード検索"
               style={{flex:"1 1 240px", minWidth:0, padding:"10px 14px", fontSize:15,
                 border:`1.5px solid ${C.border}`, borderRadius:12, background:C.bgW, color:C.fg}}/>
@@ -484,33 +596,25 @@ function App(){
             {hasFilter ? (
               <button type="button" onClick={clearAll}
                 style={{cursor:"pointer", border:"none", background:"none", color:C.accent,
-                  fontSize:13, fontWeight:700, textDecoration:"underline"}}>
-                条件をクリア
-              </button>
+                  fontSize:13, fontWeight:700, textDecoration:"underline"}}>条件をクリア</button>
             ) : null}
           </div>
-
           <div style={{display:"flex", gap:6, flexWrap:"wrap", alignItems:"center", marginBottom:8}}>
             <span style={{fontSize:12, fontWeight:800, color:C.fgXL, marginRight:2}}>エリア</span>
-            {allAreas.map(a=>(
-              <Chip key={a} active={areas.has(a)} onClick={()=>toggle(setAreas,a)}>{a}</Chip>
-            ))}
+            {allAreas.map(a=>(<Chip key={a} active={areas.has(a)} onClick={()=>toggle(setAreas,a)}>{a}</Chip>))}
           </div>
           <div style={{display:"flex", gap:6, flexWrap:"wrap", alignItems:"center"}}>
             <span style={{fontSize:12, fontWeight:800, color:C.fgXL, marginRight:2}}>ジャンル</span>
-            {allGenres.map(g=>(
-              <Chip key={g} active={genres.has(g)} onClick={()=>toggle(setGenres,g)}>{g}</Chip>
-            ))}
+            {allGenres.map(g=>(<Chip key={g} active={genres.has(g)} onClick={()=>toggle(setGenres,g)}>{g}</Chip>))}
           </div>
         </div>
       </section>
 
       {/* ===== カードグリッド ===== */}
-      <main style={{maxWidth:1080, margin:"0 auto", padding:"24px 20px 8px"}}>
+      <main style={{maxWidth:1100, margin:"0 auto", padding:"24px 20px 8px"}}>
         {filtered.length ? (
-          <div style={{display:"grid", gap:20,
-            gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))"}}>
-            {filtered.map((s,i)=><StoreCard key={s.id} s={s} index={i}/>)}
+          <div style={{display:"grid", gap:20, gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))"}}>
+            {filtered.map(s=><StoreCard key={s.id} s={s}/>)}
           </div>
         ) : (
           <div style={{textAlign:"center", padding:"60px 20px", color:C.fgL}}>
@@ -527,15 +631,15 @@ function App(){
 
       {/* ===== フッター（情報の正確性ノート＋出典） ===== */}
       <footer style={{background:C.bgDark, color:"#D8D3C8", marginTop:32}}>
-        <div style={{maxWidth:1080, margin:"0 auto", padding:"36px 20px 40px"}}>
+        <div style={{maxWidth:1100, margin:"0 auto", padding:"36px 20px 40px"}}>
           <h2 style={{color:"#fff", fontSize:18, margin:"0 0 10px"}}>このページについて / 情報の正確性</h2>
-          <p style={{fontSize:13.5, lineHeight:1.8, margin:"0 0 14px", maxWidth:760}}>
+          <p style={{fontSize:13.5, lineHeight:1.8, margin:"0 0 14px", maxWidth:780}}>
             本ページは北広島町のランチを町外の方へ紹介するために作成した
             <strong style={{color:"#fff"}}>ファンメイドのまとめ</strong>です。
-            掲載情報は <strong style={{color:"#fff"}}>2026年6月時点</strong> の公開情報に基づく調査で、
+            掲載情報は <strong style={{color:"#fff"}}>2026年6月時点</strong> の公開情報（北広島町観光協会・食べログ・各店公式 等）に基づく調査で、
             掲載店はいずれも実在を確認しています。ただし
-            <strong style={{color:"#fff"}}>営業日・営業時間・定休日・メニュー・価格は変動します</strong>。
-            おでかけ前に、必ず各店の公式Instagram・公式サイト等で最新情報をご確認ください。
+            <strong style={{color:"#fff"}}>営業日・営業時間・定休日・メニュー・価格は変動し、冬期休業の店も多く</strong>あります。
+            おでかけ前に、必ず各カードの公式リンク（Instagram・公式サイト等）で最新情報をご確認ください。
             掲載の希望・修正の依頼があれば、各店および制作者までお知らせください。
           </p>
           <div style={{display:"flex", flexWrap:"wrap", gap:"6px 16px", fontSize:13, marginBottom:18}}>
@@ -546,7 +650,7 @@ function App(){
             ))}
           </div>
           <div style={{borderTop:"1px solid #3A3D34", paddingTop:14, fontSize:12, color:"#9B978E"}}>
-            🍙 北広島町おすすめランチガイド ／ ※掲載写真の一部はジャンルのイメージ画像です（各店の実際の写真は各店SNSをご覧ください）。
+            🍙 北広島町おすすめランチガイド ／ ※カバー画像はジャンルのイメージ画像です。各店の実際の写真は公式リンク先（Instagram・公式サイト）でご覧ください。
           </div>
         </div>
       </footer>
