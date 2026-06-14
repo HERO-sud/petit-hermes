@@ -98,7 +98,8 @@ def main():
         rate = rate or 24000
         # 行ごとの尺 = max(min_dur, 声+GAP)。声の後ろを無音パディングして尺を満たす
         durs = {}; track = bytearray()
-        silence = lambda sec: b"\x00" * int(rate * sampw * ch * max(0.0, sec))
+        frame = sampw * ch
+        silence = lambda sec: b"\x00" * (int(rate * max(0.0, sec)) * frame)  # 必ずフレーム境界に揃える
         for (bid, pcm, vd) in segs:
             mind = next(b.get("min_dur", 2.5) for b in TL["beats"] if b["id"] == bid)
             dur = max(mind, vd + GAP if vd else mind)
